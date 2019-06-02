@@ -2,70 +2,97 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 
 namespace TClient.Simple
 {
     public class SimpleSocketClient
     {
-        public Socket socket;
-        public byte[] recvData = new byte[4096];
+
+        public Socket ClientSocket;
+        public byte[] RecvData = new byte[4096];
         public int Port;
         public string Host;
+        public IPEndPoint IPE;
+        public int index = 0;
         public SimpleSocketClient(string host, int port)
         {
             Host = host;
             Port = port;
+            IPAddress ip = IPAddress.Parse(Host);
+            IPE = new IPEndPoint(ip, Port);
         }
 
+        /// <summary>
+        /// Connect this instance.
+        /// </summary>
         public void Connect()
         {
-            IPAddress ip = IPAddress.Parse(Host);
-            IPEndPoint ipe = new IPEndPoint(ip, Port);
 
-            socket = new Socket(AddressFamily.InterNetwork
+            ClientSocket = new Socket(AddressFamily.InterNetwork
                 , SocketType.Stream, ProtocolType.Tcp);
 
             // connect
-            socket.BeginConnect(ipe, (ar) =>
-            {
-                ((Socket)ar.AsyncState).EndConnect(ar);
-            }, socket);
-
-            // receive
-            socket.BeginReceive(recvData, 0, recvData.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), null);
+            ClientSocket.BeginConnect(IPE, ConnectCallBack, ClientSocket);
 
             // send
             while (true)
             {
                 var str = Console.ReadLine();
                 if ("exit".Equals(str)) break;
-
-                var sendBytes = Encoding.ASCII.GetBytes(str);
-                var sendHead = BitConverter.GetBytes(sendBytes.Length);
-                var sendData = new byte[sendHead.Length + sendBytes.Length];
-                Array.Copy(sendHead, sendData, sendHead.Length);
-                Array.Copy(sendBytes, sendData, sendBytes.Length);
-                socket.BeginSend(sendData, 0, sendData.Length, SocketFlags.None, (ar) =>
+                for(var i = 0; i < 10; ++i)
                 {
-                    ((Socket)ar.AsyncState).EndSend(ar);
-                }, socket);
+                    var sendBytes = Encoding.ASCII.GetBytes(str);
+                    var sendHead = BitConverter.GetBytes(sendBytes.Length);
+                    var sendData = new byte[sendHead.Length + sendBytes.Length];
+                    Array.Copy(sendHead, 0, sendData, 0, sendHead.Length);
+                    Array.Copy(sendBytes, 0, sendData, sendHead.Length, sendBytes.Length);
+                    Console.WriteLine("Send length: " + sendData.Length);
+                    ClientSocket.BeginSend(sendData, 0, sendData.Length, SocketFlags.None, (ar) =>
+                    {
+                        ((Socket)ar.AsyncState).EndSend(ar);
+                    }, ClientSocket);
+                }
             }
-            socket.Close();
+            ClientSocket.Close();
         }
+
         /// <summary>
-        /// Receives the call back.
+        /// Connects the callback.
+        /// </summary>
+        /// <param name="ar">Ar.</param>
+        public void ConnectCallBack(IAsyncResult ar)
+        {
+            try
+            {
+                (ar.AsyncState as Socket).EndConnect(ar);
+                Console.WriteLine("Connect success!");
+            }
+            catch(SocketException ex)
+            {
+                Thread.Sleep(2000);
+                Console.WriteLine("Connect failed! Try again..." + ++index);
+                ClientSocket.BeginConnect(IPE, ConnectCallBack, ClientSocket);
+                return;
+            }
+            // receive
+            ClientSocket.BeginReceive(RecvData, 0, RecvData.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), null);
+        }
+
+        /// <summary>
+        /// Receives the callback.
         /// </summary>
         /// <param name="ar">Ar.</param>
         public void ReceiveCallBack(IAsyncResult ar)
         {
-            var endLength = socket.EndReceive(ar);
+            var endLength = ClientSocket.EndReceive(ar);
             if (endLength > 0)
             {
                 var data = new byte[endLength];
-                Array.Copy(recvData, 0, data, 0, endLength);
+                Array.Copy(RecvData, 0, data, 0, endLength);
                 Console.WriteLine(Encoding.ASCII.GetString(data));
-
-                socket.BeginReceive(recvData, 0, recvData.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), null);
+                Console.WriteLine("Receive length: " + data.Length);
+                ClientSocket.BeginReceive(RecvData, 0, RecvData.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), null);
             }
         }
     }
