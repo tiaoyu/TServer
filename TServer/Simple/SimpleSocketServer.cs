@@ -40,81 +40,45 @@ namespace TServer.Simple
             ServerSocket.BeginAccept(AcceptCallback, ServerSocket);
 
 
-            Task.Run(() =>
-            {
-                while (isRunning)
-                {
-                    var str = Console.ReadLine();
-                    if ("exit".Equals(str))
-                    {
-                        isRunning = false;
-                        continue;
-                    }
-
-                    var connectionList = new List<int>(DicConnection.Keys);
-                    if (connectionList.Count <= 0) continue;
-
-                    var sendBytes = Encoding.ASCII.GetBytes(str);
-                    var sendHead = BitConverter.GetBytes(sendBytes.Length);
-                    var sendData = new byte[sendHead.Length + sendBytes.Length];
-                    Array.Copy(sendHead, sendData, sendHead.Length);
-                    Array.Copy(sendBytes, sendData, sendBytes.Length);
-
-                    foreach (var connectionId in connectionList)
-                    {
-                        if (DicConnection.TryGetValue(connectionId, out SocketData connection))
-                        {
-                            if (connection.Socket.Connected)
-                            {
-                                Console.WriteLine("Send to {0}, length: {1}", connectionId, sendData.Length);
-                                connection.Socket.BeginSend(sendData, 0, sendData.Length, SocketFlags.None, (ar) =>
-                                {
-                                    (ar.AsyncState as Socket).EndSend(ar);
-                                }, connection);
-                            }
-                            else
-                            {
-                                DicConnection.TryRemove(connectionId, out connection);
-                            }
-                        }
-                    }
-                }
-            });
-
             while (isRunning)
             {
-                Stopwatch st = new Stopwatch();
-                st.Start();
+                var str = Console.ReadLine();
+                if ("exit".Equals(str))
+                {
+                    isRunning = false;
+                    continue;
+                }
+
                 var connectionList = new List<int>(DicConnection.Keys);
                 if (connectionList.Count <= 0) continue;
+
+                var sendBytes = Encoding.ASCII.GetBytes(str);
+                var sendHead = BitConverter.GetBytes(sendBytes.Length);
+                var sendData = new byte[sendHead.Length + sendBytes.Length];
+                Array.Copy(sendHead, 0, sendData, 0, sendHead.Length);
+                Array.Copy(sendBytes, 0, sendData, sendHead.Length, sendBytes.Length);
+                Console.WriteLine("Send length: " + sendData.Length);
+
                 foreach (var connectionId in connectionList)
                 {
                     if (DicConnection.TryGetValue(connectionId, out SocketData connection))
                     {
                         if (connection.Socket.Connected)
                         {
-                            byte[] buff;
-                            do
+                            Console.WriteLine("Send to {0}, length: {1}", connectionId, sendData.Length);
+                            connection.Socket.BeginSend(sendData, 0, sendData.Length, SocketFlags.None, (ar) =>
                             {
-                                BufferMgr.Instance.ReadBufferFromPool(out buff, connection);
-                                if (buff != null)
-                                {
-                                    Array.Copy(buff, 0, connection.Message, connection.MessageOffet, buff.Length);
-                                }
-                            } while (connection._waitReadLength > 0);
-                            if (connection.Message != null)
-                            {
-
-                                Console.WriteLine(Encoding.ASCII.GetString(connection.Message));
-                                connection.Message = null;
-                            }
+                                (ar.AsyncState as SocketData).Socket.EndSend(ar);
+                            }, connection);
+                        }
+                        else
+                        {
+                            DicConnection.TryRemove(connectionId, out connection);
                         }
                     }
                 }
-                var sleepTime = 30 - st.ElapsedMilliseconds;
-                //Console.WriteLine("spendTime:{0}", st.ElapsedMilliseconds);
-                Thread.Sleep(sleepTime > 0 ? (int)sleepTime : 0);
             }
+
             ServerSocket.Close();
         }
 
@@ -131,7 +95,8 @@ namespace TServer.Simple
 
             DicConnection.TryAdd(connection.GetHashCode(), socketData);
 
-            socketData.Socket.BeginReceive(recvData, 0, recvData.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), socketData);
+            socketData.Socket.BeginReceive(BufferMgr.Instance.ByteBufferPool, socketData.OffsetInBufferPool, BufferMgr.Instance.EachBlockBytes
+                , SocketFlags.None, new AsyncCallback(ReceiveCallBack), socketData);
             Console.WriteLine("Connected end, ConnectionId : " + connection.GetHashCode());
 
             socket.BeginAccept(AcceptCallback, socket);
@@ -141,7 +106,7 @@ namespace TServer.Simple
         /// Receives the callback.
         /// </summary>
         /// <param name="ar">Ar.</param>
-        public void ReceiveCallback(IAsyncResult ar)
+        public void ReceiveCallBack(IAsyncResult ar)
         {
             var ss = ar.AsyncState as SocketData;
             // 当前接收到的字节数
@@ -149,24 +114,17 @@ namespace TServer.Simple
             if (recvLength > 0)
             {
                 Console.WriteLine("endLength: " + recvLength);
-                var data = new byte[recvLength];
-                Array.Copy(recvData, 0, data, 0, recvLength);
-                BufferMgr.Instance.WriteBufferIntoPool(recvData, recvLength, ss);
-                //if (recvLength < 4)
-                //{
-                //    Array.Copy(recvData, 0, data, 0, recvLength);
-                //}
-                //else
-                //{
-                //    var headLength = new byte[4];
-                //    Array.Copy(recvData, 0, headLength, 0, 4);
-                //    Console.WriteLine("Head: " + BitConverter.ToInt32(headLength));
-                //    Array.Copy(recvData, 4, data, 0, recvLength - 4);
-                //}
-                //Console.WriteLine(Encoding.ASCII.GetString(data));
-                //Console.WriteLine("Receive length: " + data.Length);
-                //Array.Clear(recvData, 0, recvData.Length);
-                ss.Socket.BeginReceive(recvData, 0, recvData.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), ss);
+                // 当前剩余需要处理的字节长度
+                var remainProcessLength = recvLength;
+                do
+                {
+                    remainProcessLength = BufferMgr.Instance.ReadBufferFromPool(ss, remainProcessLength);
+
+                } while (remainProcessLength != 0);
+
+
+                ss.Socket.BeginReceive(BufferMgr.Instance.ByteBufferPool, ss.OffsetInBufferPool, BufferMgr.Instance.EachBlockBytes
+                    , SocketFlags.None, new AsyncCallback(ReceiveCallBack), ss);
             }
             else
             {

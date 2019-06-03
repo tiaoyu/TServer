@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net.Sockets;
 
-namespace TServer.Simple
+namespace TClient.Simple
 {
     public class SocketData
     {

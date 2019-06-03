@@ -40,7 +40,7 @@ namespace TClient.Simple
             {
                 var str = Console.ReadLine();
                 if ("exit".Equals(str)) break;
-                for(var i = 0; i < 10; ++i)
+                for (var i = 0; i < 10; ++i)
                 {
                     var sendBytes = Encoding.ASCII.GetBytes(str);
                     var sendHead = BitConverter.GetBytes(sendBytes.Length);
@@ -63,12 +63,13 @@ namespace TClient.Simple
         /// <param name="ar">Ar.</param>
         public void ConnectCallBack(IAsyncResult ar)
         {
+            var connection = new SocketData(ar.AsyncState as Socket);
             try
             {
-                (ar.AsyncState as Socket).EndConnect(ar);
+                connection.Socket.EndConnect(ar);
                 Console.WriteLine("Connect success!");
             }
-            catch(SocketException ex)
+            catch (SocketException ex)
             {
                 Thread.Sleep(2000);
                 Console.WriteLine("Connect failed! Try again..." + ++index);
@@ -76,7 +77,8 @@ namespace TClient.Simple
                 return;
             }
             // receive
-            ClientSocket.BeginReceive(RecvData, 0, RecvData.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), null);
+            ClientSocket.BeginReceive(BufferMgr.Instance.ByteBufferPool, connection.OffsetInBufferPool, BufferMgr.Instance.EachBlockBytes
+                    , SocketFlags.None, new AsyncCallback(ReceiveCallBack), connection);
         }
 
         /// <summary>
@@ -85,14 +87,28 @@ namespace TClient.Simple
         /// <param name="ar">Ar.</param>
         public void ReceiveCallBack(IAsyncResult ar)
         {
-            var endLength = ClientSocket.EndReceive(ar);
-            if (endLength > 0)
+            var ss = ar.AsyncState as SocketData;
+            // 当前接收到的字节数
+            var recvLength = ss.Socket.EndReceive(ar);
+            if (recvLength > 0)
             {
-                var data = new byte[endLength];
-                Array.Copy(RecvData, 0, data, 0, endLength);
-                Console.WriteLine(Encoding.ASCII.GetString(data));
-                Console.WriteLine("Receive length: " + data.Length);
-                ClientSocket.BeginReceive(RecvData, 0, RecvData.Length, SocketFlags.None, new AsyncCallback(ReceiveCallBack), null);
+                Console.WriteLine("endLength: " + recvLength);
+                // 当前剩余需要处理的字节长度
+                var remainProcessLength = recvLength;
+                do
+                {
+                    remainProcessLength = BufferMgr.Instance.ReadBufferFromPool(ss, remainProcessLength);
+
+                } while (remainProcessLength != 0);
+
+
+                ss.Socket.BeginReceive(BufferMgr.Instance.ByteBufferPool, ss.OffsetInBufferPool, BufferMgr.Instance.EachBlockBytes
+                    , SocketFlags.None, new AsyncCallback(ReceiveCallBack), ss);
+            }
+            else
+            {
+                Console.WriteLine("Connection closed, ConnectionId : " + ss.GetHashCode());
+                ss.Socket.Close();
             }
         }
     }

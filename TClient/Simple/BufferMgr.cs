@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace TServer.Simple
+namespace TClient.Simple
 {
     /// <summary>
     /// buffer 的管理类. 一个Server使用一个byte数组作为所有Socket接收数据的buffer缓存
