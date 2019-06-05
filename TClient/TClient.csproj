@@ -6,6 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Simple\" />
+    <Compile Remove="Simple\SimpleSocketClient.cs" />
+    <Compile Remove="Simple\BufferMgr.cs" />
+    <Compile Remove="Simple\SocketData.cs" />
   </ItemGroup>
+  <Import Project="..\Common\Common.projitems" Label="Shared" Condition="Exists('..\Common\Common.projitems')" />
 </Project>

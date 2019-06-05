@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace TClient.Simple
+namespace Common.SimpleSocket
 {
     /// <summary>
     /// buffer 的管理类. 一个Server使用一个byte数组作为所有Socket接收数据的buffer缓存
@@ -34,11 +34,11 @@ namespace TClient.Simple
         /// <summary>
         /// buffer池的总大小
         /// </summary>
-        private int _capability;
+        private int _capabilityBytes;
         /// <summary>
         /// 池中总共包含的block个数
         /// </summary>
-        private int _countOfBlock;
+        private int _capabilityBlocks;
         /// <summary>
         /// buffer池 所有Socket使用的buffer缓存都在一个大数组中
         /// </summary>
@@ -46,18 +46,25 @@ namespace TClient.Simple
 
         public BufferMgr()
         {
-            // 默认设置最大保持连接数为8个 每个block大小为8*1024字节
-            _countOfBlock = 8;
-            EachBlockBytes = 8 * 1024;
-            _capability = 8 * 8 * 1024;
-            ByteBufferPool = new byte[_capability];
+        }
+
+        /// <summary>
+        /// 初始化Buffer池
+        /// </summary>
+        /// <param name="maxBlockCount">Max block count.</param>
+        /// <param name="eachBlockBytes">Each block bytes.</param>
+        public void Init(int maxBlockCount = 8, int eachBlockBytes = 8 * 1024)
+        {
+            _capabilityBlocks = maxBlockCount;
+            EachBlockBytes = eachBlockBytes;
+            _capabilityBytes = _capabilityBlocks * EachBlockBytes;
+            ByteBufferPool = new byte[_capabilityBytes];
             _freeIndexStack = new Stack<int>();
-            for (var i = 0; i < _countOfBlock; ++i)
+            for (var i = 0; i < _capabilityBlocks; ++i)
             {
                 _freeIndexStack.Push(i);
             }
         }
-
 
 
         /// <summary>
@@ -108,7 +115,7 @@ namespace TClient.Simple
             }
 
             // 读取消息体：若当前剩余buffer长度大于待读取的消息长度 则读取的消息长度为 待读取的消息长度
-            if(data.BytesOfDoneBody == 0)
+            if (data.BytesOfDoneBody == 0)
             {
                 data.MessageBody = new byte[data.MessageLength];
             }
@@ -130,10 +137,10 @@ namespace TClient.Simple
             }
 
             // 处理读取到到消息
-            if(data.MessageLength == data.BytesOfDoneBody)
+            if (data.MessageLength == data.BytesOfDoneBody)
             {
                 Console.WriteLine("Recv: {0}", Encoding.ASCII.GetString(data.MessageBody));
-                if(remainLength == 0)
+                if (remainLength == 0)
                 {
                     data.SkipBufferBytes = 0;
                 }
