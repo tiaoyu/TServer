@@ -7,13 +7,13 @@ using Common.SimpleSocket;
 
 namespace TServer
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main()
         {
             Console.WriteLine("Hello Server!");
 
-            SimpleSocketServer server = new SimpleSocketServer("127.0.0.1", 11000);
+            var server = new SimpleSocketServer("127.0.0.1", 11000);
             server.Start();
 
             // 处理消息
@@ -59,7 +59,7 @@ namespace TServer
                             Console.WriteLine("Send to {0}, length: {1}", connectionId, sendData.Length);
                             connection.Socket.BeginSend(sendData, 0, sendData.Length, SocketFlags.None, (ar) =>
                             {
-                                (ar.AsyncState as SocketData).Socket.EndSend(ar);
+                                (ar.AsyncState as SocketData)?.Socket.EndSend(ar);
                             }, connection);
                         }
                         else

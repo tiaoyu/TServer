@@ -19,18 +19,19 @@ namespace Common.SimpleSocket
         /// <param name="ar">Ar.</param>
         public void AcceptCallback(IAsyncResult ar)
         {
-            var socket = ar.AsyncState as Socket;
+            if (!(ar.AsyncState is Socket socket)) return;
+
             var connection = socket.EndAccept(ar);
 
-            SocketData socketData = new SocketData(connection);
+            var socketData = new SocketData(connection);
 
             DicConnection.TryAdd(connection.GetHashCode(), socketData);
 
             socketData.Socket.BeginReceive(BufferMgr.Instance.ByteBufferPool, socketData.OffsetInBufferPool, BufferMgr.Instance.EachBlockBytes
-                , SocketFlags.None, new AsyncCallback(ReceiveCallBack), socketData);
+                , SocketFlags.None, ReceiveCallBack, socketData);
             Console.WriteLine("Connected end, ConnectionId : " + connection.GetHashCode());
-
             socket.BeginAccept(AcceptCallback, socket);
+
         }
 
         /// <summary>
@@ -39,14 +40,15 @@ namespace Common.SimpleSocket
         /// <param name="ar">Ar.</param>
         public void ReceiveCallBack(IAsyncResult ar)
         {
-            var ss = ar.AsyncState as SocketData;
+            if (!(ar.AsyncState is SocketData ss)) return;
+
             // 当前接收到的字节数
-            var recvLength = ss.Socket.EndReceive(ar);
-            if (recvLength > 0)
+            var recLength = ss.Socket.EndReceive(ar);
+            if (recLength > 0)
             {
-                Console.WriteLine("endLength: " + recvLength);
+                Console.WriteLine("endLength: " + recLength);
                 // 当前剩余需要处理的字节长度
-                var remainProcessLength = recvLength;
+                var remainProcessLength = recLength;
                 do
                 {
                     remainProcessLength = MessageHandler.ReadBufferFromPool(BufferMgr.Instance.ByteBufferPool, ss, remainProcessLength);
@@ -55,7 +57,7 @@ namespace Common.SimpleSocket
 
 
                 ss.Socket.BeginReceive(BufferMgr.Instance.ByteBufferPool, ss.OffsetInBufferPool, BufferMgr.Instance.EachBlockBytes
-                    , SocketFlags.None, new AsyncCallback(ReceiveCallBack), ss);
+                    , SocketFlags.None, ReceiveCallBack, ss);
             }
             else
             {

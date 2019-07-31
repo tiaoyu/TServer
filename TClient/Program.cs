@@ -6,15 +6,16 @@ using Common.SimpleSocket;
 
 namespace TClient
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main()
         {
             Console.WriteLine("Hello Client!");
 
-            SimpleSocketClient client = new SimpleSocketClient("127.0.0.1", 11000);
+            var client = new SimpleSocketClient("127.0.0.1", 11000);
             client.Connect();
 
+            // 消息读取线程
             Task.Run(() =>
             {
                 while (client.IsRunning)
@@ -28,7 +29,7 @@ namespace TClient
                 }
             });
 
-            // 发送消息
+            // 消息发送
             while (client.IsRunning)
             {
                 var str = Console.ReadLine();
@@ -50,7 +51,7 @@ namespace TClient
                     client.ClientSocket.BeginSend(sendData, 0, sendData.Length, SocketFlags.None,
                     (ar) =>
                     {
-                        (ar.AsyncState as Socket).EndSend(ar);
+                        (ar.AsyncState as Socket)?.EndSend(ar);
                     }, client.ClientSocket);
                 }
                 else
