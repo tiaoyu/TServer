@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using Common.SimpleSocket;
+using Common.Simple;
 
 namespace TServer
 {
@@ -13,13 +13,15 @@ namespace TServer
         {
             Console.WriteLine("Hello Server!");
 
-            var server = new SimpleSocketServer("127.0.0.1", 11000);
+            var server = new SimpleSocketServer<string>("127.0.0.1", 11000);
+            server.SetDeserializeFunc(bytes => Encoding.UTF8.GetString(bytes));
+
             server.Start();
 
             // 处理消息
             Task.Run(() =>
             {
-                while (server.isRunning)
+                while (server.IsRunning)
                 {
                     var count = server.MessageHandler.MessageQueue.Count;
                     for (var i = 0; i < count; ++i)
@@ -31,19 +33,19 @@ namespace TServer
             });
 
             // 发送消息
-            while (server.isRunning)
+            while (server.IsRunning)
             {
                 var str = Console.ReadLine();
                 if ("exit".Equals(str))
                 {
-                    server.isRunning = false;
+                    server.IsRunning = false;
                     continue;
                 }
 
                 var connectionList = new List<int>(server.DicConnection.Keys);
                 if (connectionList.Count <= 0) continue;
 
-                var sendBytes = Encoding.ASCII.GetBytes(str);
+                var sendBytes = Encoding.UTF8.GetBytes(str);
                 var sendHead = BitConverter.GetBytes(sendBytes.Length);
                 var sendData = new byte[sendHead.Length + sendBytes.Length];
                 Array.Copy(sendHead, 0, sendData, 0, sendHead.Length);

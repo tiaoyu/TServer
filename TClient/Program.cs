@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
-using Common.SimpleSocket;
+using Common.Simple;
 
 namespace TClient
 {
@@ -12,7 +13,9 @@ namespace TClient
         {
             Console.WriteLine("Hello Client!");
 
-            var client = new SimpleSocketClient("127.0.0.1", 11000);
+            var client = new SimpleSocketClient<string>("127.0.0.1", 11000);
+            client.SetDeserializeFunc(bytes => Encoding.UTF8.GetString(bytes));
+
             client.Connect();
 
             // 消息读取线程
@@ -29,6 +32,8 @@ namespace TClient
                 }
             });
 
+
+
             // 消息发送
             while (client.IsRunning)
             {
@@ -39,7 +44,7 @@ namespace TClient
                     continue;
                 }
 
-                var sendBytes = Encoding.ASCII.GetBytes(str);
+                var sendBytes = Encoding.UTF8.GetBytes(str);
                 var sendHead = BitConverter.GetBytes(sendBytes.Length);
                 var sendData = new byte[sendHead.Length + sendBytes.Length];
                 Array.Copy(sendHead, 0, sendData, 0, sendHead.Length);
@@ -59,7 +64,6 @@ namespace TClient
                     client.IsRunning = false;
                 }
             }
-
             client.ClientSocket.Close();
         }
     }

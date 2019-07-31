@@ -9,11 +9,11 @@
     <Import_RootNamespace>Common</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)BufferMgr.cs" Condition=" '$(EnableDefaultCompileItems)' == 'true' " />
-    <Compile Include="$(MSBuildThisFileDirectory)SimpleSocketServer.cs" Condition=" '$(EnableDefaultCompileItems)' == 'true' " />
-    <Compile Include="$(MSBuildThisFileDirectory)SocketData.cs" Condition=" '$(EnableDefaultCompileItems)' == 'true' " />
-    <Compile Include="$(MSBuildThisFileDirectory)SimpleSocketClient.cs" Condition=" '$(EnableDefaultCompileItems)' == 'true' " />
-    <Compile Include="$(MSBuildThisFileDirectory)MessageHandler.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SimpleSocket.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Simple\BufferMgr.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Simple\SimpleSocketClient.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Simple\SimpleSocketServer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Simple\MessageHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Simple\SimpleSocket.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Simple\SocketData.cs" />
   </ItemGroup>
 </Project>

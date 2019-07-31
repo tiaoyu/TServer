@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net.Sockets;
 
-namespace Common.SimpleSocket
+namespace Common.Simple
 {
     public class SocketData
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Common.SimpleSocket
+namespace Common.Simple
 {
     /// <summary>
     /// buffer 的管理类. 一个Server使用一个byte数组作为所有Socket接收数据的buffer缓存
@@ -13,15 +13,7 @@ namespace Common.SimpleSocket
     {
         private static BufferMgr _instance = new BufferMgr();
 
-        public static BufferMgr Instance
-        {
-            get
-            {
-                if (_instance == null)
-                    _instance = new BufferMgr();
-                return _instance;
-            }
-        }
+        public static BufferMgr Instance => _instance ?? (_instance = new BufferMgr());
 
         /// <summary>
         /// 未使用的block下标

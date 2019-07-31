@@ -1,21 +1,15 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Concurrent;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
-namespace Common.SimpleSocket
+namespace Common.Simple
 {
-    public class SimpleSocketServer : SimpleSocket
+    public class SimpleSocketServer<T> : SimpleSocket<T>
     {
-        public byte[] recvData = new byte[4096];
-        public bool isRunning = true;
-        public int Port = 11000;
-        public string Host = "127.0.0.1";
+        
+        public bool IsRunning = true;
+        public int Port;
+        public string Host;
         public Socket ServerSocket;
 
         public SimpleSocketServer(string host, int port)

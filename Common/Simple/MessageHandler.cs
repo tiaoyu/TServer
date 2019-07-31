@@ -1,23 +1,37 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Text;
-using Common.SimpleSocket;
 
-namespace Common
+namespace Common.Simple
 {
     /// <summary>
     /// 处理消息. 从Buffer池中拆分出完整消息包 塞入待处理的消息队列中 由上层进行处理
     /// </summary>
-    public class MessageHandler
+    public class MessageHandler<T>
     {
         /// <summary>
         /// 消息队列
         /// </summary>
-        public ConcurrentQueue<string> MessageQueue;
+        public ConcurrentQueue<T> MessageQueue;
+
+        /// <summary>
+        /// 反序列消息方法 由构造时传入
+        /// </summary>
+        private Func<byte[], T> _funcDeserialize;
 
         public MessageHandler()
         {
-            MessageQueue = new ConcurrentQueue<string>();
+            MessageQueue = new ConcurrentQueue<T>();
+        }
+
+        /// <summary>
+        /// 设置反序列化消息方法
+        /// </summary>
+        /// <param name="funcDeserialize"></param>
+        /// <returns></returns>
+        public MessageHandler<T> SetDeserializeFunc(Func<byte[], T> funcDeserialize)
+        {
+            _funcDeserialize = funcDeserialize;
+            return this;
         }
 
         /// <summary>
@@ -25,9 +39,9 @@ namespace Common
         /// </summary>
         /// <returns>The message.</returns>
         /// <param name="message">Message.</param>
-        public string DeserializeMessage(byte[] message)
+        private T DeserializeMessage(byte[] message)
         {
-            return Encoding.ASCII.GetString(message);
+            return _funcDeserialize(message);
         }
 
         /// <summary>
