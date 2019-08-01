@@ -1,14 +1,41 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Common.Simple
 {
+    public enum ESocketStatus
+    {
+        Connected,
+        Received,
+        Closed
+    }
+    public class RequestHandler
+    {
+
+        public Action Received;
+        public Action Connected;
+        public void DoAction(int status)
+        {
+            switch (status)
+            {
+                case (int)ESocketStatus.Received:
+                    Received();
+                    break;
+                case (int)ESocketStatus.Connected:
+                    Connected();
+                    break;
+            }
+        }
+    }
+
     public class SimpleSocketClient<T> : SimpleSocket<T>
     {
         public Socket ClientSocket;
+        public RequestHandler RequestHandler;
         public int Port;
         public string Host;
         public IPEndPoint Ipe;
@@ -18,6 +45,7 @@ namespace Common.Simple
 
         public SimpleSocketClient(string host, int port)
         {
+            RequestHandler = new RequestHandler();
             Host = host;
             Port = port;
             var ip = IPAddress.Parse(Host);
@@ -63,6 +91,7 @@ namespace Common.Simple
                 (ar.AsyncState as Socket)?.EndConnect(ar);
                 var connection = new SocketData(ar.AsyncState as Socket);
                 Console.WriteLine("Connect success!");
+                RequestHandler.DoAction((int)ESocketStatus.Connected);
 
                 // receive
                 ClientSocket.BeginReceive(BufferMgr.Instance.ByteBufferPool, connection.OffsetInBufferPool, BufferMgr.Instance.EachBlockBytes
@@ -83,6 +112,13 @@ namespace Common.Simple
                     IsRunning = false;
                 }
             }
+        }
+
+        public void Close()
+        {
+            ClientSocket.Close();
+            IsRunning = false;
+            WaitToReconnect = true;
         }
     }
 }

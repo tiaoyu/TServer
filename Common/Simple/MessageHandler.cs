@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Net.Sockets;
 
 namespace Common.Simple
 {
@@ -14,9 +15,14 @@ namespace Common.Simple
         public ConcurrentQueue<T> MessageQueue;
 
         /// <summary>
-        /// 反序列消息方法 由构造时传入
+        /// 反序列消息方法 构造时传入
         /// </summary>
-        private Func<byte[], T> _funcDeserialize;
+        private Func<Socket, byte[], T> _funcDeserialize;
+
+        /// <summary>
+        /// 序列化消息方法 构造时传入
+        /// </summary>
+        private Func<Socket, T, byte[]> _funcSerialize;
 
         public MessageHandler()
         {
@@ -28,9 +34,20 @@ namespace Common.Simple
         /// </summary>
         /// <param name="funcDeserialize"></param>
         /// <returns></returns>
-        public MessageHandler<T> SetDeserializeFunc(Func<byte[], T> funcDeserialize)
+        public MessageHandler<T> SetDeserializeFunc(Func<Socket, byte[], T> funcDeserialize)
         {
             _funcDeserialize = funcDeserialize;
+            return this;
+        }
+
+        /// <summary>
+        /// 设置序列化消息方法
+        /// </summary>
+        /// <param name="funcSerialize"></param>
+        /// <returns></returns>
+        public MessageHandler<T> SetSerializeFunc(Func<Socket, T, byte[]> funcSerialize)
+        {
+            _funcSerialize = funcSerialize;
             return this;
         }
 
@@ -39,9 +56,19 @@ namespace Common.Simple
         /// </summary>
         /// <returns>The message.</returns>
         /// <param name="message">Message.</param>
-        private T DeserializeMessage(byte[] message)
+        private T DeserializeMessage(Socket socket, byte[] message)
         {
-            return _funcDeserialize(message);
+            return _funcDeserialize(socket, message);
+        }
+
+        /// <summary>
+        /// 序列化消息
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        public byte[] SerializeMessage(Socket socket, T message)
+        {
+            return _funcSerialize(socket, message);
         }
 
         /// <summary>
@@ -106,7 +133,7 @@ namespace Common.Simple
             // 处理读取到到消息
             if (connection.MessageLength == connection.BytesOfDoneBody)
             {
-                MessageQueue.Enqueue(DeserializeMessage(connection.MessageBody));
+                MessageQueue.Enqueue(DeserializeMessage(connection.Socket, connection.MessageBody));
 
                 if (remainLength == 0)
                 {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,10 +12,21 @@ namespace TServer
     {
         private static void Main()
         {
+            Console.SetIn(new StreamReader(Console.OpenStandardInput(8192)));
+
             Console.WriteLine("Hello Server!");
 
             var server = new SimpleSocketServer<string>("127.0.0.1", 11000);
-            server.SetDeserializeFunc(bytes => Encoding.UTF8.GetString(bytes));
+            server.SetDeserializeFunc((socket, bytes) => Encoding.UTF8.GetString(bytes));
+            server.SetSerializeFunc((socket, strings) =>
+            {
+                var sendBytes = Encoding.UTF8.GetBytes(strings);
+                var sendHead = BitConverter.GetBytes(sendBytes.Length);
+                var sendData = new byte[sendHead.Length + sendBytes.Length];
+                Array.Copy(sendHead, 0, sendData, 0, sendHead.Length);
+                Array.Copy(sendBytes, 0, sendData, sendHead.Length, sendBytes.Length);
+                return sendData;
+            });
 
             server.Start();
 
@@ -45,29 +57,17 @@ namespace TServer
                 var connectionList = new List<int>(server.DicConnection.Keys);
                 if (connectionList.Count <= 0) continue;
 
-                var sendBytes = Encoding.UTF8.GetBytes(str);
-                var sendHead = BitConverter.GetBytes(sendBytes.Length);
-                var sendData = new byte[sendHead.Length + sendBytes.Length];
-                Array.Copy(sendHead, 0, sendData, 0, sendHead.Length);
-                Array.Copy(sendBytes, 0, sendData, sendHead.Length, sendBytes.Length);
-                Console.WriteLine("Send length: " + sendData.Length);
-
                 foreach (var connectionId in connectionList)
                 {
-                    if (server.DicConnection.TryGetValue(connectionId, out SocketData connection))
+                    if (!server.DicConnection.TryGetValue(connectionId, out var connection)) continue;
+
+                    if (connection.Socket.Connected)
                     {
-                        if (connection.Socket.Connected)
-                        {
-                            Console.WriteLine("Send to {0}, length: {1}", connectionId, sendData.Length);
-                            connection.Socket.BeginSend(sendData, 0, sendData.Length, SocketFlags.None, (ar) =>
-                            {
-                                (ar.AsyncState as SocketData)?.Socket.EndSend(ar);
-                            }, connection);
-                        }
-                        else
-                        {
-                            server.DicConnection.TryRemove(connectionId, out connection);
-                        }
+                        server.SendMessage(connection.Socket, str);
+                    }
+                    else
+                    {
+                        server.DicConnection.TryRemove(connectionId, out connection);
                     }
                 }
             }

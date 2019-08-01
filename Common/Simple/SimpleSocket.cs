@@ -17,9 +17,14 @@ namespace Common.Simple
             DicConnection = new ConcurrentDictionary<int, SocketData>();
         }
 
-        public void SetDeserializeFunc(Func<byte[], T> funcDeserialize)
+        public void SetDeserializeFunc(Func<Socket, byte[], T> funcDeserialize)
         {
             MessageHandler.SetDeserializeFunc(funcDeserialize);
+        }
+
+        public void SetSerializeFunc(Func<Socket, T, byte[]> funcSerialize)
+        {
+            MessageHandler.SetSerializeFunc(funcSerialize);
         }
 
         /// <summary>
@@ -85,6 +90,17 @@ namespace Common.Simple
                 ss.Socket.Close();
                 WaitToReconnect = true;
             }
+        }
+
+        public void SendMessage(Socket socket, T message)
+        {
+            SendMessage(socket, MessageHandler.SerializeMessage(socket, message));
+        }
+        private void SendMessage(Socket socket, byte[] message)
+        {
+            Console.WriteLine($"Send message, length:{message.Length}~");
+            socket.BeginSend(message, 0, message.Length, SocketFlags.None,
+                (ar) => { (ar.AsyncState as Socket)?.EndSend(ar); }, socket);
         }
     }
 }

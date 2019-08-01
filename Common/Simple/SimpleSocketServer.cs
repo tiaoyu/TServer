@@ -6,8 +6,6 @@ namespace Common.Simple
 {
     public class SimpleSocketServer<T> : SimpleSocket<T>
     {
-        
-        public bool IsRunning = true;
         public int Port;
         public string Host;
         public Socket ServerSocket;
@@ -34,6 +32,10 @@ namespace Common.Simple
             ServerSocket.BeginAccept(AcceptCallback, ServerSocket);
         }
 
+        public void SendMessage()
+        {
+
+        }
 
     }
 }
