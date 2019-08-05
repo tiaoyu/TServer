@@ -42,7 +42,6 @@ namespace Common.Simple
         private int _index;
         public int MaxReconnectCount = 20;
 
-
         public SimpleSocketClient(string host, int port)
         {
             RequestHandler = new RequestHandler();
@@ -73,6 +72,7 @@ namespace Common.Simple
                         Thread.Sleep(5000);
                         Connect();
                         WaitToReconnect = false;
+                        IsRunning = false;
                         _index = 0;
                     }
                     Thread.Sleep(1000);

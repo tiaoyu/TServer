@@ -6,7 +6,7 @@ namespace Common.Simple
 {
     /// <summary>
     /// buffer 的管理类. 一个Server使用一个byte数组作为所有Socket接收数据的buffer缓存
-    /// 每个Socket分配一段buffe 称为一个block 
+    /// 每个Socket分配一段buffer 称为一个block 
     /// 每当有Socket收到数据时 都会写入对应的block中
     /// </summary>
     public class BufferMgr
