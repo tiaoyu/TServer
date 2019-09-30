@@ -6,4 +6,8 @@
   </PropertyGroup>
 
   <Import Project="..\Common\Common.projitems" Label="Shared" Condition="Exists('..\Common\Common.projitems')" />
+
+  <ItemGroup>
+    <PackageReference Include="log4net" Version="2.0.8" />
+  </ItemGroup>
 </Project>

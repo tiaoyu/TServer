@@ -32,6 +32,10 @@ namespace Common.Simple
         }
     }
 
+    /// <summary>
+    /// 简单版客户端socket
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class SimpleSocketClient<T> : SimpleSocket<T>
     {
         public Socket ClientSocket;
@@ -72,7 +76,7 @@ namespace Common.Simple
                         Thread.Sleep(5000);
                         Connect();
                         WaitToReconnect = false;
-                        IsRunning = false;
+                        //IsRunning = false;
                         _index = 0;
                     }
                     Thread.Sleep(1000);

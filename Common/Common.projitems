@@ -9,6 +9,11 @@
     <Import_RootNamespace>Common</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)LogUtil\LogHelp.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Normal\AsyncUserToken.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Normal\BufferManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Normal\ServerBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Normal\SocketAsyncEventArgsPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Simple\BufferMgr.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Simple\SimpleSocketClient.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Simple\SimpleSocketServer.cs" />

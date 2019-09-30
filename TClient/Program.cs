@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using Common.LogUtil;
 using Common.Simple;
 
 namespace TClient
@@ -10,6 +11,9 @@ namespace TClient
     {
         private static void Main()
         {
+            LogHelp.Init(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LogConfig.log4net"));
+            LogHelp.TestLog();
+
             Console.SetIn(new StreamReader(Console.OpenStandardInput(8192)));
             Console.WriteLine("Hello Client!");
 
