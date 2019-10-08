@@ -6,7 +6,7 @@
 [Bb]in/
 packages/
 TestResults/
-
+Publish/*
 # globs
 Makefile.in
 *.DS_Store

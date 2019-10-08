@@ -10,4 +10,8 @@
   <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.8" />
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy $(SolutionDir)\Envrionment\* $(OutDir) /S /E /Y /D" />
+  </Target>
 </Project>
