@@ -9,6 +9,7 @@ namespace Common.Normal
     public class NormalClient : NetBase
     {
         private static readonly LogHelp log = LogHelp.GetLogger(typeof(NormalClient));
+        private SocketAsyncEventArgs ClientEventArgs;
         public NormalClient(int numConnections, int receiveBufferSize) : base(numConnections, receiveBufferSize)
         {
         }
@@ -17,12 +18,20 @@ namespace Common.Normal
         {
             if (e.SocketError != SocketError.Success)
             {
+                return;
             }
-            e.AcceptSocket = e.ConnectSocket;
-            ((AsyncUserToken)e.UserToken).Socket = e.ConnectSocket;
-            ((AsyncUserToken)e.UserToken).Guid = Guid.NewGuid();
 
-            StartReceive(e);
+            ClientEventArgs = CreateNewSocketAsyncEventArgsFromPool();
+            ClientEventArgs.AcceptSocket = e.ConnectSocket;
+            ((AsyncUserToken)ClientEventArgs.UserToken).Socket = e.ConnectSocket;
+            ((AsyncUserToken)ClientEventArgs.UserToken).Guid = Guid.NewGuid();
+
+            StartReceive(ClientEventArgs);
+        }
+
+        public void StartSend(byte[] msg)
+        {
+            StartSend(ClientEventArgs, msg);
         }
 
         protected override void CloseClientSocket(SocketAsyncEventArgs e)
@@ -42,7 +51,9 @@ namespace Common.Normal
             token.Socket?.Close();
 
             // Free the SocketAsyncEventArg so they can be reused by another client
-            m_readWritePool.Push(e);
+            FreeSocketAsyncEventArgsToPool(e);
+
+            log.Info("Connection break");
         }
     }
 }

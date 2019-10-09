@@ -77,7 +77,7 @@ namespace Common.Normal
         // This method is called whenever a receive or send operation is completed on a socket 
         //
         // <param name="e">SocketAsyncEventArg associated with the completed receive operation</param>
-        void IO_Completed(object sender, SocketAsyncEventArgs e)
+        public virtual void IO_Completed(object sender, SocketAsyncEventArgs e)
         {
             // determine which type of operation just completed and call the associated handler
             switch (e.LastOperation)
@@ -116,6 +116,7 @@ namespace Common.Normal
                 ProcessSend(sendSocketArgs);
             }
         }
+
         // This method is invoked when an asynchronous send operation completes.  
         // The method issues another receive on the socket to read any additional 
         // data sent from the client
@@ -128,7 +129,7 @@ namespace Common.Normal
                 // done echoing data back to the client
                 AsyncUserToken token = (AsyncUserToken)e.UserToken;
                 // read the next block of data send from the client
-                m_readWritePool.Push(e);
+                FreeSocketAsyncEventArgsToPool(e);
             }
             else
             {
@@ -136,6 +137,7 @@ namespace Common.Normal
             }
 
         }
+
         public void StartReceive(SocketAsyncEventArgs e)
         {
             var ret = e.AcceptSocket.ReceiveAsync(e);
@@ -169,9 +171,15 @@ namespace Common.Normal
 
         public virtual void ProcessConnect(SocketAsyncEventArgs e) { }
 
-
-
         protected virtual void CloseClientSocket(SocketAsyncEventArgs e) { }
+
+        public SocketAsyncEventArgs CreateNewSocketAsyncEventArgsForConnect()
+        {
+            var e = new SocketAsyncEventArgs();
+            e.Completed += new EventHandler<SocketAsyncEventArgs>(IO_Completed);
+            e.UserToken = new AsyncUserToken();
+            return e;
+        }
 
         /// <summary>
         /// 
@@ -181,5 +189,10 @@ namespace Common.Normal
             return m_readWritePool.Pop();
         }
 
+        public void FreeSocketAsyncEventArgsToPool(SocketAsyncEventArgs e)
+        {
+            m_bufferManager.FreeBuffer(e);
+            m_readWritePool.Push(e);
+        }
     }
 }

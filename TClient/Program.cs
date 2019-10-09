@@ -76,17 +76,18 @@ namespace TClient
             #endregion Simple Socket
 
             #region Normal Socket
-            var client = new NormalClient(2, 8192);
+            var client = new NormalClient(20, 8192);
             client.Init();
             var remoteEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 11000);
             var listenSocket = new Socket(remoteEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-            SocketAsyncEventArgs e = client.CreateNewSocketAsyncEventArgsFromPool();
+            var e = client.CreateNewSocketAsyncEventArgsForConnect();
             e.RemoteEndPoint = remoteEndPoint;
+
             listenSocket.ConnectAsync(e);
             while (true)
             {
                 var str = Console.ReadLine();
-                client.StartSend(e, Encoding.UTF8.GetBytes(str));
+                client.StartSend(Encoding.UTF8.GetBytes(str));
             }
             #endregion Normal Socket
         }

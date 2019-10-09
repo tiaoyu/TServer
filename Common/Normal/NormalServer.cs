@@ -115,7 +115,7 @@ namespace Common.Normal
             Interlocked.Decrement(ref m_numConnectedSockets);
 
             // Free the SocketAsyncEventArg so they can be reused by another client
-            m_readWritePool.Push(e);
+            FreeSocketAsyncEventArgsToPool(e);
 
             m_maxNumberAcceptedClients.Release();
             log.Info($"A client has been disconnected from the server. There are {m_numConnectedSockets} clients connected to the server");
