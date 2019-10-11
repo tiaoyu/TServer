@@ -15,7 +15,7 @@ namespace Common.Normal
         /// <summary> BufferPool 总大小 BufferPoolSize </summary>
         int m_numBytes;                 // the total number of bytes controlled by the buffer pool
         /// <summary> BufferPool </summary>
-        byte[] m_buffer;                // the underlying byte array maintained by the Buffer Manager
+        public byte[] m_buffer;                // the underlying byte array maintained by the Buffer Manager
         /// <summary>
         /// 待分配的Buffer池序号栈
         /// </summary>

@@ -13,10 +13,12 @@ namespace TServer
 {
     internal class Program
     {
+        private static LogHelp log;
         private static void Main()
         {
             LogHelp.Init(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LogConfig.log4net"));
             LogHelp.TestLog();
+            log = LogHelp.GetLogger(typeof(Program));
 
             Console.SetIn(new StreamReader(Console.OpenStandardInput(8192)));
 
@@ -85,13 +87,35 @@ namespace TServer
             #region Normal Socket
             var server = new NormalServer(2, 8192);
             server.Init();
-            server.Start(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 11000));
+            server.MessageHandler.SetDeserializeFunc((bytes) => Encoding.UTF8.GetString(bytes));
+            server.MessageHandler.SetSerializeFunc((strings) =>
+            {
+                var sendBytes = Encoding.UTF8.GetBytes(strings as string);
+                var sendHead = BitConverter.GetBytes(sendBytes.Length);
+                var sendData = new byte[sendHead.Length + sendBytes.Length];
+                Array.Copy(sendHead, 0, sendData, 0, sendHead.Length);
+                Array.Copy(sendBytes, 0, sendData, sendHead.Length, sendBytes.Length);
+                return sendData;
+            });
+            server.Start("127.0.0.1", 11000);
+
+            Task.Run(() =>
+            {
+                while (true)
+                {
+                    if (server.MessageHandler.MessageQueue.TryDequeue(out object msg))
+                    {
+                        log.Debug($"Get msg:{msg as string}");
+                    }
+                    System.Threading.Thread.Sleep(1000);
+                }
+            });
             while (true)
             {
                 var str = Console.ReadLine();
                 foreach (var (_, v) in server.dicEventArgs)
                 {
-                    server.StartSend(v, Encoding.UTF8.GetBytes(str));
+                    server.StartSend(v, str);
                 }
             }
             #endregion Normal Socket

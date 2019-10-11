@@ -12,6 +12,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)LogUtil\LogHelp.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Normal\AsyncUserToken.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Normal\BufferManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Normal\MessageHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Normal\NormalClient.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Normal\NormalServer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Normal\NetBase.cs" />

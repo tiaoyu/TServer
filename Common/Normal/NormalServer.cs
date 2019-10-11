@@ -16,6 +16,7 @@ namespace Common.Normal
         Semaphore m_maxNumberAcceptedClients;
         Socket listenSocket;            // the socket used to listen for incoming connection requests
         int m_numConnectedSockets;      // the total number of clients connected to the server 
+        private IPAddress localAddress;
 
         public NormalServer(int numConnections, int receiveBufferSize) : base(numConnections, receiveBufferSize)
         {
@@ -28,13 +29,20 @@ namespace Common.Normal
         //
         // <param name="localEndPoint">The endpoint which the server will listening 
         // for connection requests on</param>
-        public void Start(IPEndPoint localEndPoint)
+        public void Start(string ipOrHost, int port)
         {
+            var address = Dns.GetHostAddresses(ipOrHost);
+            localAddress = address[address.Length - 1];
+            
+            var localEndPoint = new IPEndPoint(localAddress, port);
+
             // create the socket which listens for incoming connections
             listenSocket = new Socket(localEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
             listenSocket.Bind(localEndPoint);
             // start the server with a listen backlog of 100 connections
             listenSocket.Listen(100);
+
+            log.Debug($"HostOrIp:{ipOrHost} Listen LocalAddress:{localAddress.ToString()} Port:{port}");
 
             // post accepts on the listening socket
             StartAccept(null);
@@ -74,7 +82,10 @@ namespace Common.Normal
             //ReadEventArg object user token
             SocketAsyncEventArgs readEventArgs = m_readWritePool.Pop();
             readEventArgs.AcceptSocket = e.AcceptSocket;
-            ((AsyncUserToken)readEventArgs.UserToken).Socket = e.AcceptSocket;
+            var token = (AsyncUserToken)readEventArgs.UserToken;
+            token.Socket = e.AcceptSocket;
+            token.OffsetInBufferPool = readEventArgs.Offset;
+
             var guid = Guid.NewGuid();
             ((AsyncUserToken)readEventArgs.UserToken).Guid = guid;
             // Save EventArgs
@@ -95,7 +106,7 @@ namespace Common.Normal
             ProcessAccept(e);
         }
 
-        protected override void CloseClientSocket(SocketAsyncEventArgs e)
+        protected override void CloseSocket(SocketAsyncEventArgs e)
         {
             AsyncUserToken token = e.UserToken as AsyncUserToken;
 

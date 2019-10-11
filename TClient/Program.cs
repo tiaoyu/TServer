@@ -12,10 +12,12 @@ namespace TClient
 {
     internal class Program
     {
+        private static LogHelp log;
         private static void Main()
         {
             LogHelp.Init(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LogConfig.log4net"));
             LogHelp.TestLog();
+            log = LogHelp.GetLogger(typeof(Program));
 
             Console.SetIn(new StreamReader(Console.OpenStandardInput(8192)));
             Console.WriteLine("Hello Client!");
@@ -76,19 +78,39 @@ namespace TClient
             #endregion Simple Socket
 
             #region Normal Socket
+            
             var client = new NormalClient(20, 8192);
             client.Init();
-            var remoteEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 11000);
-            var listenSocket = new Socket(remoteEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-            var e = client.CreateNewSocketAsyncEventArgsForConnect();
-            e.RemoteEndPoint = remoteEndPoint;
+            client.MessageHandler.SetDeserializeFunc((bytes) => Encoding.UTF8.GetString(bytes));
+            client.MessageHandler.SetSerializeFunc((strings) =>
+            {
+                var sendBytes = Encoding.UTF8.GetBytes(strings as string);
+                var sendHead = BitConverter.GetBytes(sendBytes.Length);
+                var sendData = new byte[sendHead.Length + sendBytes.Length];
+                Array.Copy(sendHead, 0, sendData, 0, sendHead.Length);
+                Array.Copy(sendBytes, 0, sendData, sendHead.Length, sendBytes.Length);
+                return sendData;
+            });
+            client.StartConnect("127.0.0.1", 11000);
 
-            listenSocket.ConnectAsync(e);
+            Task.Run(() =>
+            {
+                while (true)
+                {
+                    if (client.MessageHandler.MessageQueue.TryDequeue(out object msg))
+                    {
+                        log.Debug($"Get msg:{msg as string}");
+                    }
+                    System.Threading.Thread.Sleep(1000);
+                }
+            });
+
             while (true)
             {
                 var str = Console.ReadLine();
-                client.StartSend(Encoding.UTF8.GetBytes(str));
+                client.StartSend(str);
             }
+
             #endregion Normal Socket
         }
     }

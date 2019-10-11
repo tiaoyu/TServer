@@ -16,14 +16,15 @@ namespace Common.Normal
     {
         private static readonly LogHelp log = LogHelp.GetLogger(typeof(NetBase));
 
-
         private int m_numConnections;   // the maximum number of connections the sample is designed to handle simultaneously 
-        private int m_receiveBufferSize;// buffer size to use for each socket I/O operation 
-        BufferManager m_bufferManager;  // represents a large reusable set of buffers for all socket operations
-        const int opsToPreAlloc = 2;    // read, write (don't alloc buffer space for accepts)
+        protected int m_receiveBufferSize;// buffer size to use for each socket I/O operation 
+        private BufferManager m_bufferManager;  // represents a large reusable set of buffers for all socket operations
+        private const int opsToPreAlloc = 2;    // read, write (don't alloc buffer space for accepts)
                                         // pool of reusable SocketAsyncEventArgs objects for write, read and accept socket operations
         protected SocketAsyncEventArgsPool m_readWritePool;
-        int m_totalBytesRead;           // counter of the total # bytes received by the server
+        private int m_totalBytesRead;           // counter of the total # bytes received by the server
+
+        public MessageHandler<object> MessageHandler;
 
         // Create an uninitialized server instance.  
         // To start the server listening for connection requests
@@ -72,6 +73,7 @@ namespace Common.Normal
                 m_readWritePool.Push(readWriteEventArg);
             }
 
+            MessageHandler = new MessageHandler<object>();
         }
 
         // This method is called whenever a receive or send operation is completed on a socket 
@@ -93,13 +95,14 @@ namespace Common.Normal
                 case SocketAsyncOperation.Disconnect:
                     log.Debug("Disconnect");
                     break;
-                case SocketAsyncOperation.Connect:
-                    log.Debug("Connect");
-                    ProcessConnect(e);
-                    break;
                 default:
                     throw new ArgumentException("The last operation completed on the socket was not a receive or send");
             }
+        }
+
+        public void StartSend(SocketAsyncEventArgs e, string msg)
+        {
+            StartSend(e, MessageHandler.SerializeMessage(msg));
         }
 
         public void StartSend(SocketAsyncEventArgs e, byte[] buffer)
@@ -133,7 +136,7 @@ namespace Common.Normal
             }
             else
             {
-                CloseClientSocket(e);
+                CloseSocket(e);
             }
 
         }
@@ -160,36 +163,34 @@ namespace Common.Normal
             {
                 //increment the count of the total bytes receive by the server
                 Interlocked.Add(ref m_totalBytesRead, e.BytesTransferred);
-                log.Debug($"The server has read a total of {m_totalBytesRead} bytes, message: {Encoding.UTF8.GetString(e.Buffer, e.Offset, e.BytesTransferred)}");
+                //log.Debug($"The server has read a total of {m_totalBytesRead} bytes, message: {Encoding.UTF8.GetString(e.Buffer, e.Offset, e.BytesTransferred)}");
+                token.OffsetInBufferPool = e.Offset;
+                // 当前剩余需要处理的字节长度
+                var remainProcessLength = e.BytesTransferred;
+                do
+                {
+                    remainProcessLength = MessageHandler.ReadBufferFromPool(m_bufferManager.m_buffer, token, remainProcessLength);
+
+                } while (remainProcessLength != 0);
                 StartReceive(e);
             }
             else
             {
-                CloseClientSocket(e);
+                CloseSocket(e);
             }
         }
 
-        public virtual void ProcessConnect(SocketAsyncEventArgs e) { }
-
-        protected virtual void CloseClientSocket(SocketAsyncEventArgs e) { }
-
-        public SocketAsyncEventArgs CreateNewSocketAsyncEventArgsForConnect()
-        {
-            var e = new SocketAsyncEventArgs();
-            e.Completed += new EventHandler<SocketAsyncEventArgs>(IO_Completed);
-            e.UserToken = new AsyncUserToken();
-            return e;
-        }
+        protected virtual void CloseSocket(SocketAsyncEventArgs e) { }
 
         /// <summary>
         /// 
         /// </summary>
-        public SocketAsyncEventArgs CreateNewSocketAsyncEventArgsFromPool()
+        protected SocketAsyncEventArgs CreateNewSocketAsyncEventArgsFromPool()
         {
             return m_readWritePool.Pop();
         }
 
-        public void FreeSocketAsyncEventArgsToPool(SocketAsyncEventArgs e)
+        protected void FreeSocketAsyncEventArgsToPool(SocketAsyncEventArgs e)
         {
             m_bufferManager.FreeBuffer(e);
             m_readWritePool.Push(e);
