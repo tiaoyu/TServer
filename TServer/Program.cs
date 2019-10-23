@@ -7,7 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Common.LogUtil;
 using Common.Normal;
+using Common.Protobuf;
 using Common.Simple;
+using Google.Protobuf;
 
 namespace TServer
 {
@@ -23,6 +25,11 @@ namespace TServer
             Console.SetIn(new StreamReader(Console.OpenStandardInput(8192)));
 
             Console.WriteLine("Hello Server!");
+            while (true)
+            {
+                log.Debug("asdfasdf");
+                System.Threading.Thread.Sleep(1000);
+            }
 
             #region Simple Socket
             //var server = new SimpleSocketServer<string>("127.0.0.1", 11000);
@@ -87,15 +94,15 @@ namespace TServer
             #region Normal Socket
             var server = new NormalServer(2, 8192);
             server.Init();
-            server.MessageHandler.SetDeserializeFunc((bytes) => Encoding.UTF8.GetString(bytes));
-            server.MessageHandler.SetSerializeFunc((strings) =>
+            //server.MessageHandler.SetDeserializeFunc((bytes) => Encoding.UTF8.GetString(bytes));
+            server.MessageHandler.SetDeserializeFunc((bytes) =>
             {
-                var sendBytes = Encoding.UTF8.GetBytes(strings as string);
-                var sendHead = BitConverter.GetBytes(sendBytes.Length);
-                var sendData = new byte[sendHead.Length + sendBytes.Length];
-                Array.Copy(sendHead, 0, sendData, 0, sendHead.Length);
-                Array.Copy(sendBytes, 0, sendData, sendHead.Length, sendBytes.Length);
-                return sendData;
+                var protoId = BitConverter.ToInt32(bytes);
+                return ProtocolParser.Instance.GetParser(protoId).ParseFrom(bytes);
+            });
+            server.MessageHandler.SetSerializeFunc((protocol) =>
+            {
+                return (protocol as ProtocolBufBase).Serialize();
             });
             server.Start("127.0.0.1", 11000);
 
@@ -105,7 +112,7 @@ namespace TServer
                 {
                     if (server.MessageHandler.MessageQueue.TryDequeue(out object msg))
                     {
-                        log.Debug($"Get msg:{msg as string}");
+                        log.Debug($"Get msg:{msg}");
                     }
                     System.Threading.Thread.Sleep(1000);
                 }
@@ -113,9 +120,13 @@ namespace TServer
             while (true)
             {
                 var str = Console.ReadLine();
+                var pack = new S2CLogin
+                {
+                    Res = 0
+                };
                 foreach (var (_, v) in server.dicEventArgs)
                 {
-                    server.StartSend(v, str);
+                    server.StartSend(v, pack);
                 }
             }
             #endregion Normal Socket

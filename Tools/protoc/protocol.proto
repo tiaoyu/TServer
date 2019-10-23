@@ -1,0 +1,25 @@
+syntax = "proto3";
+option csharp_namespace = "Common.Protobuf";
+
+// 约定协议上限为 10000 条
+// C2S协议号从 1 开始 S2C协议号为 10000 减去其对应的C2S协议号
+// 例: 1 是C2S登陆协议好 那么 9999 则为 S2C 登陆应答协议号
+enum S2C_PROTOCOL_TYPE {
+  S2C_Begin = 0;
+  S2C_Login = 9999;
+}
+enum C2S_PROTOCOL_TYPE {
+  C2S_Begin = 0;
+  C2S_Login = 1;
+}
+
+message C2SLogin {
+  C2S_PROTOCOL_TYPE type = 1;
+  string name = 2;
+  string password = 3;
+}
+
+message S2CLogin {
+  S2C_PROTOCOL_TYPE type = 1;
+  int32 res = 2;
+}

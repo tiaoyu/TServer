@@ -1,4 +1,5 @@
 ﻿using Common.LogUtil;
+using Common.Protobuf;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -100,7 +101,7 @@ namespace Common.Normal
             }
         }
 
-        public void StartSend(SocketAsyncEventArgs e, string msg)
+        public void StartSend(SocketAsyncEventArgs e, object msg)
         {
             StartSend(e, MessageHandler.SerializeMessage(msg));
         }

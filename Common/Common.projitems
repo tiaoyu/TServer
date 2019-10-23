@@ -17,6 +17,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Normal\NormalServer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Normal\NetBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Normal\SocketAsyncEventArgsPool.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Protobuf\ProtobufBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Protobuf\Protocol.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Simple\BufferMgr.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Simple\SimpleSocketClient.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Simple\SimpleSocketServer.cs" />

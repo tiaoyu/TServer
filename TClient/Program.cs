@@ -6,7 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Common.LogUtil;
 using Common.Normal;
+using Common.Protobuf;
 using Common.Simple;
+using Google.Protobuf;
 
 namespace TClient
 {
@@ -78,19 +80,19 @@ namespace TClient
             #endregion Simple Socket
 
             #region Normal Socket
-            
+
             var client = new NormalClient(20, 8192);
             client.Init();
-            client.MessageHandler.SetDeserializeFunc((bytes) => Encoding.UTF8.GetString(bytes));
-            client.MessageHandler.SetSerializeFunc((strings) =>
+            client.MessageHandler.SetDeserializeFunc((bytes) =>
             {
-                var sendBytes = Encoding.UTF8.GetBytes(strings as string);
-                var sendHead = BitConverter.GetBytes(sendBytes.Length);
-                var sendData = new byte[sendHead.Length + sendBytes.Length];
-                Array.Copy(sendHead, 0, sendData, 0, sendHead.Length);
-                Array.Copy(sendBytes, 0, sendData, sendHead.Length, sendBytes.Length);
-                return sendData;
+                var protoId = BitConverter.ToInt32(bytes);
+                return ProtocolParser.Instance.GetParser(protoId).ParseFrom(bytes);
             });
+            client.MessageHandler.SetSerializeFunc((protocol) =>
+            {
+                return (protocol as ProtocolBufBase).Serialize();
+            });
+
             client.StartConnect("127.0.0.1", 11000);
 
             Task.Run(() =>
@@ -108,7 +110,12 @@ namespace TClient
             while (true)
             {
                 var str = Console.ReadLine();
-                client.StartSend(str);
+                var pack = new C2SLogin
+                {
+                    Name = "tiaoyu",
+                    Password = "password"
+                };
+                client.StartSend(pack);
             }
 
             #endregion Normal Socket

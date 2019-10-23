@@ -1,4 +1,5 @@
 ﻿using Common.LogUtil;
+using Common.Protobuf;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -46,9 +47,9 @@ namespace Common.Normal
             StartReceive(ClientEventArgs);
         }
 
-        public void StartSend(string msg)
+        public void StartSend(ProtocolBufBase msg)
         {
-            StartSend(ClientEventArgs, MessageHandler.SerializeMessage(msg));
+            StartSend(ClientEventArgs, msg.Serialize());
         }
 
         public void StartSend(byte[] msg)
