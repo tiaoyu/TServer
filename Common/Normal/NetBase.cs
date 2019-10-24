@@ -21,7 +21,7 @@ namespace Common.Normal
         protected int m_receiveBufferSize;// buffer size to use for each socket I/O operation 
         private BufferManager m_bufferManager;  // represents a large reusable set of buffers for all socket operations
         private const int opsToPreAlloc = 2;    // read, write (don't alloc buffer space for accepts)
-                                        // pool of reusable SocketAsyncEventArgs objects for write, read and accept socket operations
+                                                // pool of reusable SocketAsyncEventArgs objects for write, read and accept socket operations
         protected SocketAsyncEventArgsPool m_readWritePool;
         private int m_totalBytesRead;           // counter of the total # bytes received by the server
 
@@ -75,6 +75,8 @@ namespace Common.Normal
             }
 
             MessageHandler = new MessageHandler<object>();
+            
+            ProtocolParser.Register();
         }
 
         // This method is called whenever a receive or send operation is completed on a socket 

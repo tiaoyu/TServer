@@ -9,32 +9,46 @@ namespace Common.Protobuf
     public interface ProtocolBufBase
     {
         public byte[] Serialize();
+
+        public void OnProcess(Guid guid);
+
+        public void OnProcess();
     }
     public class ProtobufBase<T> : ProtocolBufBase where T : class, IMessage<T>, new()
     {
-        public static int ProtoId;
+        public static int TypeId { set; get; }
+        public int ProtoId { get { return TypeId; } }
 
         public void SetProtoId(int id)
         {
-            ProtoId = id;
+            TypeId = id;
         }
 
         public byte[] Serialize()
         {
             var stream = new MemoryStream();
-            (this as T).WriteTo(stream);
+            var t = (this as T);
+            t.WriteTo(stream);
             var sendBytes = stream.ToArray();
-            var sendHead = BitConverter.GetBytes(sendBytes.Length);
-            var sendData = new byte[sendHead.Length + sendBytes.Length];
+            var sendProtoId = BitConverter.GetBytes(this.ProtoId);
+            var sendHead = BitConverter.GetBytes(sendBytes.Length + sendProtoId.Length);
+            var sendData = new byte[sendHead.Length + sendProtoId.Length + sendBytes.Length];
             Array.Copy(sendHead, 0, sendData, 0, sendHead.Length);
-            Array.Copy(sendBytes, 0, sendData, sendHead.Length, sendBytes.Length);
+            Array.Copy(sendProtoId, 0, sendData, sendHead.Length, sendProtoId.Length);
+            Array.Copy(sendBytes, 0, sendData, sendHead.Length + sendProtoId.Length, sendBytes.Length);
             return sendData;
         }
+
+        public virtual void OnProcess(Guid guid)
+        {
+        }
+
+        public virtual void OnProcess() { }
     }
 
     public class ProtocolPaseBase
     {
-        Func<IMessage> _func;
+        private Func<IMessage> _func;
         public ProtocolPaseBase(Func<IMessage> func)
         {
             _func = func;
@@ -45,19 +59,21 @@ namespace Common.Protobuf
         public IMessage ParseFrom(byte[] stream)
         {
             IMessage msg = _func();
-            msg.MergeFrom(stream);
+            msg.MergeFrom(stream, 4, stream.Length - 4);
             return msg;
         }
     }
     public class ProtocolParse<T> : ProtocolPaseBase where T : ProtobufBase<T>, IMessage<T>, new()
     {
-        public ProtocolParse(Func<IMessage> func) : base(func)
+        private Func<T> _func;
+        public ProtocolParse(Func<T> func) : base(() => func())
         {
+            _func = func;
         }
 
         public override void SetProtoId(int protoId)
         {
-            ProtobufBase<T>.ProtoId = protoId;
+            ProtobufBase<T>.TypeId = protoId;
         }
     }
 
@@ -66,7 +82,7 @@ namespace Common.Protobuf
         private static ProtocolParser _instance = new ProtocolParser();
         public static ProtocolParser Instance => _instance ?? new ProtocolParser();
 
-        private Dictionary<int, ProtocolPaseBase> _dicParser = new Dictionary<int, ProtocolPaseBase>();
+        private static Dictionary<int, ProtocolPaseBase> _dicParser = new Dictionary<int, ProtocolPaseBase>();
 
         public ProtocolPaseBase GetParser(int proId)
         {
@@ -78,10 +94,12 @@ namespace Common.Protobuf
         {
             return new ProtocolParse<T>(() => new T());
         }
-
         public ProtocolParser()
         {
+        }
 
+        public static void Register()
+        {
             push((int)S2C_PROTOCOL_TYPE.S2CLogin, CreateParse<S2CLogin>());
             push((int)C2S_PROTOCOL_TYPE.C2SLogin, CreateParse<C2SLogin>());
 
@@ -91,9 +109,10 @@ namespace Common.Protobuf
             }
         }
 
-        void push(int protoId, ProtocolPaseBase parse)
+
+        private static void push(int protoId, ProtocolPaseBase parse)
         {
-            _dicParser.Add((int)S2C_PROTOCOL_TYPE.S2CLogin, CreateParse<S2CLogin>());
+            _dicParser.Add(protoId, parse);
         }
     }
 }

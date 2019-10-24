@@ -17,7 +17,7 @@ namespace Common.Normal
         /// <summary>
         /// 反序列消息方法 构造时传入
         /// </summary>
-        private Func<byte[], T> _funcDeserialize;
+        private Func<byte[],Guid, T> _funcDeserialize;
 
         /// <summary>
         /// 序列化消息方法 构造时传入
@@ -34,7 +34,7 @@ namespace Common.Normal
         /// </summary>
         /// <param name="funcDeserialize"></param>
         /// <returns></returns>
-        public MessageHandler<T> SetDeserializeFunc(Func<byte[], T> funcDeserialize)
+        public MessageHandler<T> SetDeserializeFunc(Func<byte[],Guid, T> funcDeserialize)
         {
             _funcDeserialize = funcDeserialize;
             return this;
@@ -56,9 +56,9 @@ namespace Common.Normal
         /// </summary>
         /// <returns>The message.</returns>
         /// <param name="message">Message.</param>
-        private T DeserializeMessage(byte[] message)
+        private T DeserializeMessage(byte[] message, Guid guid)
         {
-            return _funcDeserialize(message);
+            return _funcDeserialize(message, guid);
         }
 
         /// <summary>
@@ -133,7 +133,7 @@ namespace Common.Normal
             // 处理读取到到消息
             if (connection.MessageLength == connection.BytesOfDoneBody)
             {
-                MessageQueue.Enqueue(DeserializeMessage(connection.MessageBody));
+                MessageQueue.Enqueue(DeserializeMessage(connection.MessageBody, connection.Guid));
 
                 if (remainLength == 0)
                 {

@@ -11,7 +11,7 @@ namespace Common.Normal
     public class NormalServer : NetBase
     {
         private static readonly LogHelp log = LogHelp.GetLogger(typeof(NormalServer));
-        public Dictionary<Guid, SocketAsyncEventArgs> dicEventArgs = new Dictionary<Guid, SocketAsyncEventArgs>();
+        public Dictionary<Guid, ExtSocket> dicEventArgs = new Dictionary<Guid, ExtSocket>();
 
         Semaphore m_maxNumberAcceptedClients;
         Socket listenSocket;            // the socket used to listen for incoming connection requests
@@ -33,7 +33,7 @@ namespace Common.Normal
         {
             var address = Dns.GetHostAddresses(ipOrHost);
             localAddress = address[address.Length - 1];
-            
+
             var localEndPoint = new IPEndPoint(localAddress, port);
 
             // create the socket which listens for incoming connections
@@ -89,7 +89,7 @@ namespace Common.Normal
             var guid = Guid.NewGuid();
             ((AsyncUserToken)readEventArgs.UserToken).Guid = guid;
             // Save EventArgs
-            dicEventArgs.Add(guid, readEventArgs);
+            dicEventArgs.Add(guid, new ExtSocket { SocketEventArgs = readEventArgs, Guid = guid });
 
             // As soon as the client is connected, post a receive to the connection
             StartReceive(readEventArgs);

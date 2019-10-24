@@ -47,9 +47,9 @@ namespace Common.Normal
             StartReceive(ClientEventArgs);
         }
 
-        public void StartSend(ProtocolBufBase msg)
+        public void StartSend(object msg)
         {
-            StartSend(ClientEventArgs, msg.Serialize());
+            StartSend(ClientEventArgs, msg);
         }
 
         public void StartSend(byte[] msg)

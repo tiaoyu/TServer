@@ -83,7 +83,7 @@ namespace TClient
 
             var client = new NormalClient(20, 8192);
             client.Init();
-            client.MessageHandler.SetDeserializeFunc((bytes) =>
+            client.MessageHandler.SetDeserializeFunc((bytes, guid) =>
             {
                 var protoId = BitConverter.ToInt32(bytes);
                 return ProtocolParser.Instance.GetParser(protoId).ParseFrom(bytes);
@@ -101,7 +101,7 @@ namespace TClient
                 {
                     if (client.MessageHandler.MessageQueue.TryDequeue(out object msg))
                     {
-                        log.Debug($"Get msg:{msg as string}");
+                        (msg as ProtocolBufBase).OnProcess();
                     }
                     System.Threading.Thread.Sleep(1000);
                 }

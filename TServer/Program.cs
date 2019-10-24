@@ -25,11 +25,6 @@ namespace TServer
             Console.SetIn(new StreamReader(Console.OpenStandardInput(8192)));
 
             Console.WriteLine("Hello Server!");
-            while (true)
-            {
-                log.Debug("asdfasdf");
-                System.Threading.Thread.Sleep(1000);
-            }
 
             #region Simple Socket
             //var server = new SimpleSocketServer<string>("127.0.0.1", 11000);
@@ -95,10 +90,10 @@ namespace TServer
             var server = new NormalServer(2, 8192);
             server.Init();
             //server.MessageHandler.SetDeserializeFunc((bytes) => Encoding.UTF8.GetString(bytes));
-            server.MessageHandler.SetDeserializeFunc((bytes) =>
+            server.MessageHandler.SetDeserializeFunc((bytes, guid) =>
             {
                 var protoId = BitConverter.ToInt32(bytes);
-                return ProtocolParser.Instance.GetParser(protoId).ParseFrom(bytes);
+                return new ExtSocket { Protocol = ProtocolParser.Instance.GetParser(protoId).ParseFrom(bytes) as ProtocolBufBase, Guid = guid };
             });
             server.MessageHandler.SetSerializeFunc((protocol) =>
             {
@@ -113,6 +108,8 @@ namespace TServer
                     if (server.MessageHandler.MessageQueue.TryDequeue(out object msg))
                     {
                         log.Debug($"Get msg:{msg}");
+                        var ss = (msg as ExtSocket);
+                        ss.Protocol.OnProcess(ss.Guid);
                     }
                     System.Threading.Thread.Sleep(1000);
                 }
@@ -122,11 +119,11 @@ namespace TServer
                 var str = Console.ReadLine();
                 var pack = new S2CLogin
                 {
-                    Res = 0
+                    Res = 1
                 };
                 foreach (var (_, v) in server.dicEventArgs)
                 {
-                    server.StartSend(v, pack);
+                    server.StartSend(v.SocketEventArgs, pack);
                 }
             }
             #endregion Normal Socket
