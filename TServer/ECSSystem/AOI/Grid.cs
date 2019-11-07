@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace TServer.ECSSystem.AOI
 {
     /// <summary>
     /// 位置
     /// </summary>
-    class Position<T>
+    public class Position<T>
     {
         public T x;
         public T y;
@@ -16,7 +14,7 @@ namespace TServer.ECSSystem.AOI
     /// <summary>
     /// 格子
     /// </summary>
-    class Grid
+    public class Grid
     {
         // 格子单位长度
         public int GridUnit;
@@ -28,6 +26,9 @@ namespace TServer.ECSSystem.AOI
         public int GridLength;
     }
 
+    /// <summary>
+    /// 地图
+    /// </summary>
     public class Map
     {
         // 地图起始X位置
@@ -43,20 +44,27 @@ namespace TServer.ECSSystem.AOI
         public double MapLength { get; set; }
     }
 
-    class GridManager
+    /// <summary>
+    /// 格子管理
+    /// </summary>
+    public class GridManager
     {
         private Grid _grid;
         private Map _map;
 
         // 每个格子中的角色列表 <格子index-角色ID集合>
         private Dictionary<int, HashSet<int>> _roleMap;
+        public Dictionary<int, HashSet<int>> RoleMap => _roleMap;
 
-        public GridManager(int gridUnit, double mapMinX, double mapMinY, double mapWidth, double mapLength)
+        public GridManager(int gridUnit, double mapWidth, double mapLength, double mapMinX = 0f, double mapMinY = 0f)
         {
             _map = new Map { MapMinX = mapMinX, MapMinY = mapMinY, MapWidth = mapWidth, MapLength = mapLength };
             _grid = new Grid { GridUnit = gridUnit };
         }
 
+        /// <summary>
+        /// 初始化
+        /// </summary>
         public void Init()
         {
             _grid.GridWidth = (int)_map.MapWidth / _grid.GridUnit + 1;
@@ -70,15 +78,44 @@ namespace TServer.ECSSystem.AOI
         }
 
         /// <summary>
-        /// 地图位置转格子位置 返回格子的index
+        /// 格子位置转格子下标
+        /// </summary>
+        /// <param name="gridPos"></param>
+        /// <returns></returns>
+        public int GetGridIdxFromGridPos(Position<int> gridPos)
+        {
+            return gridPos.x * _grid.GridWidth + gridPos.y;
+        }
+        /// <summary>
+        /// 格子位置转格子下标
+        /// </summary>
+        /// <param name="gridPos"></param>
+        /// <returns></returns>
+        public int GetGridIdxFromGridPos(int x, int y)
+        {
+            return x * _grid.GridWidth + y;
+        }
+
+        /// <summary>
+        /// 地图位置转格子位置 返回格子下标
         /// </summary>
         /// <param name="mapPos"></param>
         /// <param name="gridPos"></param>
         /// <return></return>
         public int GetGridPosFromMapPos(Position<double> mapPos, out Position<int> gridPos)
         {
-            gridPos = new Position<int> { x = (int)mapPos.x / _grid.GridUnit, y = (int)mapPos.y / _grid.GridUnit };
-            return gridPos.x * _grid.GridWidth + gridPos.y;
+            gridPos = new Position<int> { x = (int)(mapPos.x - _map.MapMinX) / _grid.GridUnit, y = (int)(mapPos.y - _map.MapMinY) / _grid.GridUnit };
+            return GetGridIdxFromGridPos(gridPos);
+        }
+
+        /// <summary>
+        /// 格子下标转格子位置
+        /// </summary>
+        /// <param name="gridIdx"></param>
+        /// <returns></returns>
+        public Position<int> GetGridPosFromGridIdx(int gridIdx)
+        {
+            return new Position<int> { x = gridIdx % _grid.GridWidth, y = gridIdx / _grid.GridLength };
         }
 
         /// <summary>
@@ -86,10 +123,11 @@ namespace TServer.ECSSystem.AOI
         /// </summary>
         /// <param name="roleId"></param>
         /// <param name=""></param>
-        public void AddRoleToGrid(int roleId, Position<double> roleNewPos)
+        public int AddRoleToGrid(int roleId, Position<double> roleNewPos)
         {
             var idx = GetGridPosFromMapPos(roleNewPos, out var _);
             _roleMap[idx].Add(roleId);
+            return idx;
         }
 
         /// <summary>
@@ -103,46 +141,32 @@ namespace TServer.ECSSystem.AOI
         }
 
         /// <summary>
-        /// 
+        /// 获取周围指定深度的格子下标集合
         /// </summary>
         /// <param name="deep"></param>
-        /// <returns></returns>
-        public HashSet<int> GetRolesFromSight(int gridIdx, int deep)
+        /// <param name="curPos"></param>
+        /// <param name="gridIdxs"></param>
+        public void GetRolesFromSight(int deep, Position<int> curPos, out HashSet<int> gridIdxs, out HashSet<int> roleIds)
         {
-            var idxs = new HashSet<int>();
+            gridIdxs = new HashSet<int>();
+            roleIds = new HashSet<int>();
+            var xFrom = curPos.x - deep < 0 ? 0 : curPos.x - deep;
+            var yFrom = curPos.y - deep < 0 ? 0 : curPos.y - deep;
+            var xTo = curPos.x + deep < _grid.GridWidth ? curPos.x + deep : _grid.GridWidth;
+            var yTo = curPos.y + deep < _grid.GridLength ? curPos.y + deep : _grid.GridLength;
 
-            idxs.Add(gridIdx);
-            idxs.Add(gridIdx);
-            idxs.Add(gridIdx);
-            idxs.Add(gridIdx);
-            idxs.Add(gridIdx);
-            idxs.Add(gridIdx);
-            idxs.Add(gridIdx);
-            idxs.Add(gridIdx);
-            idxs.Add(gridIdx);
-
-            // 左边界
-            if (gridIdx % _grid.GridWidth == 0)
+            for (var i = xFrom; i <= xTo; ++i)
             {
-
+                for (var j = yFrom; j <= yTo; ++j)
+                {
+                    if (i >= 0 && i < _grid.GridWidth && j >= 0 && j < _grid.GridLength)
+                    {
+                        var idx = GetGridIdxFromGridPos(i, j);
+                        gridIdxs.Add(idx);
+                        roleIds.UnionWith(_roleMap[idx]);
+                    }
+                }
             }
-            // 右边界
-            if ((gridIdx + 1) % _grid.GridWidth == 0)
-            {
-
-            }
-            // 上边界
-            if (gridIdx / _grid.GridWidth < 1)
-            {
-
-            }
-            // 下边界
-            if ((gridIdx / _grid.GridWidth + 1) == _grid.GridLength)
-            {
-
-            }
-
-            return idxs;
         }
     }
 }
