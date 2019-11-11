@@ -1,16 +1,8 @@
 ﻿using System.Collections.Generic;
+using TServer.ECSComponent;
 
 namespace TServer.ECSSystem.AOI
 {
-    /// <summary>
-    /// 位置
-    /// </summary>
-    public class Position<T>
-    {
-        public T x;
-        public T y;
-    }
-
     /// <summary>
     /// 格子
     /// </summary>
@@ -47,7 +39,7 @@ namespace TServer.ECSSystem.AOI
     /// <summary>
     /// 格子管理
     /// </summary>
-    public class GridManager
+    public class GridSystem
     {
         private Grid _grid;
         private Map _map;
@@ -56,7 +48,7 @@ namespace TServer.ECSSystem.AOI
         private Dictionary<int, HashSet<int>> _roleMap;
         public Dictionary<int, HashSet<int>> RoleMap => _roleMap;
 
-        public GridManager(int gridUnit, double mapWidth, double mapLength, double mapMinX = 0f, double mapMinY = 0f)
+        public GridSystem(int gridUnit, double mapWidth, double mapLength, double mapMinX = 0f, double mapMinY = 0f)
         {
             _map = new Map { MapMinX = mapMinX, MapMinY = mapMinY, MapWidth = mapWidth, MapLength = mapLength };
             _grid = new Grid { GridUnit = gridUnit };
@@ -82,7 +74,7 @@ namespace TServer.ECSSystem.AOI
         /// </summary>
         /// <param name="gridPos"></param>
         /// <returns></returns>
-        public int GetGridIdxFromGridPos(Position<int> gridPos)
+        public int GetGridIdxFromGridPos(PositionCmt<int> gridPos)
         {
             return gridPos.x * _grid.GridWidth + gridPos.y;
         }
@@ -102,9 +94,9 @@ namespace TServer.ECSSystem.AOI
         /// <param name="mapPos"></param>
         /// <param name="gridPos"></param>
         /// <return></return>
-        public int GetGridPosFromMapPos(Position<double> mapPos, out Position<int> gridPos)
+        public int GetGridPosFromMapPos(PositionCmt<double> mapPos, out PositionCmt<int> gridPos)
         {
-            gridPos = new Position<int> { x = (int)(mapPos.x - _map.MapMinX) / _grid.GridUnit, y = (int)(mapPos.y - _map.MapMinY) / _grid.GridUnit };
+            gridPos = new PositionCmt<int> { x = (int)(mapPos.x - _map.MapMinX) / _grid.GridUnit, y = (int)(mapPos.y - _map.MapMinY) / _grid.GridUnit };
             return GetGridIdxFromGridPos(gridPos);
         }
 
@@ -113,9 +105,9 @@ namespace TServer.ECSSystem.AOI
         /// </summary>
         /// <param name="gridIdx"></param>
         /// <returns></returns>
-        public Position<int> GetGridPosFromGridIdx(int gridIdx)
+        public PositionCmt<int> GetGridPosFromGridIdx(int gridIdx)
         {
-            return new Position<int> { x = gridIdx % _grid.GridWidth, y = gridIdx / _grid.GridLength };
+            return new PositionCmt<int> { x = gridIdx % _grid.GridWidth, y = gridIdx / _grid.GridLength };
         }
 
         /// <summary>
@@ -123,7 +115,7 @@ namespace TServer.ECSSystem.AOI
         /// </summary>
         /// <param name="roleId"></param>
         /// <param name=""></param>
-        public int AddRoleToGrid(int roleId, Position<double> roleNewPos)
+        public int AddRoleToGrid(int roleId, PositionCmt<double> roleNewPos)
         {
             var idx = GetGridPosFromMapPos(roleNewPos, out var _);
             _roleMap[idx].Add(roleId);
@@ -134,7 +126,7 @@ namespace TServer.ECSSystem.AOI
         /// 从格子中删除角色
         /// </summary>
         /// <param name="roleId"></param>
-        public void DeleteRoleFromGrid(int roleId, Position<double> roleOldPos)
+        public void DeleteRoleFromGrid(int roleId, PositionCmt<double> roleOldPos)
         {
             var idx = GetGridPosFromMapPos(roleOldPos, out var _);
             _roleMap[idx].Remove(roleId);
@@ -146,7 +138,7 @@ namespace TServer.ECSSystem.AOI
         /// <param name="deep"></param>
         /// <param name="curPos"></param>
         /// <param name="gridIdxs"></param>
-        public void GetRolesFromSight(int deep, Position<int> curPos, out HashSet<int> gridIdxs, out HashSet<int> roleIds)
+        public void GetRolesFromSight(int deep, PositionCmt<int> curPos, out HashSet<int> gridIdxs, out HashSet<int> roleIds)
         {
             gridIdxs = new HashSet<int>();
             roleIds = new HashSet<int>();

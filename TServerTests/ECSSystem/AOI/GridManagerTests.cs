@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Xunit.Abstractions;
+using TServer.ECSComponent;
 
 namespace TServer.ECSSystem.AOI.Tests
 {
@@ -23,7 +24,7 @@ namespace TServer.ECSSystem.AOI.Tests
         [Fact()]
         public void GetRolesFromSightTest()
         {
-            var manager = new GridManager(5, 99.0D, 99.0D);
+            var manager = new GridSystem(5, 99.0D, 99.0D);
             manager.Init();
 
             int[] map = new int[400];
@@ -32,16 +33,16 @@ namespace TServer.ECSSystem.AOI.Tests
             {
                 var x = GetRandomNum(0, 100);
                 var y = GetRandomNum(0, 100);
-                map[manager.AddRoleToGrid(i, new Position<double> { x = x, y = y })]++;
+                map[manager.AddRoleToGrid(i, new PositionCmt<double> { x = x, y = y })]++;
             }
 
             // 获取视野内角色
-            manager.GetRolesFromSight(1, new Position<int> { x = 0, y = 0 }, out var set1, out var role1);
-            manager.GetRolesFromSight(1, new Position<int> { x = 10, y = 10 }, out var set2, out var role2);
-            manager.GetRolesFromSight(1, new Position<int> { x = 19, y = 19 }, out var set3, out var role3);
-            manager.GetRolesFromSight(1, new Position<int> { x = 0, y = 19 }, out var set4, out var role4);
-            manager.GetRolesFromSight(1, new Position<int> { x = 19, y = 0 }, out var set5, out var role5);
-            manager.GetRolesFromSight(2, new Position<int> { x = 10, y = 10 }, out var set6, out var role6);
+            manager.GetRolesFromSight(1, new PositionCmt<int> { x = 0, y = 0 }, out var set1, out var role1);
+            manager.GetRolesFromSight(1, new PositionCmt<int> { x = 10, y = 10 }, out var set2, out var role2);
+            manager.GetRolesFromSight(1, new PositionCmt<int> { x = 19, y = 19 }, out var set3, out var role3);
+            manager.GetRolesFromSight(1, new PositionCmt<int> { x = 0, y = 19 }, out var set4, out var role4);
+            manager.GetRolesFromSight(1, new PositionCmt<int> { x = 19, y = 0 }, out var set5, out var role5);
+            manager.GetRolesFromSight(2, new PositionCmt<int> { x = 10, y = 10 }, out var set6, out var role6);
 
 
             Assert.True(set1.Count == 4);
@@ -65,10 +66,6 @@ namespace TServer.ECSSystem.AOI.Tests
                 }
                 output.WriteLine(strings.ToString());
                 strings.Clear();
-            }
-            foreach (var id in set6)
-            {
-                output.WriteLine($"{id}");
             }
             Assert.True(set6.Count == 25);
         }
