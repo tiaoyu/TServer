@@ -27,5 +27,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Simple\SimpleSocket.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Simple\SocketData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Singleton.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TTimer\TimerManager.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)TTimer\" />
   </ItemGroup>
 </Project>
