@@ -12,7 +12,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TClient", "TClient\TClient.
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Common", "Common\Common.shproj", "{D03A4C41-977E-4E07-BA78-533655305A10}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TServerTests", "TServerTests\TServerTests.csproj", "{334C821C-1D68-4975-A037-E19363E5703E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TServerTests", "TServerTests\TServerTests.csproj", "{334C821C-1D68-4975-A037-E19363E5703E}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
