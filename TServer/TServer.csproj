@@ -10,8 +10,12 @@
   <ItemGroup>
     <PackageReference Include="Google.Protobuf" Version="3.10.0" />
     <PackageReference Include="log4net" Version="2.0.8" />
+    <PackageReference Include="CSRedisCore" Version="3.1.17" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Cache\" />
+  </ItemGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Copy SourceFiles="$(ProjectDir)..\Environment\LogConfig.log4net" DestinationFolder="$(OutDir)" />
   </Target>
