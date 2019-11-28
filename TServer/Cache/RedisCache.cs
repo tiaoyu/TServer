@@ -1,7 +1,7 @@
 ﻿using System;
 namespace Common.Cache
 {
-    public class RedisCache
+    public class RedisCache : Singleton<RedisCache>
     {
         public RedisCache()
         {
@@ -9,14 +9,19 @@ namespace Common.Cache
             RedisHelper.Initialization(csredis);
         }
 
-        public static void Set(string key, byte[] value)
+        public void Set(string key, byte[] value)
         {
             RedisHelper.Set(key, value);
         }
 
-        public static byte[] Get(string key)
+        public void Set(string key, string value)
         {
-            return RedisHelper.Get<byte[]>(key);
+            RedisHelper.Set(key, value);
+        }
+
+        public T Get<T>(string key)
+        {
+            return RedisHelper.Get<T>(key);
         }
     }
 }
