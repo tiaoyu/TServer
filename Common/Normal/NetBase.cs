@@ -141,7 +141,6 @@ namespace Common.Normal
             {
                 CloseSocket(e);
             }
-
         }
 
         public void StartReceive(SocketAsyncEventArgs e)

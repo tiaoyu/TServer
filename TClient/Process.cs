@@ -11,4 +11,12 @@ namespace Common.Protobuf
             Console.WriteLine($"Res:{this.Res}");
         }
     }
+
+    public partial class S2CRegister
+    {
+        public override void OnProcess()
+        {
+            Console.WriteLine($"Res:{this.Res}");
+        }
+    }
 }

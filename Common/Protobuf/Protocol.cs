@@ -26,16 +26,22 @@ namespace Common.Protobuf {
           string.Concat(
             "Cg5wcm90b2NvbC5wcm90byJMCghDMlNMb2dpbhIgCgR0eXBlGAEgASgOMhIu",
             "QzJTX1BST1RPQ09MX1RZUEUSDAoEbmFtZRgCIAEoCRIQCghwYXNzd29yZBgD",
-            "IAEoCSI5CghTMkNMb2dpbhIgCgR0eXBlGAEgASgOMhIuUzJDX1BST1RPQ09M",
-            "X1RZUEUSCwoDcmVzGAIgASgFKjIKEVMyQ19QUk9UT0NPTF9UWVBFEg0KCVMy",
-            "Q19CZWdpbhAAEg4KCVMyQ19Mb2dpbhCPTioxChFDMlNfUFJPVE9DT0xfVFlQ",
-            "RRINCglDMlNfQmVnaW4QABINCglDMlNfTG9naW4QAUISqgIPQ29tbW9uLlBy",
+            "IAEoCSJPCgtDMlNSZWdpc3RlchIgCgR0eXBlGAEgASgOMhIuQzJTX1BST1RP",
+            "Q09MX1RZUEUSDAoEbmFtZRgCIAEoCRIQCghwYXNzd29yZBgDIAEoCSI5CghT",
+            "MkNMb2dpbhIgCgR0eXBlGAEgASgOMhIuUzJDX1BST1RPQ09MX1RZUEUSCwoD",
+            "cmVzGAIgASgFIjwKC1MyQ1JlZ2lzdGVyEiAKBHR5cGUYASABKA4yEi5TMkNf",
+            "UFJPVE9DT0xfVFlQRRILCgNyZXMYAiABKAkqRQoRUzJDX1BST1RPQ09MX1RZ",
+            "UEUSDQoJUzJDX0JlZ2luEAASDgoJUzJDX0xvZ2luEI9OEhEKDFMyQ19SZWdp",
+            "c3RlchCOTipDChFDMlNfUFJPVE9DT0xfVFlQRRINCglDMlNfQmVnaW4QABIN",
+            "CglDMlNfTG9naW4QARIQCgxDMlNfUmVnaXN0ZXIQAkISqgIPQ29tbW9uLlBy",
             "b3RvYnVmYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Common.Protobuf.S2C_PROTOCOL_TYPE), typeof(global::Common.Protobuf.C2S_PROTOCOL_TYPE), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Common.Protobuf.C2SLogin), global::Common.Protobuf.C2SLogin.Parser, new[]{ "Type", "Name", "Password" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Common.Protobuf.S2CLogin), global::Common.Protobuf.S2CLogin.Parser, new[]{ "Type", "Res" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Common.Protobuf.C2SRegister), global::Common.Protobuf.C2SRegister.Parser, new[]{ "Type", "Name", "Password" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Common.Protobuf.S2CLogin), global::Common.Protobuf.S2CLogin.Parser, new[]{ "Type", "Res" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Common.Protobuf.S2CRegister), global::Common.Protobuf.S2CRegister.Parser, new[]{ "Type", "Res" }, null, null, null, null)
           }));
     }
     #endregion
@@ -50,16 +56,21 @@ namespace Common.Protobuf {
   public enum S2C_PROTOCOL_TYPE {
     [pbr::OriginalName("S2C_Begin")] S2CBegin = 0,
     [pbr::OriginalName("S2C_Login")] S2CLogin = 9999,
+    [pbr::OriginalName("S2C_Register")] S2CRegister = 9998,
   }
 
   public enum C2S_PROTOCOL_TYPE {
     [pbr::OriginalName("C2S_Begin")] C2SBegin = 0,
     [pbr::OriginalName("C2S_Login")] C2SLogin = 1,
+    [pbr::OriginalName("C2S_Register")] C2SRegister = 2,
   }
 
   #endregion
 
   #region Messages
+  /// <summary>
+  /// C2S
+  /// </summary>
   public sealed partial class C2SLogin : ProtobufBase<C2SLogin>,pb::IMessage<C2SLogin> {
     private static readonly pb::MessageParser<C2SLogin> _parser = new pb::MessageParser<C2SLogin>(() => new C2SLogin());
     private pb::UnknownFieldSet _unknownFields;
@@ -245,6 +256,194 @@ namespace Common.Protobuf {
 
   }
 
+  public sealed partial class C2SRegister : ProtobufBase<C2SRegister>,pb::IMessage<C2SRegister> {
+    private static readonly pb::MessageParser<C2SRegister> _parser = new pb::MessageParser<C2SRegister>(() => new C2SRegister());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<C2SRegister> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Common.Protobuf.ProtocolReflection.Descriptor.MessageTypes[1]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public C2SRegister() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public C2SRegister(C2SRegister other) : this() {
+      type_ = other.type_;
+      name_ = other.name_;
+      password_ = other.password_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public C2SRegister Clone() {
+      return new C2SRegister(this);
+    }
+
+    /// <summary>Field number for the "type" field.</summary>
+    public const int TypeFieldNumber = 1;
+    private global::Common.Protobuf.C2S_PROTOCOL_TYPE type_ = global::Common.Protobuf.C2S_PROTOCOL_TYPE.C2SBegin;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Common.Protobuf.C2S_PROTOCOL_TYPE Type {
+      get { return type_; }
+      set {
+        type_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "name" field.</summary>
+    public const int NameFieldNumber = 2;
+    private string name_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Name {
+      get { return name_; }
+      set {
+        name_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "password" field.</summary>
+    public const int PasswordFieldNumber = 3;
+    private string password_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Password {
+      get { return password_; }
+      set {
+        password_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as C2SRegister);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(C2SRegister other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Type != other.Type) return false;
+      if (Name != other.Name) return false;
+      if (Password != other.Password) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Type != global::Common.Protobuf.C2S_PROTOCOL_TYPE.C2SBegin) hash ^= Type.GetHashCode();
+      if (Name.Length != 0) hash ^= Name.GetHashCode();
+      if (Password.Length != 0) hash ^= Password.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (Type != global::Common.Protobuf.C2S_PROTOCOL_TYPE.C2SBegin) {
+        output.WriteRawTag(8);
+        output.WriteEnum((int) Type);
+      }
+      if (Name.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(Name);
+      }
+      if (Password.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteString(Password);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (Type != global::Common.Protobuf.C2S_PROTOCOL_TYPE.C2SBegin) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Type);
+      }
+      if (Name.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Name);
+      }
+      if (Password.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Password);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(C2SRegister other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Type != global::Common.Protobuf.C2S_PROTOCOL_TYPE.C2SBegin) {
+        Type = other.Type;
+      }
+      if (other.Name.Length != 0) {
+        Name = other.Name;
+      }
+      if (other.Password.Length != 0) {
+        Password = other.Password;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            Type = (global::Common.Protobuf.C2S_PROTOCOL_TYPE) input.ReadEnum();
+            break;
+          }
+          case 18: {
+            Name = input.ReadString();
+            break;
+          }
+          case 26: {
+            Password = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  /// <summary>
+  /// S2C
+  /// </summary>
   public sealed partial class S2CLogin : ProtobufBase<S2CLogin>,pb::IMessage<S2CLogin> {
     private static readonly pb::MessageParser<S2CLogin> _parser = new pb::MessageParser<S2CLogin>(() => new S2CLogin());
     private pb::UnknownFieldSet _unknownFields;
@@ -253,7 +452,7 @@ namespace Common.Protobuf {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Common.Protobuf.ProtocolReflection.Descriptor.MessageTypes[1]; }
+      get { return global::Common.Protobuf.ProtocolReflection.Descriptor.MessageTypes[2]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -394,6 +593,163 @@ namespace Common.Protobuf {
           }
           case 16: {
             Res = input.ReadInt32();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  public sealed partial class S2CRegister : ProtobufBase<S2CRegister>,pb::IMessage<S2CRegister> {
+    private static readonly pb::MessageParser<S2CRegister> _parser = new pb::MessageParser<S2CRegister>(() => new S2CRegister());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<S2CRegister> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Common.Protobuf.ProtocolReflection.Descriptor.MessageTypes[3]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public S2CRegister() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public S2CRegister(S2CRegister other) : this() {
+      type_ = other.type_;
+      res_ = other.res_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public S2CRegister Clone() {
+      return new S2CRegister(this);
+    }
+
+    /// <summary>Field number for the "type" field.</summary>
+    public const int TypeFieldNumber = 1;
+    private global::Common.Protobuf.S2C_PROTOCOL_TYPE type_ = global::Common.Protobuf.S2C_PROTOCOL_TYPE.S2CBegin;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Common.Protobuf.S2C_PROTOCOL_TYPE Type {
+      get { return type_; }
+      set {
+        type_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "res" field.</summary>
+    public const int ResFieldNumber = 2;
+    private string res_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Res {
+      get { return res_; }
+      set {
+        res_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as S2CRegister);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(S2CRegister other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Type != other.Type) return false;
+      if (Res != other.Res) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Type != global::Common.Protobuf.S2C_PROTOCOL_TYPE.S2CBegin) hash ^= Type.GetHashCode();
+      if (Res.Length != 0) hash ^= Res.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (Type != global::Common.Protobuf.S2C_PROTOCOL_TYPE.S2CBegin) {
+        output.WriteRawTag(8);
+        output.WriteEnum((int) Type);
+      }
+      if (Res.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(Res);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (Type != global::Common.Protobuf.S2C_PROTOCOL_TYPE.S2CBegin) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Type);
+      }
+      if (Res.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Res);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(S2CRegister other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Type != global::Common.Protobuf.S2C_PROTOCOL_TYPE.S2CBegin) {
+        Type = other.Type;
+      }
+      if (other.Res.Length != 0) {
+        Res = other.Res;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            Type = (global::Common.Protobuf.S2C_PROTOCOL_TYPE) input.ReadEnum();
+            break;
+          }
+          case 18: {
+            Res = input.ReadString();
             break;
           }
         }

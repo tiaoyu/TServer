@@ -11,6 +11,11 @@ namespace TServer.ECSSystem
     {
         private static readonly LogHelp log = LogHelp.GetLogger(typeof(LoginSystem));
 
+        public void Register(Guid guid,  C2SRegister pack)
+        {
+            log.Debug($"Guid:{guid} --- {pack.Name} register, passwordis {pack.Password}.");
+        }
+
         public void LoginIn(Guid guid, C2SLogin pack)
         {
             log.Debug($"Guid:{guid} --- {pack.Name} login in, password is {pack.Password}.");

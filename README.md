@@ -5,3 +5,9 @@ a strong server
 
 1. Socket list
 2. Buffer manager
+
+### System
+
+#### AOI
+
+#### 

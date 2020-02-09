@@ -12,4 +12,12 @@ namespace Common.Protobuf
             LoginSystem.Instance.LoginIn(guid, this);
         }
     }
+
+    public partial class C2SRegister
+    {
+        public override void OnProcess(Guid guid)
+        {
+            LoginSystem.Instance.Register(guid, this);
+        }
+    }
 }

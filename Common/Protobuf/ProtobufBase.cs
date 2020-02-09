@@ -102,6 +102,8 @@ namespace Common.Protobuf
         {
             push((int)S2C_PROTOCOL_TYPE.S2CLogin, CreateParse<S2CLogin>());
             push((int)C2S_PROTOCOL_TYPE.C2SLogin, CreateParse<C2SLogin>());
+            push((int)S2C_PROTOCOL_TYPE.S2CRegister, CreateParse<S2CRegister>());
+            push((int)C2S_PROTOCOL_TYPE.C2SRegister, CreateParse<C2SRegister>());
 
             foreach (var (protoId, parser) in _dicParser)
             {

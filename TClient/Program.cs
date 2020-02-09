@@ -110,15 +110,41 @@ namespace TClient
             while (true)
             {
                 var str = Console.ReadLine();
-                var pack = new C2SLogin
+                var args = str.Split(' ');
+                switch (args[0])
                 {
-                    Name = "tiaoyu",
-                    Password = "password"
-                };
-                client.StartSend(pack);
-            }
+                    case "register":
+                        if (args.Length > 2)
+                        {
 
-            #endregion Normal Socket
+                            var pack = new C2SRegister
+                            {
+                                Name = args[1],
+                                Password = args[2]
+                            };
+                            client.StartSend(pack);
+                        }
+                        break;
+
+                    case "login":
+                        if (args.Length > 2)
+                        {
+                            var pack = new C2SLogin
+                            {
+                                Name = args[1],
+                                Password = args[2]
+                            };
+                            client.StartSend(pack);
+                        }
+                        break;
+
+                    default:
+                        break;
+                }
+
+            }
         }
+
+        #endregion Normal Socket
     }
 }

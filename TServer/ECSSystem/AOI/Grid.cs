@@ -48,6 +48,14 @@ namespace TServer.ECSSystem.AOI
         private Dictionary<int, HashSet<int>> _roleMap;
         public Dictionary<int, HashSet<int>> RoleMap => _roleMap;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="gridUnit">格子单元长度</param>
+        /// <param name="mapWidth">地图宽度</param>
+        /// <param name="mapLength">地图长度</param>
+        /// <param name="mapMinX">地图最小X坐标</param>
+        /// <param name="mapMinY">地图最小Y坐标</param>
         public GridSystem(int gridUnit, double mapWidth, double mapLength, double mapMinX = 0f, double mapMinY = 0f)
         {
             _map = new Map { MapMinX = mapMinX, MapMinY = mapMinY, MapWidth = mapWidth, MapLength = mapLength };
@@ -78,6 +86,7 @@ namespace TServer.ECSSystem.AOI
         {
             return gridPos.x * _grid.GridWidth + gridPos.y;
         }
+
         /// <summary>
         /// 格子位置转格子下标
         /// </summary>
