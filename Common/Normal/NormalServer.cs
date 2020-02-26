@@ -89,8 +89,8 @@ namespace Common.Normal
 
             var guid = Guid.NewGuid();
             ((AsyncUserToken)readEventArgs.UserToken).Guid = guid;
-            // Save EventArgs
-            dicEventArgs.Add(guid, new ExtSocket { SocketEventArgs = readEventArgs, Guid = guid });
+
+            MessageHandler.MessageQueue.Enqueue(new ExtSocket { SocketEventArgs = readEventArgs, Guid = guid, ESocketType = ESocketType.ESocketAccept });
 
             // As soon as the client is connected, post a receive to the connection
             StartReceive(readEventArgs);
@@ -107,10 +107,20 @@ namespace Common.Normal
             ProcessAccept(e);
         }
 
+        protected override void OnAccept(ExtSocket ss)
+        {
+            dicEventArgs.Add(ss.Guid, ss);
+        }
+        protected override void OnDisconnect(ExtSocket ss)
+        {
+            base.OnDisconnect(ss);
+            dicEventArgs.Remove(ss.Guid);
+        }
+
         protected override void CloseSocket(SocketAsyncEventArgs e)
         {
             AsyncUserToken token = e.UserToken as AsyncUserToken;
-
+            MessageHandler.MessageQueue.Enqueue(new ExtSocket { ESocketType = ESocketType.ESocketDisconnect, SocketEventArgs = e, Guid = token.Guid });
             // close the socket associated with the client
             try
             {

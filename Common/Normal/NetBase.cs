@@ -10,9 +10,7 @@ using System.Threading;
 namespace Common.Normal
 {
     // Implements the connection logic for the socket server.  
-    // After accepting a connection, all data read from the client 
-    // is sent back to the client. The read and echo back to the client pattern 
-    // is continued until the client disconnects.
+    // 
     public class NetBase
     {
         private static readonly LogHelp log = LogHelp.GetLogger(typeof(NetBase));
@@ -113,7 +111,7 @@ namespace Common.Normal
         public void StartSend(SocketAsyncEventArgs e, byte[] buffer)
         {
             AsyncUserToken token = (AsyncUserToken)e.UserToken;
-            if (token.Socket.Connected)
+            if (token != null && token.Socket.Connected)
             {
                 var sendSocketArgs = token.SendSocket;
                 sendSocketArgs.AcceptSocket = e.AcceptSocket;
@@ -200,8 +198,46 @@ namespace Common.Normal
 
         protected void FreeSocketAsyncEventArgsToPool(SocketAsyncEventArgs e)
         {
+            e.UserToken = null;
             m_bufferManager.FreeBuffer(e);
             m_readWritePool.Push(e);
+        }
+
+        protected virtual void OnAccept(ExtSocket ss) { }
+        protected virtual void OnConnect(ExtSocket ss) { }
+        protected virtual void OnClose(ExtSocket ss) { }
+        protected virtual void OnDisconnect(ExtSocket ss) { }
+        protected virtual void OnReceive(ExtSocket ss)
+        {
+            log.Debug($"Get msg:{ss.Protocol}");
+            ss.Protocol.OnProcess(ss.Guid);
+        }
+
+        public void ProcessMessage()
+        {
+            var count = MessageHandler.MessageQueue.Count;
+            while (count-- > 0)
+            {
+                if (MessageHandler.MessageQueue.TryDequeue(out object msg))
+                {
+                    var ss = (msg as ExtSocket);
+                    switch (ss.ESocketType)
+                    {
+                        case ESocketType.ESocketAccept:
+                            OnAccept(ss);
+                            break;
+                        case ESocketType.ESocketDisconnect:
+                            OnDisconnect(ss);
+                            break;
+                        case ESocketType.ESocketReceive:
+                            OnReceive(ss);
+                            break;
+                        case ESocketType.ESocketClose:
+                            OnClose(ss);
+                            break;
+                    }
+                }
+            }
         }
     }
 }

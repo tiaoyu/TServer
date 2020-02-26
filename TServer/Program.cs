@@ -101,7 +101,7 @@ namespace TServer
             Server.MessageHandler.SetDeserializeFunc((bytes, guid) =>
             {
                 var protoId = BitConverter.ToInt32(bytes);
-                return new ExtSocket { Protocol = ProtocolParser.Instance.GetParser(protoId).ParseFrom(bytes) as ProtocolBufBase, Guid = guid };
+                return new ExtSocket { Protocol = ProtocolParser.Instance.GetParser(protoId).ParseFrom(bytes) as ProtocolBufBase, Guid = guid, ESocketType = ESocketType.ESocketReceive };
             });
             Server.MessageHandler.SetSerializeFunc((protocol) =>
             {
@@ -127,16 +127,7 @@ namespace TServer
             {
                 t1 = stopwatch.ElapsedMilliseconds;
 
-                var count = Server.MessageHandler.MessageQueue.Count;
-                while (count-- > 0)
-                {
-                    if (Server.MessageHandler.MessageQueue.TryDequeue(out object msg))
-                    {
-                        log.Debug($"Get msg:{msg}");
-                        var ss = (msg as ExtSocket);
-                        ss.Protocol.OnProcess(ss.Guid);
-                    }
-                }
+                Server.ProcessMessage();
                 TimerManager.Update(stopwatch.ElapsedMilliseconds);
 
                 SDungeon.Instance.Update();
