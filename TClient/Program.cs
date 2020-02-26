@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
@@ -97,13 +98,24 @@ namespace TClient
 
             Task.Run(() =>
             {
+                var stopwatch = new Stopwatch();
+                stopwatch.Start();
+                var t1 = stopwatch.ElapsedMilliseconds;
+                var t2 = stopwatch.ElapsedMilliseconds;
                 while (true)
                 {
-                    if (client.MessageHandler.MessageQueue.TryDequeue(out object msg))
+                    t1 = stopwatch.ElapsedMilliseconds;
+                    var count = client.MessageHandler.MessageQueue.Count;
+                    for (var i = 0; i < count; ++i)
                     {
-                        (msg as ProtocolBufBase).OnProcess();
+                        if (client.MessageHandler.MessageQueue.TryDequeue(out var msg))
+                        {
+                            (msg as ProtocolBufBase).OnProcess();
+                        }
                     }
-                    System.Threading.Thread.Sleep(1000);
+                    t2 = stopwatch.ElapsedMilliseconds;
+                    var t = (int)(t2 - t1);
+                    System.Threading.Thread.Sleep(t < 30 ? 30 - t : 1);
                 }
             });
 
@@ -137,7 +149,17 @@ namespace TClient
                             client.StartSend(pack);
                         }
                         break;
-
+                    case "move":
+                        if (args.Length > 2)
+                        {
+                            var pack = new C2SMove
+                            {
+                                X = double.Parse(args[1]),
+                                Y = double.Parse(args[2])
+                            };
+                            client.StartSend(pack);
+                        }
+                        break;
                     default:
                         break;
                 }

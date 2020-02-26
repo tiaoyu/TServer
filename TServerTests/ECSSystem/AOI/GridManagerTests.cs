@@ -33,16 +33,16 @@ namespace TServer.ECSSystem.AOI.Tests
             {
                 var x = GetRandomNum(0, 100);
                 var y = GetRandomNum(0, 100);
-                map[manager.AddRoleToGrid(i, new PositionCmt<double> { x = x, y = y })]++;
+                map[manager.AddRoleToGrid(i, new CPosition<double> { x = x, y = y })]++;
             }
 
             // 获取视野内角色
-            manager.GetRolesFromSight(1, new PositionCmt<int> { x = 0, y = 0 }, out var set1, out var role1);
-            manager.GetRolesFromSight(1, new PositionCmt<int> { x = 10, y = 10 }, out var set2, out var role2);
-            manager.GetRolesFromSight(1, new PositionCmt<int> { x = 19, y = 19 }, out var set3, out var role3);
-            manager.GetRolesFromSight(1, new PositionCmt<int> { x = 0, y = 19 }, out var set4, out var role4);
-            manager.GetRolesFromSight(1, new PositionCmt<int> { x = 19, y = 0 }, out var set5, out var role5);
-            manager.GetRolesFromSight(2, new PositionCmt<int> { x = 10, y = 10 }, out var set6, out var role6);
+            manager.GetRolesFromSight(1, new CPosition<int> { x = 0, y = 0 }, out var set1, out var role1);
+            manager.GetRolesFromSight(1, new CPosition<int> { x = 10, y = 10 }, out var set2, out var role2);
+            manager.GetRolesFromSight(1, new CPosition<int> { x = 19, y = 19 }, out var set3, out var role3);
+            manager.GetRolesFromSight(1, new CPosition<int> { x = 0, y = 19 }, out var set4, out var role4);
+            manager.GetRolesFromSight(1, new CPosition<int> { x = 19, y = 0 }, out var set5, out var role5);
+            manager.GetRolesFromSight(2, new CPosition<int> { x = 10, y = 10 }, out var set6, out var role6);
 
 
             Assert.True(set1.Count == 4);

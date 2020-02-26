@@ -1,21 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Common.LogUtil;
 using Common.Normal;
 using Common.Protobuf;
 using Common.Simple;
+using Common.TTimer;
 using Google.Protobuf;
+using TServer.ECSEntity;
+using TServer.ECSSystem.Dungeon;
 
 namespace TServer
 {
     internal class Program
     {
         private static LogHelp log;
+        public static NormalServer Server;
+        public static Dictionary<Guid, ERole> DicRole = new Dictionary<Guid, ERole>();
+        public static TimerManager TimerManager = new TimerManager();
         private static void Main()
         {
             LogHelp.Init(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LogConfig.log4net"));
@@ -87,33 +95,59 @@ namespace TServer
             #endregion Simple Socket
 
             #region Normal Socket
-            var server = new NormalServer(2, 8192);
-            server.Init();
+            Server = new NormalServer(128, 8192);
+            Server.Init();
             //server.MessageHandler.SetDeserializeFunc((bytes) => Encoding.UTF8.GetString(bytes));
-            server.MessageHandler.SetDeserializeFunc((bytes, guid) =>
+            Server.MessageHandler.SetDeserializeFunc((bytes, guid) =>
             {
                 var protoId = BitConverter.ToInt32(bytes);
                 return new ExtSocket { Protocol = ProtocolParser.Instance.GetParser(protoId).ParseFrom(bytes) as ProtocolBufBase, Guid = guid };
             });
-            server.MessageHandler.SetSerializeFunc((protocol) =>
+            Server.MessageHandler.SetSerializeFunc((protocol) =>
             {
                 return (protocol as ProtocolBufBase).Serialize();
             });
-            server.Start("127.0.0.1", 11000);
+            Server.Start("127.0.0.1", 11000);
 
+            // 主循环
             Task.Run(() =>
             {
+                var stopwatch = new Stopwatch();
+                stopwatch.Start();
+                var t1 = stopwatch.ElapsedMilliseconds;
+                var t2 = stopwatch.ElapsedMilliseconds;
+                TimerManager.Init();
+                TimerManager.Insert(6000, 6000, int.MaxValue, null, (obj) =>
+                {
+                    foreach (var (_, role) in DicRole)
+                    {
+                        log.Info($"test role.");
+                    }
+                });
+
                 while (true)
                 {
-                    if (server.MessageHandler.MessageQueue.TryDequeue(out object msg))
+                    t1 = stopwatch.ElapsedMilliseconds;
+                    
+                    var count = Server.MessageHandler.MessageQueue.Count;
+                    while (count-- > 0)
                     {
-                        log.Debug($"Get msg:{msg}");
-                        var ss = (msg as ExtSocket);
-                        ss.Protocol.OnProcess(ss.Guid);
+                        if (Server.MessageHandler.MessageQueue.TryDequeue(out object msg))
+                        {
+                            log.Debug($"Get msg:{msg}");
+                            var ss = (msg as ExtSocket);
+                            ss.Protocol.OnProcess(ss.Guid);
+                        }
                     }
-                    System.Threading.Thread.Sleep(1000);
+                    TimerManager.Update(stopwatch.ElapsedMilliseconds);
+
+                    SDungeon.Instance.Update();
+                    t2 = stopwatch.ElapsedMilliseconds;
+                    var t = (int)(t2 - t1);
+                    System.Threading.Thread.Sleep(t < 30 ? 30 - t : 1);
                 }
             });
+
             while (true)
             {
                 var str = Console.ReadLine();
@@ -121,9 +155,9 @@ namespace TServer
                 {
                     Res = 1
                 };
-                foreach (var (_, v) in server.dicEventArgs)
+                foreach (var (_, v) in Server.dicEventArgs)
                 {
-                    server.StartSend(v.SocketEventArgs, pack);
+                    Server.StartSend(v.SocketEventArgs, pack);
                 }
             }
             #endregion Normal Socket

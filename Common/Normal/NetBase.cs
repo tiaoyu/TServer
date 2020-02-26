@@ -75,7 +75,7 @@ namespace Common.Normal
             }
 
             MessageHandler = new MessageHandler<object>();
-            
+
             ProtocolParser.Register();
         }
 
@@ -87,6 +87,9 @@ namespace Common.Normal
             // determine which type of operation just completed and call the associated handler
             switch (e.LastOperation)
             {
+                case SocketAsyncOperation.Connect:
+                    log.Debug("Connect");
+                    break;
                 case SocketAsyncOperation.Receive:
                     log.Debug("Receive");
                     ProcessReceive(e);
@@ -110,16 +113,18 @@ namespace Common.Normal
 
         public void StartSend(SocketAsyncEventArgs e, byte[] buffer)
         {
-            var sendSocketArgs = CreateNewSocketAsyncEventArgsFromPool();
-            sendSocketArgs.AcceptSocket = e.AcceptSocket;
-
             AsyncUserToken token = (AsyncUserToken)e.UserToken;
-            sendSocketArgs.SetBuffer(buffer, 0, buffer.Length);
-
-            bool willRaiseEvent = token.Socket.SendAsync(sendSocketArgs);
-            if (!willRaiseEvent)
+            if (token.Socket.Connected)
             {
-                ProcessSend(sendSocketArgs);
+                var sendSocketArgs = CreateNewSocketAsyncEventArgsFromPool();
+                sendSocketArgs.AcceptSocket = e.AcceptSocket;
+
+                sendSocketArgs.SetBuffer(buffer, 0, buffer.Length);
+                bool willRaiseEvent = token.Socket.SendAsync(sendSocketArgs);
+                if (!willRaiseEvent)
+                {
+                    ProcessSend(sendSocketArgs);
+                }
             }
         }
 
@@ -161,7 +166,13 @@ namespace Common.Normal
         {
             // check if the remote host closed the connection
             AsyncUserToken token = (AsyncUserToken)e.UserToken;
-            if (e.BytesTransferred > 0 && e.SocketError == SocketError.Success)
+            
+            if (e.BytesTransferred <= 0)
+            {
+                CloseSocket(e);
+            }
+         
+            if (e.SocketError == SocketError.Success)
             {
                 //increment the count of the total bytes receive by the server
                 Interlocked.Add(ref m_totalBytesRead, e.BytesTransferred);
@@ -175,10 +186,6 @@ namespace Common.Normal
 
                 } while (remainProcessLength != 0);
                 StartReceive(e);
-            }
-            else
-            {
-                CloseSocket(e);
             }
         }
 

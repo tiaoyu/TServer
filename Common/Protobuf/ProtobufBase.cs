@@ -1,5 +1,5 @@
-﻿using Google.Protobuf;
-using Google.Protobuf.Reflection;
+﻿using Common.Normal;
+using Google.Protobuf;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,6 +18,7 @@ namespace Common.Protobuf
     {
         public static int TypeId { set; get; }
         public int ProtoId { get { return TypeId; } }
+        public ExtSocket ExtSocket { get; set; }
 
         public void SetProtoId(int id)
         {
@@ -100,10 +101,17 @@ namespace Common.Protobuf
 
         public static void Register()
         {
-            push((int)S2C_PROTOCOL_TYPE.S2CLogin, CreateParse<S2CLogin>());
+            push((int)C2S_PROTOCOL_TYPE.C2STest, CreateParse<C2STest>());
+            push((int)S2C_PROTOCOL_TYPE.S2CTest, CreateParse<S2CTest>());
+
             push((int)C2S_PROTOCOL_TYPE.C2SLogin, CreateParse<C2SLogin>());
-            push((int)S2C_PROTOCOL_TYPE.S2CRegister, CreateParse<S2CRegister>());
+            push((int)S2C_PROTOCOL_TYPE.S2CLogin, CreateParse<S2CLogin>());
+
             push((int)C2S_PROTOCOL_TYPE.C2SRegister, CreateParse<C2SRegister>());
+            push((int)S2C_PROTOCOL_TYPE.S2CRegister, CreateParse<S2CRegister>());
+
+            push((int)S2C_PROTOCOL_TYPE.S2CMove, CreateParse<S2CMove>());
+            push((int)C2S_PROTOCOL_TYPE.C2SMove, CreateParse<C2SMove>());
 
             foreach (var (protoId, parser) in _dicParser)
             {

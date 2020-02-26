@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using TServer.ECSComponent;
+using TServer.ECSEntity;
 
 namespace TServer.ECSSystem.AOI
 {
@@ -82,7 +83,7 @@ namespace TServer.ECSSystem.AOI
         /// </summary>
         /// <param name="gridPos"></param>
         /// <returns></returns>
-        public int GetGridIdxFromGridPos(PositionCmt<int> gridPos)
+        public int GetGridIdxFromGridPos(CPosition<int> gridPos)
         {
             return gridPos.x * _grid.GridWidth + gridPos.y;
         }
@@ -103,9 +104,9 @@ namespace TServer.ECSSystem.AOI
         /// <param name="mapPos"></param>
         /// <param name="gridPos"></param>
         /// <return></return>
-        public int GetGridPosFromMapPos(PositionCmt<double> mapPos, out PositionCmt<int> gridPos)
+        public int GetGridPosFromMapPos(CPosition<double> mapPos, out CPosition<int> gridPos)
         {
-            gridPos = new PositionCmt<int> { x = (int)(mapPos.x - _map.MapMinX) / _grid.GridUnit, y = (int)(mapPos.y - _map.MapMinY) / _grid.GridUnit };
+            gridPos = new CPosition<int> { x = (int)(mapPos.x - _map.MapMinX) / _grid.GridUnit, y = (int)(mapPos.y - _map.MapMinY) / _grid.GridUnit };
             return GetGridIdxFromGridPos(gridPos);
         }
 
@@ -114,9 +115,9 @@ namespace TServer.ECSSystem.AOI
         /// </summary>
         /// <param name="gridIdx"></param>
         /// <returns></returns>
-        public PositionCmt<int> GetGridPosFromGridIdx(int gridIdx)
+        public CPosition<int> GetGridPosFromGridIdx(int gridIdx)
         {
-            return new PositionCmt<int> { x = gridIdx % _grid.GridWidth, y = gridIdx / _grid.GridLength };
+            return new CPosition<int> { x = gridIdx % _grid.GridWidth, y = gridIdx / _grid.GridLength };
         }
 
         /// <summary>
@@ -124,7 +125,7 @@ namespace TServer.ECSSystem.AOI
         /// </summary>
         /// <param name="roleId"></param>
         /// <param name=""></param>
-        public int AddRoleToGrid(int roleId, PositionCmt<double> roleNewPos)
+        public int AddRoleToGrid(int roleId, CPosition<double> roleNewPos)
         {
             var idx = GetGridPosFromMapPos(roleNewPos, out var _);
             _roleMap[idx].Add(roleId);
@@ -135,7 +136,7 @@ namespace TServer.ECSSystem.AOI
         /// 从格子中删除角色
         /// </summary>
         /// <param name="roleId"></param>
-        public void DeleteRoleFromGrid(int roleId, PositionCmt<double> roleOldPos)
+        public void DeleteRoleFromGrid(int roleId, CPosition<double> roleOldPos)
         {
             var idx = GetGridPosFromMapPos(roleOldPos, out var _);
             _roleMap[idx].Remove(roleId);
@@ -147,7 +148,7 @@ namespace TServer.ECSSystem.AOI
         /// <param name="deep"></param>
         /// <param name="curPos"></param>
         /// <param name="gridIdxs"></param>
-        public void GetRolesFromSight(int deep, PositionCmt<int> curPos, out HashSet<int> gridIdxs, out HashSet<int> roleIds)
+        public void GetRolesFromSight(int deep, CPosition<int> curPos, out HashSet<int> gridIdxs, out HashSet<int> roleIds)
         {
             gridIdxs = new HashSet<int>();
             roleIds = new HashSet<int>();
@@ -168,6 +169,18 @@ namespace TServer.ECSSystem.AOI
                     }
                 }
             }
+        }
+
+        public void GetRolesFromSight(int deep, CPosition<double> curPos, out HashSet<int> gridIdxs, out HashSet<int> roleIds)
+        {
+            GetGridPosFromMapPos(curPos, out var gridPos);
+            GetRolesFromSight(deep, gridPos, out gridIdxs, out roleIds);
+        }
+
+        public void UpdateRolePosition(ERole role)
+        {
+            DeleteRoleFromGrid(role.Id, role.Position);
+            AddRoleToGrid(role.Id, role.Position);
         }
     }
 }

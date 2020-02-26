@@ -4,15 +4,31 @@ option csharp_namespace = "Common.Protobuf";
 // 约定协议上限为 10000 条
 // C2S协议号从 1 开始 S2C协议号为 10000 减去其对应的C2S协议号
 // 例: 1 是C2S登陆协议好 那么 9999 则为 S2C 登陆应答协议号
+
 enum S2C_PROTOCOL_TYPE {
   S2C_Begin = 0;
+  S2C_Test = 5000;
+
   S2C_Login = 9999;
   S2C_Register = 9998;
+  S2C_Move = 9997;
+
 }
+
 enum C2S_PROTOCOL_TYPE {
   C2S_Begin = 0;
+  C2S_Test = 4999;
+
   C2S_Login = 1;
   C2S_Register = 2;
+  C2S_Move = 3;
+
+}
+
+message C2STest {
+  C2S_PROTOCOL_TYPE type = 1;
+  float x = 2;
+  float y = 3;
 }
 
 // C2S
@@ -28,7 +44,18 @@ message C2SRegister {
   string password = 3;
 }
 
+message C2SMove {
+  C2S_PROTOCOL_TYPE type = 1;
+  double x = 2;
+  double y = 3;
+}
+
 // S2C
+message S2CTest {
+  S2C_PROTOCOL_TYPE type = 1;
+  repeated RoleInfo RoleList = 2;
+}
+
 message S2CLogin {
   S2C_PROTOCOL_TYPE type = 1;
   int32 res = 2;
@@ -37,4 +64,15 @@ message S2CLogin {
 message  S2CRegister {
   S2C_PROTOCOL_TYPE type = 1;
   string res = 2;
+}
+
+message S2CMove {
+    S2C_PROTOCOL_TYPE type = 1;
+    repeated RoleInfo RoleInfoList = 2;
+}
+
+message RoleInfo {
+  int32 id = 1;
+  double x = 2;
+  double y = 3;
 }

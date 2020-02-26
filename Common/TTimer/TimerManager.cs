@@ -142,7 +142,7 @@ namespace Common.TTimer
         /// 更新定时器
         /// 每帧更新一次
         /// </summary>
-        public void Update(int futureTick)
+        public void Update(long futureTick)
         {
             //if (CurrentTick == 0)
             //{
