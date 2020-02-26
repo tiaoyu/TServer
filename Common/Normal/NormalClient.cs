@@ -41,8 +41,10 @@ namespace Common.Normal
 
             ClientEventArgs = CreateNewSocketAsyncEventArgsFromPool();
             ClientEventArgs.AcceptSocket = e.ConnectSocket;
-            ((AsyncUserToken)ClientEventArgs.UserToken).Socket = e.ConnectSocket;
-            ((AsyncUserToken)ClientEventArgs.UserToken).Guid = Guid.NewGuid();
+            var token = ((AsyncUserToken)ClientEventArgs.UserToken);
+            token.Socket = e.ConnectSocket;
+            token.Guid = Guid.NewGuid();
+            token.SendSocket = CreateNewSocketAsyncEventArgsFromPool();
 
             StartReceive(ClientEventArgs);
         }

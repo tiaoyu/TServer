@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Sockets;
 using System.Text;
 
 namespace Common.Normal
@@ -32,6 +33,8 @@ namespace Common.Normal
 
         public System.Net.Sockets.Socket Socket { get; set; }
         public Guid Guid { get; set; }
+
+        public SocketAsyncEventArgs SendSocket { get; set; }
 
         public AsyncUserToken()
         {

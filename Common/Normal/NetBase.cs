@@ -65,10 +65,9 @@ namespace Common.Normal
                 //Pre-allocate a set of reusable SocketAsyncEventArgs
                 readWriteEventArg = new SocketAsyncEventArgs();
                 readWriteEventArg.Completed += new EventHandler<SocketAsyncEventArgs>(IO_Completed);
-                readWriteEventArg.UserToken = new AsyncUserToken();
-
                 // assign a byte buffer from the buffer pool to the SocketAsyncEventArg object
                 m_bufferManager.SetBuffer(readWriteEventArg);
+                readWriteEventArg.UserToken = new AsyncUserToken { OffsetInBufferPool = readWriteEventArg.Offset };
 
                 // add SocketAsyncEventArg to the pool
                 m_readWritePool.Push(readWriteEventArg);
@@ -116,11 +115,11 @@ namespace Common.Normal
             AsyncUserToken token = (AsyncUserToken)e.UserToken;
             if (token.Socket.Connected)
             {
-                var sendSocketArgs = CreateNewSocketAsyncEventArgsFromPool();
+                var sendSocketArgs = token.SendSocket;
                 sendSocketArgs.AcceptSocket = e.AcceptSocket;
 
                 sendSocketArgs.SetBuffer(buffer, 0, buffer.Length);
-                bool willRaiseEvent = token.Socket.SendAsync(sendSocketArgs);
+                bool willRaiseEvent = sendSocketArgs.AcceptSocket.SendAsync(sendSocketArgs);
                 if (!willRaiseEvent)
                 {
                     ProcessSend(sendSocketArgs);
@@ -140,7 +139,7 @@ namespace Common.Normal
                 // done echoing data back to the client
                 AsyncUserToken token = (AsyncUserToken)e.UserToken;
                 // read the next block of data send from the client
-                FreeSocketAsyncEventArgsToPool(e);
+                //FreeSocketAsyncEventArgsToPool(e);
             }
             else
             {
@@ -166,12 +165,12 @@ namespace Common.Normal
         {
             // check if the remote host closed the connection
             AsyncUserToken token = (AsyncUserToken)e.UserToken;
-            
+
             if (e.BytesTransferred <= 0)
             {
                 CloseSocket(e);
             }
-         
+
             if (e.SocketError == SocketError.Success)
             {
                 //increment the count of the total bytes receive by the server

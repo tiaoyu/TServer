@@ -80,11 +80,12 @@ namespace Common.Normal
 
             // Get the socket for the accepted client connection and put it into the 
             //ReadEventArg object user token
-            SocketAsyncEventArgs readEventArgs = m_readWritePool.Pop();
+            SocketAsyncEventArgs readEventArgs = CreateNewSocketAsyncEventArgsFromPool();
             readEventArgs.AcceptSocket = e.AcceptSocket;
-            var token = (AsyncUserToken)readEventArgs.UserToken;
+            var token = readEventArgs.UserToken as AsyncUserToken;
             token.Socket = e.AcceptSocket;
             token.OffsetInBufferPool = readEventArgs.Offset;
+            token.SendSocket = CreateNewSocketAsyncEventArgsFromPool();
 
             var guid = Guid.NewGuid();
             ((AsyncUserToken)readEventArgs.UserToken).Guid = guid;

@@ -110,56 +110,53 @@ namespace TServer
             Server.Start("127.0.0.1", 11000);
 
             // 主循环
-            Task.Run(() =>
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+            var t1 = stopwatch.ElapsedMilliseconds;
+            var t2 = stopwatch.ElapsedMilliseconds;
+            TimerManager.Init();
+            TimerManager.Insert(6000, 6000, int.MaxValue, null, (obj) =>
             {
-                var stopwatch = new Stopwatch();
-                stopwatch.Start();
-                var t1 = stopwatch.ElapsedMilliseconds;
-                var t2 = stopwatch.ElapsedMilliseconds;
-                TimerManager.Init();
-                TimerManager.Insert(6000, 6000, int.MaxValue, null, (obj) =>
+                foreach (var (_, role) in DicRole)
                 {
-                    foreach (var (_, role) in DicRole)
-                    {
-                        log.Info($"test role.");
-                    }
-                });
-
-                while (true)
-                {
-                    t1 = stopwatch.ElapsedMilliseconds;
-                    
-                    var count = Server.MessageHandler.MessageQueue.Count;
-                    while (count-- > 0)
-                    {
-                        if (Server.MessageHandler.MessageQueue.TryDequeue(out object msg))
-                        {
-                            log.Debug($"Get msg:{msg}");
-                            var ss = (msg as ExtSocket);
-                            ss.Protocol.OnProcess(ss.Guid);
-                        }
-                    }
-                    TimerManager.Update(stopwatch.ElapsedMilliseconds);
-
-                    SDungeon.Instance.Update();
-                    t2 = stopwatch.ElapsedMilliseconds;
-                    var t = (int)(t2 - t1);
-                    System.Threading.Thread.Sleep(t < 30 ? 30 - t : 1);
+                    log.Info($"role id:{role.Id}");
                 }
             });
 
             while (true)
             {
-                var str = Console.ReadLine();
-                var pack = new S2CLogin
+                t1 = stopwatch.ElapsedMilliseconds;
+
+                var count = Server.MessageHandler.MessageQueue.Count;
+                while (count-- > 0)
                 {
-                    Res = 1
-                };
-                foreach (var (_, v) in Server.dicEventArgs)
-                {
-                    Server.StartSend(v.SocketEventArgs, pack);
+                    if (Server.MessageHandler.MessageQueue.TryDequeue(out object msg))
+                    {
+                        log.Debug($"Get msg:{msg}");
+                        var ss = (msg as ExtSocket);
+                        ss.Protocol.OnProcess(ss.Guid);
+                    }
                 }
+                TimerManager.Update(stopwatch.ElapsedMilliseconds);
+
+                SDungeon.Instance.Update();
+                t2 = stopwatch.ElapsedMilliseconds;
+                var t = (int)(t2 - t1);
+                System.Threading.Thread.Sleep(t < 30 ? 30 - t : 1);
             }
+
+            //while (true)
+            //{
+            //    var str = Console.ReadLine();
+            //    var pack = new S2CLogin
+            //    {
+            //        Res = 1
+            //    };
+            //    foreach (var (_, v) in Server.dicEventArgs)
+            //    {
+            //        Server.StartSend(v.SocketEventArgs, pack);
+            //    }
+            //}
             #endregion Normal Socket
         }
     }
