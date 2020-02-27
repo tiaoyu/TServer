@@ -4,6 +4,7 @@ using System.Net.Sockets;
 
 namespace Common.Simple
 {
+    [Obsolete("Don't use Simple, use Normal instead", false)]
     public class SimpleSocket<T>
     {
         public bool IsRunning = true;

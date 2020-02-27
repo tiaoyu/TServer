@@ -9,6 +9,7 @@ namespace Common.Simple
     /// 每个Socket分配一段buffer 称为一个block 
     /// 每当有Socket收到数据时 都会写入对应的block中
     /// </summary>
+    [Obsolete("Don't use Simple, use Normal instead", false)]
     public class BufferMgr
     {
         private static BufferMgr _instance = new BufferMgr();

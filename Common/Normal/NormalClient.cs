@@ -92,7 +92,7 @@ namespace Common.Normal
             // throws if client process has already closed
             catch (Exception err)
             {
-                log.Info($"Exception:{err.Message}");
+                log.Error($"Exception:{err.Message}");
             }
             token.Socket?.Close();
 

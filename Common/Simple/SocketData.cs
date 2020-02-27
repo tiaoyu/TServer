@@ -3,6 +3,7 @@ using System.Net.Sockets;
 
 namespace Common.Simple
 {
+    [Obsolete("Don't use Simple, use Normal instead", false)]
     public class SocketData
     {
         public int MessageLength;

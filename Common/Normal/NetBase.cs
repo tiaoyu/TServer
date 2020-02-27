@@ -204,9 +204,15 @@ namespace Common.Normal
         }
 
         protected virtual void OnAccept(ExtSocket ss) { }
+
         protected virtual void OnConnect(ExtSocket ss) { }
-        protected virtual void OnClose(ExtSocket ss) { }
+
+        protected virtual void OnClose(ExtSocket ss)
+        {
+            log.Debug($"Close client.");
+        }
         protected virtual void OnDisconnect(ExtSocket ss) { }
+        
         protected virtual void OnReceive(ExtSocket ss)
         {
             log.Debug($"Get msg:{ss.Protocol}");

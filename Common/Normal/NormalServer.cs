@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading;
 
 namespace Common.Normal
@@ -11,7 +10,7 @@ namespace Common.Normal
     public class NormalServer : NetBase
     {
         private static readonly LogHelp log = LogHelp.GetLogger(typeof(NormalServer));
-        public Dictionary<Guid, ExtSocket> dicEventArgs = new Dictionary<Guid, ExtSocket>();
+        public Dictionary<Guid, ExtSocket> DicEventArgs = new Dictionary<Guid, ExtSocket>();
 
         Semaphore m_maxNumberAcceptedClients;
         Socket listenSocket;            // the socket used to listen for incoming connection requests
@@ -109,12 +108,7 @@ namespace Common.Normal
 
         protected override void OnAccept(ExtSocket ss)
         {
-            dicEventArgs.Add(ss.Guid, ss);
-        }
-        protected override void OnDisconnect(ExtSocket ss)
-        {
-            base.OnDisconnect(ss);
-            dicEventArgs.Remove(ss.Guid);
+            DicEventArgs.Add(ss.Guid, ss);
         }
 
         protected override void CloseSocket(SocketAsyncEventArgs e)
@@ -129,7 +123,7 @@ namespace Common.Normal
             // throws if client process has already closed
             catch (Exception err)
             {
-                log.Info($"Exception:{err.Message}");
+                log.Error($"Exception:{err.Message}");
             }
             token.Socket?.Close();
 

@@ -1,9 +1,11 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Net;
 using System.Net.Sockets;
 
 namespace Common.Simple
 {
+    [Obsolete("Don't use OldMethod, use NewMethod instead", true)]
     public class SimpleSocketServer<T> : SimpleSocket<T>
     {
         public int Port;

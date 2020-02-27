@@ -7,6 +7,7 @@ namespace Common.Simple
     /// <summary>
     /// 处理消息. 从Buffer池中拆分出完整消息包 塞入待处理的消息队列中 由上层进行处理
     /// </summary>
+    [Obsolete("Don't use Simple, use Normal instead", false)]
     public class MessageHandler<T>
     {
         /// <summary>

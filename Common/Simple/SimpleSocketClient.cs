@@ -31,7 +31,7 @@ namespace Common.Simple
             }
         }
     }
-
+    [Obsolete("Don't use OldMethod, use NewMethod instead", true)]
     /// <summary>
     /// 简单版客户端socket
     /// </summary>
