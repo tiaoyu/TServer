@@ -1,5 +1,20 @@
 # TServer
-a strong server
+a game server
+
+## To do list
+
+| index | task                       |
+| ----- | -------------------------- |
+| 1     | 增加角色进入副本、退出副本 |
+| 2     | 增加通知系统               |
+| 3     |                            |
+| 4     |                            |
+| 5     |                            |
+| 6     |                            |
+| 7     |                            |
+| 8     |                            |
+| 9     |                            |
+| 10    |                            |
 
 ## Server
 
@@ -8,11 +23,15 @@ a strong server
 3. Role manager
 
 
+
+
 ### System
 
 #### AOI
 
 #### Login
+
+### Protocol
 
 |              |      |
 | ------------ | ---- |
@@ -21,7 +40,8 @@ a strong server
 | C2S_Test     | 4999 |
 | C2S_Login    | 1    |
 | C2S_Register | 2    |
-| C2S_Move     | 3     |
+| C2S_Move     | 3    |
+|              |      |
 
 |              |      |
 | ------------ | ---- |
@@ -29,4 +49,4 @@ a strong server
 | S2C_Test     | 5000 |
 | S2C_Login    | 9999 |
 | S2C_Register | 9998 |
-| S2C_Move     | 9997     |
+| S2C_Move     | 9997 |
