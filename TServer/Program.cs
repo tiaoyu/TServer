@@ -15,14 +15,14 @@ using Common.TTimer;
 using Google.Protobuf;
 using TServer.ECSEntity;
 using TServer.ECSSystem.Dungeon;
+using TServer.Net;
 
 namespace TServer
 {
     internal class Program
     {
         private static LogHelp log;
-        public static NormalServer Server;
-        public static Dictionary<Guid, ERole> DicRole = new Dictionary<Guid, ERole>();
+        public static GameServer Server;
         public static TimerManager TimerManager = new TimerManager();
         private static void Main()
         {
@@ -95,7 +95,7 @@ namespace TServer
             #endregion Simple Socket
 
             #region Normal Socket
-            Server = new NormalServer(128, 8192);
+            Server = new GameServer(128, 8192);
             Server.Init();
             //server.MessageHandler.SetDeserializeFunc((bytes) => Encoding.UTF8.GetString(bytes));
             Server.MessageHandler.SetDeserializeFunc((bytes, guid) =>
@@ -117,7 +117,7 @@ namespace TServer
             TimerManager.Init();
             TimerManager.Insert(6000, 6000, int.MaxValue, null, (obj) =>
             {
-                foreach (var (_, role) in DicRole)
+                foreach (var (_, role) in GameServer.DicRole)
                 {
                     log.Info($"role id:{role.Id}");
                 }
@@ -134,6 +134,8 @@ namespace TServer
                 t2 = stopwatch.ElapsedMilliseconds;
                 var t = (int)(t2 - t1);
                 System.Threading.Thread.Sleep(t < 30 ? 30 - t : 1);
+                if (t > 200)
+                    log.Warn($"Performance warning! One tick cost {t} ms!");
             }
 
             //while (true)

@@ -6,13 +6,13 @@ using System.Collections.Generic;
 using System.Text;
 using TServer.ECSEntity;
 using TServer.ECSSystem.Dungeon;
+using TServer.Net;
 
 namespace TServer.ECSSystem
 {
     public class SLogin : Singleton<SLogin>
     {
         private static readonly LogHelp log = LogHelp.GetLogger(typeof(SLogin));
-        private int i = 0;
         public void Register(Guid guid, C2SRegister pack)
         {
             log.Debug($"Guid:{guid} --- {pack.Name} register, passwordis {pack.Password}.");
@@ -21,9 +21,10 @@ namespace TServer.ECSSystem
         public void LoginIn(Guid guid, C2SLogin pack)
         {
             var role = new ERole();
-            role.Id = ++i;
-            Program.Server.dicEventArgs.TryGetValue(guid, out role.exSocket);
-            Program.DicRole.Add(guid, role);
+            role.Id = Utilities.SUtilities.GetIndex();
+            Program.Server.DicEventArgs.TryGetValue(guid, out role.exSocket);
+
+            GameServer.DicRole.Add(guid, role);
 
             SDungeon.Instance.EnterDungeon(role);
 

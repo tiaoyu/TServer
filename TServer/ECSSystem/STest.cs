@@ -3,6 +3,7 @@ using Common.Protobuf;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using TServer.Net;
 
 namespace TServer.ECSSystem
 {
@@ -10,7 +11,7 @@ namespace TServer.ECSSystem
     {
         public void Test(Guid guid, C2STest pack)
         {
-            if (!TServer.Program.DicRole.TryGetValue(guid, out var role))
+            if (!GameServer.DicRole.TryGetValue(guid, out var role))
                 return;
             role.Position = new ECSComponent.CPosition<double> { x = pack.X, y = pack.Y };
         }

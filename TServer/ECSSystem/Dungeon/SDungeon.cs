@@ -10,6 +10,7 @@ namespace TServer.ECSSystem.Dungeon
     public class SDungeon : Singleton<SDungeon>
     {
         public Dictionary<int, EDungeon> DicDungeon = new Dictionary<int, EDungeon>();
+
         public void Update()
         {
             foreach (var (_, dungeon) in DicDungeon)

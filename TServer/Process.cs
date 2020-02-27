@@ -6,6 +6,7 @@ using TServer;
 using TServer.ECSEntity;
 using TServer.ECSSystem;
 using TServer.ECSSystem.Dungeon;
+using TServer.Net;
 
 namespace Common.Protobuf
 {
@@ -14,7 +15,7 @@ namespace Common.Protobuf
         private static readonly LogHelp log = LogHelp.GetLogger(typeof(C2STest));
         public override void OnProcess(Guid guid)
         {
-            if (!Program.DicRole.TryGetValue(guid, out var role))
+            if (!GameServer.DicRole.TryGetValue(guid, out var role))
                 return;
             role.Position = new TServer.ECSComponent.CPosition<double> { x = X, y = Y };
             var dungeon = new EDungeon { Tid = 1 };
@@ -45,7 +46,7 @@ namespace Common.Protobuf
     {
         public override void OnProcess(Guid guid)
         {
-            if (!Program.DicRole.TryGetValue(guid, out var role)) return;
+            if (!GameServer.DicRole.TryGetValue(guid, out var role)) return;
             SMove.Instance.RoleMove(role, this);
         }
     }
