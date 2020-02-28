@@ -8,7 +8,7 @@ namespace TServer.ECSEntity
         public int Id;
         public ExtSocket exSocket;
         public CPosition<double> Position;
-        public EDungeon Dungeon;
+        public CDungeon Dungeon;
         public ERole()
         {
             Position = new CPosition<double> { x = 0D, y = 0D };

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using TServer;
+using TServer.ECSComponent;
 using TServer.ECSEntity;
 using TServer.ECSSystem;
 using TServer.ECSSystem.Dungeon;
@@ -18,7 +19,7 @@ namespace Common.Protobuf
             if (!GameServer.DicRole.TryGetValue(guid, out var role))
                 return;
             role.Position = new TServer.ECSComponent.CPosition<double> { x = X, y = Y };
-            var dungeon = new EDungeon { Tid = 1 };
+            var dungeon = new CDungeon { Tid = 1 };
             dungeon.DicRole.Add(role.Id, role);
             SDungeon.Instance.DicDungeon.Add(1, dungeon);
 

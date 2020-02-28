@@ -3,13 +3,14 @@ using Common.Protobuf;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using TServer.ECSComponent;
 using TServer.ECSEntity;
 
 namespace TServer.ECSSystem.Dungeon
 {
     public class SDungeon : Singleton<SDungeon>
     {
-        public Dictionary<int, EDungeon> DicDungeon = new Dictionary<int, EDungeon>();
+        public Dictionary<int, CDungeon> DicDungeon = new Dictionary<int, CDungeon>();
 
         public void Update()
         {
@@ -36,7 +37,7 @@ namespace TServer.ECSSystem.Dungeon
         /// </summary>
         /// <param name="role"></param>
         /// <param name="dungeon"></param>
-        public void EnterDungeon(ERole role, EDungeon dungeon)
+        public void EnterDungeon(ERole role, CDungeon dungeon)
         {
             dungeon.DicRole.Add(role.Id, role);
             dungeon.GridSystem.AddRoleToGrid(role.Id, role.Position);
@@ -51,7 +52,7 @@ namespace TServer.ECSSystem.Dungeon
         {
             if (DicDungeon.Count <= 0)
             {
-                var dungeon = new EDungeon();
+                var dungeon = new CDungeon();
                 dungeon.Tid = 101;
                 DicDungeon.Add(dungeon.Tid, dungeon);
             }
@@ -63,6 +64,16 @@ namespace TServer.ECSSystem.Dungeon
                 role.Dungeon = dungeon;
                 return;
             }
+        }
+
+        /// <summary>
+        /// 角色离开副本
+        /// </summary>
+        /// <param name="role"></param>
+        public void LeaveDungeon(ERole role)
+        {
+            role.Dungeon?.DicRole.Remove(role.Id);
+            role.Dungeon?.GridSystem.DeleteRoleFromGrid(role.Id, role.Position);
         }
     }
 }

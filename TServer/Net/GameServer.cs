@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using TServer.ECSEntity;
+using TServer.ECSSystem.Dungeon;
 
 namespace TServer.Net
 {
@@ -18,14 +19,22 @@ namespace TServer.Net
         {
             base.OnDisconnect(ss);
             DicEventArgs.Remove(ss.Guid);
-            DicRole.Remove(ss.Guid);
+            if (DicRole.TryGetValue(ss.Guid, out var role))
+            {
+                DicRole.Remove(ss.Guid);
+                SDungeon.Instance.LeaveDungeon(role);
+            }
         }
 
         protected override void OnClose(ExtSocket ss)
         {
             base.OnClose(ss);
             DicEventArgs.Remove(ss.Guid);
-            DicRole.Remove(ss.Guid);
+            if (DicRole.TryGetValue(ss.Guid, out var role))
+            {
+                DicRole.Remove(ss.Guid);
+                SDungeon.Instance.LeaveDungeon(role);
+            }
         }
     }
 }

@@ -44,9 +44,11 @@ namespace TServer.ECSSystem.AOI
     {
         private Grid _grid;
         private Map _map;
+        private int CurrentRoleCount;
 
         // 每个格子中的角色列表 <格子index-角色ID集合>
         private Dictionary<int, HashSet<int>> _roleMap;
+
         public Dictionary<int, HashSet<int>> RoleMap => _roleMap;
 
         /// <summary>
