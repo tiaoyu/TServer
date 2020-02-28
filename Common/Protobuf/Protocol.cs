@@ -32,17 +32,22 @@ namespace Common.Protobuf {
             "EAoIcGFzc3dvcmQYAyABKAkiQQoHQzJTTW92ZRIgCgR0eXBlGAEgASgOMhIu",
             "QzJTX1BST1RPQ09MX1RZUEUSCQoBeBgCIAEoARIJCgF5GAMgASgBIkgKB1My",
             "Q1Rlc3QSIAoEdHlwZRgBIAEoDjISLlMyQ19QUk9UT0NPTF9UWVBFEhsKCFJv",
-            "bGVMaXN0GAIgAygLMgkuUm9sZUluZm8iOQoIUzJDTG9naW4SIAoEdHlwZRgB",
-            "IAEoDjISLlMyQ19QUk9UT0NPTF9UWVBFEgsKA3JlcxgCIAEoBSI8CgtTMkNS",
-            "ZWdpc3RlchIgCgR0eXBlGAEgASgOMhIuUzJDX1BST1RPQ09MX1RZUEUSCwoD",
-            "cmVzGAIgASgJIkwKB1MyQ01vdmUSIAoEdHlwZRgBIAEoDjISLlMyQ19QUk9U",
-            "T0NPTF9UWVBFEh8KDFJvbGVJbmZvTGlzdBgCIAMoCzIJLlJvbGVJbmZvIiwK",
-            "CFJvbGVJbmZvEgoKAmlkGAEgASgFEgkKAXgYAiABKAESCQoBeRgDIAEoASpj",
-            "ChFTMkNfUFJPVE9DT0xfVFlQRRINCglTMkNfQmVnaW4QABINCghTMkNfVGVz",
-            "dBCIJxIOCglTMkNfTG9naW4Qj04SEQoMUzJDX1JlZ2lzdGVyEI5OEg0KCFMy",
-            "Q19Nb3ZlEI1OKmAKEUMyU19QUk9UT0NPTF9UWVBFEg0KCUMyU19CZWdpbhAA",
-            "Eg0KCEMyU19UZXN0EIcnEg0KCUMyU19Mb2dpbhABEhAKDEMyU19SZWdpc3Rl",
-            "chACEgwKCEMyU19Nb3ZlEANCEqoCD0NvbW1vbi5Qcm90b2J1ZmIGcHJvdG8z"));
+            "bGVMaXN0GAIgAygLMgkuUm9sZUluZm8iVgoIUzJDTG9naW4SIAoEdHlwZRgB",
+            "IAEoDjISLlMyQ19QUk9UT0NPTF9UWVBFEgsKA3JlcxgCIAEoBRIbCghyb2xl",
+            "SW5mbxgDIAEoCzIJLlJvbGVJbmZvIjwKC1MyQ1JlZ2lzdGVyEiAKBHR5cGUY",
+            "ASABKA4yEi5TMkNfUFJPVE9DT0xfVFlQRRILCgNyZXMYAiABKAkiTAoHUzJD",
+            "TW92ZRIgCgR0eXBlGAEgASgOMhIuUzJDX1BST1RPQ09MX1RZUEUSHwoMUm9s",
+            "ZUluZm9MaXN0GAIgAygLMgkuUm9sZUluZm8inQEKCFMyQ1NpZ2h0EiAKBHR5",
+            "cGUYASABKA4yEi5TMkNfUFJPVE9DT0xfVFlQRRIlCghTaWdodE9wdBgCIAEo",
+            "DjITLlMyQ1NpZ2h0LkVTaWdodE9wdBIbCghSb2xlSW5mbxgDIAEoCzIJLlJv",
+            "bGVJbmZvIisKCUVTaWdodE9wdBIOCgpFbnRlclNpZ2h0EAASDgoKTGVhdmVT",
+            "aWdodBABIiwKCFJvbGVJbmZvEgoKAmlkGAEgASgFEgkKAXgYAiABKAESCQoB",
+            "eRgDIAEoASpzChFTMkNfUFJPVE9DT0xfVFlQRRINCglTMkNfQmVnaW4QABIN",
+            "CghTMkNfVGVzdBCIJxIOCglTMkNfTG9naW4Qj04SEQoMUzJDX1JlZ2lzdGVy",
+            "EI5OEg0KCFMyQ19Nb3ZlEI1OEg4KCVMyQ19TaWdodBCMTipgChFDMlNfUFJP",
+            "VE9DT0xfVFlQRRINCglDMlNfQmVnaW4QABINCghDMlNfVGVzdBCHJxINCglD",
+            "MlNfTG9naW4QARIQCgxDMlNfUmVnaXN0ZXIQAhIMCghDMlNfTW92ZRADQhKq",
+            "Ag9Db21tb24uUHJvdG9idWZiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Common.Protobuf.S2C_PROTOCOL_TYPE), typeof(global::Common.Protobuf.C2S_PROTOCOL_TYPE), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -51,9 +56,10 @@ namespace Common.Protobuf {
             new pbr::GeneratedClrTypeInfo(typeof(global::Common.Protobuf.C2SRegister), global::Common.Protobuf.C2SRegister.Parser, new[]{ "Type", "Name", "Password" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Common.Protobuf.C2SMove), global::Common.Protobuf.C2SMove.Parser, new[]{ "Type", "X", "Y" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Common.Protobuf.S2CTest), global::Common.Protobuf.S2CTest.Parser, new[]{ "Type", "RoleList" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Common.Protobuf.S2CLogin), global::Common.Protobuf.S2CLogin.Parser, new[]{ "Type", "Res" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Common.Protobuf.S2CLogin), global::Common.Protobuf.S2CLogin.Parser, new[]{ "Type", "Res", "RoleInfo" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Common.Protobuf.S2CRegister), global::Common.Protobuf.S2CRegister.Parser, new[]{ "Type", "Res" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Common.Protobuf.S2CMove), global::Common.Protobuf.S2CMove.Parser, new[]{ "Type", "RoleInfoList" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Common.Protobuf.S2CSight), global::Common.Protobuf.S2CSight.Parser, new[]{ "Type", "SightOpt", "RoleInfo" }, null, new[]{ typeof(global::Common.Protobuf.S2CSight.Types.ESightOpt) }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Common.Protobuf.RoleInfo), global::Common.Protobuf.RoleInfo.Parser, new[]{ "Id", "X", "Y" }, null, null, null, null)
           }));
     }
@@ -67,6 +73,7 @@ namespace Common.Protobuf {
     [pbr::OriginalName("S2C_Login")] S2CLogin = 9999,
     [pbr::OriginalName("S2C_Register")] S2CRegister = 9998,
     [pbr::OriginalName("S2C_Move")] S2CMove = 9997,
+    [pbr::OriginalName("S2C_Sight")] S2CSight = 9996,
   }
 
   public enum C2S_PROTOCOL_TYPE {
@@ -1002,6 +1009,7 @@ namespace Common.Protobuf {
     public S2CLogin(S2CLogin other) : this() {
       type_ = other.type_;
       res_ = other.res_;
+      roleInfo_ = other.roleInfo_ != null ? other.roleInfo_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -1032,6 +1040,17 @@ namespace Common.Protobuf {
       }
     }
 
+    /// <summary>Field number for the "roleInfo" field.</summary>
+    public const int RoleInfoFieldNumber = 3;
+    private global::Common.Protobuf.RoleInfo roleInfo_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Common.Protobuf.RoleInfo RoleInfo {
+      get { return roleInfo_; }
+      set {
+        roleInfo_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as S2CLogin);
@@ -1047,6 +1066,7 @@ namespace Common.Protobuf {
       }
       if (Type != other.Type) return false;
       if (Res != other.Res) return false;
+      if (!object.Equals(RoleInfo, other.RoleInfo)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -1055,6 +1075,7 @@ namespace Common.Protobuf {
       int hash = 1;
       if (Type != global::Common.Protobuf.S2C_PROTOCOL_TYPE.S2CBegin) hash ^= Type.GetHashCode();
       if (Res != 0) hash ^= Res.GetHashCode();
+      if (roleInfo_ != null) hash ^= RoleInfo.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1076,6 +1097,10 @@ namespace Common.Protobuf {
         output.WriteRawTag(16);
         output.WriteInt32(Res);
       }
+      if (roleInfo_ != null) {
+        output.WriteRawTag(26);
+        output.WriteMessage(RoleInfo);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -1089,6 +1114,9 @@ namespace Common.Protobuf {
       }
       if (Res != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(Res);
+      }
+      if (roleInfo_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(RoleInfo);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -1107,6 +1135,12 @@ namespace Common.Protobuf {
       if (other.Res != 0) {
         Res = other.Res;
       }
+      if (other.roleInfo_ != null) {
+        if (roleInfo_ == null) {
+          RoleInfo = new global::Common.Protobuf.RoleInfo();
+        }
+        RoleInfo.MergeFrom(other.RoleInfo);
+      }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -1124,6 +1158,13 @@ namespace Common.Protobuf {
           }
           case 16: {
             Res = input.ReadInt32();
+            break;
+          }
+          case 26: {
+            if (roleInfo_ == null) {
+              RoleInfo = new global::Common.Protobuf.RoleInfo();
+            }
+            input.ReadMessage(RoleInfo);
             break;
           }
         }
@@ -1438,6 +1479,209 @@ namespace Common.Protobuf {
 
   }
 
+  public sealed partial class S2CSight : ProtobufBase<S2CSight>,pb::IMessage<S2CSight> {
+    private static readonly pb::MessageParser<S2CSight> _parser = new pb::MessageParser<S2CSight>(() => new S2CSight());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<S2CSight> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Common.Protobuf.ProtocolReflection.Descriptor.MessageTypes[8]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public S2CSight() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public S2CSight(S2CSight other) : this() {
+      type_ = other.type_;
+      sightOpt_ = other.sightOpt_;
+      roleInfo_ = other.roleInfo_ != null ? other.roleInfo_.Clone() : null;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public S2CSight Clone() {
+      return new S2CSight(this);
+    }
+
+    /// <summary>Field number for the "type" field.</summary>
+    public const int TypeFieldNumber = 1;
+    private global::Common.Protobuf.S2C_PROTOCOL_TYPE type_ = global::Common.Protobuf.S2C_PROTOCOL_TYPE.S2CBegin;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Common.Protobuf.S2C_PROTOCOL_TYPE Type {
+      get { return type_; }
+      set {
+        type_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "SightOpt" field.</summary>
+    public const int SightOptFieldNumber = 2;
+    private global::Common.Protobuf.S2CSight.Types.ESightOpt sightOpt_ = global::Common.Protobuf.S2CSight.Types.ESightOpt.EnterSight;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Common.Protobuf.S2CSight.Types.ESightOpt SightOpt {
+      get { return sightOpt_; }
+      set {
+        sightOpt_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "RoleInfo" field.</summary>
+    public const int RoleInfoFieldNumber = 3;
+    private global::Common.Protobuf.RoleInfo roleInfo_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Common.Protobuf.RoleInfo RoleInfo {
+      get { return roleInfo_; }
+      set {
+        roleInfo_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as S2CSight);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(S2CSight other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Type != other.Type) return false;
+      if (SightOpt != other.SightOpt) return false;
+      if (!object.Equals(RoleInfo, other.RoleInfo)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Type != global::Common.Protobuf.S2C_PROTOCOL_TYPE.S2CBegin) hash ^= Type.GetHashCode();
+      if (SightOpt != global::Common.Protobuf.S2CSight.Types.ESightOpt.EnterSight) hash ^= SightOpt.GetHashCode();
+      if (roleInfo_ != null) hash ^= RoleInfo.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (Type != global::Common.Protobuf.S2C_PROTOCOL_TYPE.S2CBegin) {
+        output.WriteRawTag(8);
+        output.WriteEnum((int) Type);
+      }
+      if (SightOpt != global::Common.Protobuf.S2CSight.Types.ESightOpt.EnterSight) {
+        output.WriteRawTag(16);
+        output.WriteEnum((int) SightOpt);
+      }
+      if (roleInfo_ != null) {
+        output.WriteRawTag(26);
+        output.WriteMessage(RoleInfo);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (Type != global::Common.Protobuf.S2C_PROTOCOL_TYPE.S2CBegin) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Type);
+      }
+      if (SightOpt != global::Common.Protobuf.S2CSight.Types.ESightOpt.EnterSight) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) SightOpt);
+      }
+      if (roleInfo_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(RoleInfo);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(S2CSight other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Type != global::Common.Protobuf.S2C_PROTOCOL_TYPE.S2CBegin) {
+        Type = other.Type;
+      }
+      if (other.SightOpt != global::Common.Protobuf.S2CSight.Types.ESightOpt.EnterSight) {
+        SightOpt = other.SightOpt;
+      }
+      if (other.roleInfo_ != null) {
+        if (roleInfo_ == null) {
+          RoleInfo = new global::Common.Protobuf.RoleInfo();
+        }
+        RoleInfo.MergeFrom(other.RoleInfo);
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            Type = (global::Common.Protobuf.S2C_PROTOCOL_TYPE) input.ReadEnum();
+            break;
+          }
+          case 16: {
+            SightOpt = (global::Common.Protobuf.S2CSight.Types.ESightOpt) input.ReadEnum();
+            break;
+          }
+          case 26: {
+            if (roleInfo_ == null) {
+              RoleInfo = new global::Common.Protobuf.RoleInfo();
+            }
+            input.ReadMessage(RoleInfo);
+            break;
+          }
+        }
+      }
+    }
+
+    #region Nested types
+    /// <summary>Container for nested types declared in the S2CSight message type.</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static partial class Types {
+      public enum ESightOpt {
+        [pbr::OriginalName("EnterSight")] EnterSight = 0,
+        [pbr::OriginalName("LeaveSight")] LeaveSight = 1,
+      }
+
+    }
+    #endregion
+
+  }
+
   public sealed partial class RoleInfo : ProtobufBase<RoleInfo>,pb::IMessage<RoleInfo> {
     private static readonly pb::MessageParser<RoleInfo> _parser = new pb::MessageParser<RoleInfo>(() => new RoleInfo());
     private pb::UnknownFieldSet _unknownFields;
@@ -1446,7 +1690,7 @@ namespace Common.Protobuf {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Common.Protobuf.ProtocolReflection.Descriptor.MessageTypes[8]; }
+      get { return global::Common.Protobuf.ProtocolReflection.Descriptor.MessageTypes[9]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]

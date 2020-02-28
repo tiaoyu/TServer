@@ -24,27 +24,32 @@ namespace TServer.ECSSystem.AOI.Tests
         [Fact()]
         public void GetRolesFromSightTest()
         {
-            var manager = new GridSystem(5, 99.0D, 99.0D);
+            var manager = new GridSystem(5, 499.0D, 499.0D);
             manager.Init();
 
-            int[] map = new int[400];
+            int[] map = new int[250000];
             // 添加角色
-            for (var i = 0; i < 1000; ++i)
+            for (var i = 0; i < 250000; ++i)
             {
-                var x = GetRandomNum(0, 100);
-                var y = GetRandomNum(0, 100);
+                var x = GetRandomNum(0, 499);
+                var y = GetRandomNum(0, 499);
                 map[manager.AddRoleToGrid(i, new CPosition<double> { x = x, y = y })]++;
             }
 
             // 获取视野内角色
             manager.GetRolesFromSight(1, new CPosition<int> { x = 0, y = 0 }, out var set1, out var role1);
             manager.GetRolesFromSight(1, new CPosition<int> { x = 10, y = 10 }, out var set2, out var role2);
-            manager.GetRolesFromSight(1, new CPosition<int> { x = 19, y = 19 }, out var set3, out var role3);
-            manager.GetRolesFromSight(1, new CPosition<int> { x = 0, y = 19 }, out var set4, out var role4);
-            manager.GetRolesFromSight(1, new CPosition<int> { x = 19, y = 0 }, out var set5, out var role5);
+            manager.GetRolesFromSight(1, new CPosition<int> { x = 99, y = 99 }, out var set3, out var role3);
+            manager.GetRolesFromSight(1, new CPosition<int> { x = 0, y = 99 }, out var set4, out var role4);
+            manager.GetRolesFromSight(1, new CPosition<int> { x = 99, y = 0 }, out var set5, out var role5);
             manager.GetRolesFromSight(2, new CPosition<int> { x = 10, y = 10 }, out var set6, out var role6);
 
-
+            output.WriteLine($"{set1.Count}");
+            output.WriteLine($"{set2.Count}");
+            output.WriteLine($"{set3.Count}");
+            output.WriteLine($"{set4.Count}");
+            output.WriteLine($"{set5.Count}");
+            output.WriteLine($"{set6.Count}");
             Assert.True(set1.Count == 4);
             Assert.True(set2.Count == 9);
             Assert.True(set3.Count == 4);
@@ -58,9 +63,9 @@ namespace TServer.ECSSystem.AOI.Tests
             //Assert.True(role5.Count == 0);
 
             var strings = new StringBuilder();
-            for (var i = 0; i <= 19; ++i)
+            for (var i = 0; i <= 99; ++i)
             {
-                for (var j = 0; j <= 19; ++j)
+                for (var j = 0; j <= 99; ++j)
                 {
                     strings.Append($"{manager.RoleMap[manager.GetGridIdxFromGridPos(i, j)].Count} ");
                 }

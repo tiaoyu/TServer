@@ -12,7 +12,7 @@ enum S2C_PROTOCOL_TYPE {
   S2C_Login = 9999;
   S2C_Register = 9998;
   S2C_Move = 9997;
-
+  S2C_Sight = 9996;
 }
 
 enum C2S_PROTOCOL_TYPE {
@@ -59,6 +59,7 @@ message S2CTest {
 message S2CLogin {
   S2C_PROTOCOL_TYPE type = 1;
   int32 res = 2;
+  RoleInfo roleInfo = 3;
 }
 
 message  S2CRegister {
@@ -69,6 +70,16 @@ message  S2CRegister {
 message S2CMove {
     S2C_PROTOCOL_TYPE type = 1;
     repeated RoleInfo RoleInfoList = 2;
+}
+
+message S2CSight {
+    enum ESightOpt {
+        EnterSight = 0;
+        LeaveSight = 1;
+    }
+    S2C_PROTOCOL_TYPE type = 1;
+    ESightOpt SightOpt = 2;
+    RoleInfo RoleInfo = 3;
 }
 
 message RoleInfo {

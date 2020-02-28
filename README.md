@@ -1,29 +1,28 @@
-# TServer
+TServer
+=========
 a game server
 
-## To do list
+### 0 To do list
 
-| index | task                   |
-| ----- | ---------------------- |
-| 1     | 角色进入副本、退出副本 |
-| 2     | 通知系统               |
-| 3     |                        |
-| 4     |                        |
-| 5     |                        |
-| 6     |                        |
-| 7     |                        |
-| 8     |                        |
-| 9     |                        |
-| 10    |                        |
+| index | task                   |          |
+| ----- | ---------------------- | -------- |
+| 1     | 角色进入副本、退出副本 | FINISHED |
+| 2     | 通知系统               |          |
+| 3     | 匹配功能               |          |
+| 4     |                        |          |
+| 5     |                        |          |
+| 6     |                        |          |
+| 7     |                        |          |
+| 8     |                        |          |
+| 9     |                        |          |
+| 10    |                        |          |
 
-## Server
+### 1 Function List
 
 1. Socket list
 2. Buffer manager
 3. Role manager
-
-
-
+4. Dungeon manager
 
 ### System
 

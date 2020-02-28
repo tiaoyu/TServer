@@ -14,6 +14,8 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Common", "Common\Common.shp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TServerTests", "TServerTests\TServerTests.csproj", "{334C821C-1D68-4975-A037-E19363E5703E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TClientUI", "TClientUI\TClientUI.csproj", "{C6A56775-0A82-4149-86FC-1A6965A31DB0}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Common\Common.projitems*{d03a4c41-977e-4e07-ba78-533655305a10}*SharedItemsImports = 13
@@ -63,6 +65,18 @@ Global
 		{334C821C-1D68-4975-A037-E19363E5703E}.Release|x64.Build.0 = Release|Any CPU
 		{334C821C-1D68-4975-A037-E19363E5703E}.Release|x86.ActiveCfg = Release|Any CPU
 		{334C821C-1D68-4975-A037-E19363E5703E}.Release|x86.Build.0 = Release|Any CPU
+		{C6A56775-0A82-4149-86FC-1A6965A31DB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6A56775-0A82-4149-86FC-1A6965A31DB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6A56775-0A82-4149-86FC-1A6965A31DB0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C6A56775-0A82-4149-86FC-1A6965A31DB0}.Debug|x64.Build.0 = Debug|Any CPU
+		{C6A56775-0A82-4149-86FC-1A6965A31DB0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C6A56775-0A82-4149-86FC-1A6965A31DB0}.Debug|x86.Build.0 = Debug|Any CPU
+		{C6A56775-0A82-4149-86FC-1A6965A31DB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6A56775-0A82-4149-86FC-1A6965A31DB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6A56775-0A82-4149-86FC-1A6965A31DB0}.Release|x64.ActiveCfg = Release|Any CPU
+		{C6A56775-0A82-4149-86FC-1A6965A31DB0}.Release|x64.Build.0 = Release|Any CPU
+		{C6A56775-0A82-4149-86FC-1A6965A31DB0}.Release|x86.ActiveCfg = Release|Any CPU
+		{C6A56775-0A82-4149-86FC-1A6965A31DB0}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

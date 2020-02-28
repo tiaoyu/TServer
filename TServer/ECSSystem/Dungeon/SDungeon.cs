@@ -11,16 +11,17 @@ namespace TServer.ECSSystem.Dungeon
     public class SDungeon : Singleton<SDungeon>
     {
         public Dictionary<int, CDungeon> DicDungeon = new Dictionary<int, CDungeon>();
-
+        
         public void Update()
         {
+            // 同步视野内角色数据由: 角色移动、角色进入、角色退出来触发
             foreach (var (_, dungeon) in DicDungeon)
             {
                 var pack = new S2CMove();
 
                 foreach (var (_, role) in dungeon.DicRole)
                 {
-                    dungeon.GridSystem.GetRolesFromSight(1, role.Position, out var girdIdxs, out var roleIds);
+                    dungeon.GridSystem.GetRolesFromSight(4, role.Position, out var girdIdxs, out var roleIds);
                     foreach (var id in roleIds)
                     {
                         pack.RoleInfoList.Add(new RoleInfo { Id = id, X = dungeon.DicRole[id].Position.x, Y = dungeon.DicRole[id].Position.y });
@@ -62,8 +63,11 @@ namespace TServer.ECSSystem.Dungeon
                 dungeon.DicRole.Add(role.Id, role);
                 dungeon.GridSystem.AddRoleToGrid(role.Id, role.Position);
                 role.Dungeon = dungeon;
-                return;
+                break;
             }
+
+            role.Dungeon.GridSystem.UpdateRolePosition(role, role.Position.x, role.Position.y);
+
         }
 
         /// <summary>
@@ -72,8 +76,13 @@ namespace TServer.ECSSystem.Dungeon
         /// <param name="role"></param>
         public void LeaveDungeon(ERole role)
         {
+            var roleIds = new HashSet<int>();
+            role.Dungeon?.GridSystem.GetRolesFromSight(1, role.Position, out _, out roleIds);
+
             role.Dungeon?.DicRole.Remove(role.Id);
             role.Dungeon?.GridSystem.DeleteRoleFromGrid(role.Id, role.Position);
+            
+            SSight.Instance.LeaveSight(role, roleIds);
         }
     }
 }

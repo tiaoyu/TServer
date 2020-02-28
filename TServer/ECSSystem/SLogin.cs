@@ -28,6 +28,7 @@ namespace TServer.ECSSystem
 
             SDungeon.Instance.EnterDungeon(role);
 
+            TServer.Program.Server.StartSend(role.exSocket.SocketEventArgs, new S2CLogin { Res = 1, RoleInfo = new RoleInfo { Id = role.Id, X = role.Position.x, Y = role.Position.y } });
             log.Debug($"Guid:{guid} --- {pack.Name} login in, password is {pack.Password}.");
         }
     }

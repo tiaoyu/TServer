@@ -11,10 +11,8 @@ namespace TServer.ECSSystem
     {
         public void RoleMove(ERole role, C2SMove pack)
         {
-            role.Position.x = pack.X;
-            role.Position.y = pack.Y;
-
-            role.Dungeon.GridSystem.UpdateRolePosition(role);
+            role.Dungeon.GridSystem.UpdateRolePosition(role, pack.X, pack.Y);
+            SSight.Instance.RoleMove(role);
         }
     }
 }

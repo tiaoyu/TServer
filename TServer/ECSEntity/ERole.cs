@@ -7,11 +7,15 @@ namespace TServer.ECSEntity
     {
         public int Id;
         public ExtSocket exSocket;
-        public CPosition<double> Position;
-        public CDungeon Dungeon;
+
+        public CPosition<double> Position { get; set; }
+        public CDungeon Dungeon { get; set; }
+        public CSight Sight { get; set; }
+
         public ERole()
         {
             Position = new CPosition<double> { x = 0D, y = 0D };
+            Sight = new CSight();
         }
     }
 }

@@ -198,7 +198,7 @@ namespace Common.Normal
 
         protected void FreeSocketAsyncEventArgsToPool(SocketAsyncEventArgs e)
         {
-            e.UserToken = null;
+            //e.UserToken = null;
             m_bufferManager.FreeBuffer(e);
             m_readWritePool.Push(e);
         }

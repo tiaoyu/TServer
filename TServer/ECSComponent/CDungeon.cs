@@ -22,7 +22,7 @@ namespace TServer.ECSComponent
         public CDungeon()
         {
             DicRole = new Dictionary<int, ERole>();
-            GridSystem = new GridSystem(5, 99.0D, 99.0D);
+            GridSystem = new GridSystem(5, 500.0D, 500.0D);
             GridSystem.Init();
         }
     }

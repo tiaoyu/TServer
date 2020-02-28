@@ -113,6 +113,8 @@ namespace Common.Protobuf
             push((int)S2C_PROTOCOL_TYPE.S2CMove, CreateParse<S2CMove>());
             push((int)C2S_PROTOCOL_TYPE.C2SMove, CreateParse<C2SMove>());
 
+            push((int)S2C_PROTOCOL_TYPE.S2CSight, CreateParse<S2CSight>());
+
             foreach (var (protoId, parser) in _dicParser)
             {
                 parser.SetProtoId(protoId);
