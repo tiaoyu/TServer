@@ -96,7 +96,7 @@ namespace TServer.ECSSystem
                 if (!role.Dungeon.DicRole.TryGetValue(id, out var r)) continue;
                 Program.Server.StartSend(r.exSocket.SocketEventArgs, pack);
             }
-            Program.Server.StartSend(role.exSocket.SocketEventArgs, pack);
+            //Program.Server.StartSend(role.exSocket.SocketEventArgs, pack);
         }
     }
 }

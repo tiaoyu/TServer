@@ -58,9 +58,14 @@ namespace TClientUI
                 for (var i = 0; i < count; ++i)
                 {
                     if (!EllipseList.TryDequeue(out var e)) continue;
+                    if (!RoleMap.Children.Contains(e.ellipse))
+                    {
+                        RoleMap.Children.Add(e.ellipse);
+                    }
                     Canvas.SetLeft(e.ellipse, e.x);
                     Canvas.SetTop(e.ellipse, e.y);
                 }
+
                 count = WillBeRemoveEllipseList.Count;
                 for (var i = 0; i < count; ++i)
                 {
@@ -103,6 +108,7 @@ namespace TClientUI
                 RoleMap.Children.Add(ellipse);
             });
         }
+
         public void UpdateCanvas(Ellipse e, double x, double y)
         {
             this.Dispatcher?.Invoke(() =>
@@ -117,20 +123,32 @@ namespace TClientUI
             {
                 if (!DicRole.TryGetValue(role.Id, out var ellipse))
                 {
-                    AddToCanvas(role.Id, role.X, role.Y);
+                    if (ellipse == null)
+                    {
+                        AddToCanvas(role.Id, role.X, role.Y);
+                    }
+                    else
+                    {
+                        AddToCanvas(ellipse);
+                    }
                     continue;
                 }
                 EllipseList.Enqueue(new MoveStruct { ellipse = ellipse, x = role.X, y = role.Y });
+                this.Dispatcher?.Invoke(() =>
+                {
+                    DebugLog.Text = $"cur position ({role.X},{role.Y})";
+                });
             }
         }
 
         public void UpdateRoleSight(RoleInfo roleInfo, S2CSight.Types.ESightOpt opt)
         {
             DicRole.TryGetValue(roleInfo.Id, out var ellipse);
+
             switch (opt)
             {
                 case S2CSight.Types.ESightOpt.EnterSight:
-                    AddToCanvas(ellipse);
+                    if (ellipse == null) { AddToCanvas(roleInfo.Id, roleInfo.X, roleInfo.Y); break; }
                     EllipseList.Enqueue(new MoveStruct { ellipse = ellipse, x = roleInfo.X, y = roleInfo.Y });
                     break;
                 case S2CSight.Types.ESightOpt.LeaveSight:

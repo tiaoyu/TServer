@@ -11,11 +11,16 @@ namespace TServer.ECSEntity
         public CPosition<double> Position { get; set; }
         public CDungeon Dungeon { get; set; }
         public CSight Sight { get; set; }
+        /// <summary>
+        /// 视野半径
+        /// </summary>
+        public int SightDistance { get; set; }
 
         public ERole()
         {
             Position = new CPosition<double> { x = 0D, y = 0D };
             Sight = new CSight();
+            SightDistance = 4;
         }
     }
 }

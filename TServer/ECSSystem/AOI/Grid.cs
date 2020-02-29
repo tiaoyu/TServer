@@ -179,21 +179,28 @@ namespace TServer.ECSSystem.AOI
             GetRolesFromSight(deep, gridPos, out gridIdxs, out roleIds);
         }
 
+        /// <summary>
+        /// 更新角色位置
+        /// </summary>
+        /// <param name="role"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
         public void UpdateRolePosition(ERole role, double x, double y)
         {
             if (!IsValidPos(x, y)) return;
-            GetRolesFromSight(1, role.Position, out _, out var roleIdsOld);
+            GetRolesFromSight(role.SightDistance, role.Position, out _, out var roleIdsOld);
             DeleteRoleFromGrid(role.Id, role.Position);
             role.Position.x = x;
             role.Position.y = y;
             AddRoleToGrid(role.Id, role.Position);
-            GetRolesFromSight(1, role.Position, out _, out var roleIdsNew);
+            GetRolesFromSight(role.SightDistance, role.Position, out _, out var roleIdsNew);
 
             var bothTmp = new HashSet<int>(roleIdsOld);
             bothTmp.IntersectWith(roleIdsNew);
             roleIdsOld.ExceptWith(bothTmp);
             roleIdsNew.ExceptWith(bothTmp);
 
+            roleIdsOld.Remove(role.Id);
             SSight.Instance.LeaveSight(role, roleIdsOld);
             SSight.Instance.EnterSight(role, roleIdsNew);
         }
