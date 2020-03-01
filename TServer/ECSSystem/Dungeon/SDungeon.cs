@@ -17,19 +17,6 @@ namespace TServer.ECSSystem.Dungeon
             // 同步视野内角色数据由: 角色移动、角色进入、角色退出来触发
             foreach (var (_, dungeon) in DicDungeon)
             {
-                //var pack = new S2CMove();
-
-                //foreach (var (_, role) in dungeon.DicRole)
-                //{
-                //    dungeon.GridSystem.GetRolesFromSight(role.SightDistance, role.Position, out var girdIdxs, out var roleIds);
-                //    foreach (var id in roleIds)
-                //    {
-                //        pack.RoleInfoList.Add(new RoleInfo { Id = id, X = dungeon.DicRole[id].Position.x, Y = dungeon.DicRole[id].Position.y });
-                //    }
-
-                //    TServer.Program.Server.StartSend(role.exSocket.SocketEventArgs, pack);
-                //    pack.RoleInfoList.Clear();
-                //}
             }
         }
 

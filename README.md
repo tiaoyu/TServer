@@ -49,3 +49,4 @@ a game server
 | S2C_Login    | 9999 |
 | S2C_Register | 9998 |
 | S2C_Move     | 9997 |
+| S2C_Sight    | 9996 |
