@@ -2,39 +2,52 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using TServer.ECSEntity;
 
 namespace TServer.ECSSystem
 {
     /// <summary>
     /// 通知系统
     /// </summary>
-    public class SNotify : Singleton<SLogin>
+    public class SNotify : Singleton<SNotify>
     {
-        public Dictionary<ENotify, Notify> DicNotifies;
+        public Dictionary<ENotify, Action<Notify>> DicNotifies;
         public Queue<Notify> QueueNotifies;
 
         public void Update()
         {
             foreach (var notify in QueueNotifies)
             {
-                notify.Action();
+                if (DicNotifies.TryGetValue(notify.NotifyType, out var callback))
+                {
+                    callback(notify);
+                }
             }
         }
 
-        public void Init()
+        public SNotify()
         {
-            DicNotifies = new Dictionary<ENotify, Notify>();
+            DicNotifies = new Dictionary<ENotify, Action<Notify>>();
+            QueueNotifies = new Queue<Notify>();
         }
 
-        public void Register(ENotify notifyType, Action notifyEvent)
+        public void Register(ENotify notifyType, Action<Notify> notifyEvent)
         {
             if (!DicNotifies.TryGetValue(notifyType, out var notify))
             {
-                notify = new Notify { NotifyType = notifyType };
+                notify += notifyEvent;
                 DicNotifies.Add(notifyType, notify);
             }
+            else
+            {
+                notify += notifyEvent;
+            }
 
-            notify.NotifyEvent += notifyEvent;
+        }
+
+        public void Push(Notify notify)
+        {
+            QueueNotifies.Enqueue(notify);
         }
     }
 
@@ -42,23 +55,21 @@ namespace TServer.ECSSystem
     {
         ENotify_RoleLeaveDungeon,
         ENotify_RoleEnterDungeon,
+        ENotify_RoleDead,
     }
 
     public class Notify
     {
         public ENotify NotifyType;
-        public Action NotifyEvent;
-
-        public void Action()
-        {
-            if (NotifyEvent != null)
-                NotifyEvent();
-        }
     }
-
 
     public class NotifyRoleDead : Notify
     {
+        public ERole Role;
 
+        public static void Push(ERole role)
+        {
+            SNotify.Instance.Push(new NotifyRoleDead { NotifyType = ENotify.ENotify_RoleDead, Role = role });
+        }
     }
 }

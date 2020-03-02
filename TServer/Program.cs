@@ -1,19 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Net;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using Common.LogUtil;
 using Common.Normal;
 using Common.Protobuf;
 using Common.Simple;
 using Common.TTimer;
-using Google.Protobuf;
-using TServer.ECSEntity;
+using TServer.ECSSystem;
+using TServer.ECSSystem;
 using TServer.ECSSystem.Dungeon;
 using TServer.Net;
 
@@ -131,6 +125,8 @@ namespace TServer
                 TimerManager.Update(stopwatch.ElapsedMilliseconds);
 
                 SDungeon.Instance.Update();
+                SNotify.Instance.Update();
+
                 t2 = stopwatch.ElapsedMilliseconds;
                 var t = (int)(t2 - t1);
                 System.Threading.Thread.Sleep(t < 30 ? 30 - t : 1);
