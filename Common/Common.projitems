@@ -10,7 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)LogUtil\LogHelp.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)NavAuto\AStart.cs" />
+    <Compile Include="..\Common\NavAuto\AStar.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NavAuto\MapData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Normal\AsyncUserToken.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Normal\BufferManager.cs" />

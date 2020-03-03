@@ -40,7 +40,7 @@ a game server
 | C2S_Login    | 1    |
 | C2S_Register | 2    |
 | C2S_Move     | 3    |
-|              |      |
+| C2S_NavAuto  | 4     |
 
 |              |      |
 | ------------ | ---- |

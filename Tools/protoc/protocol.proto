@@ -6,23 +6,23 @@ option csharp_namespace = "Common.Protobuf";
 // 例: 1 是C2S登陆协议好 那么 9999 则为 S2C 登陆应答协议号
 
 enum S2C_PROTOCOL_TYPE {
-  S2C_Begin = 0;
-  S2C_Test = 5000;
+  S2C_Begin    = 0;
+  S2C_Test     = 5000;
 
-  S2C_Login = 9999;
+  S2C_Login    = 9999;
   S2C_Register = 9998;
-  S2C_Move = 9997;
-  S2C_Sight = 9996;
+  S2C_Move     = 9997;
+  S2C_Sight    = 9996;
 }
 
 enum C2S_PROTOCOL_TYPE {
-  C2S_Begin = 0;
-  C2S_Test = 4999;
+  C2S_Begin    = 0;
+  C2S_Test     = 4999;
 
-  C2S_Login = 1;
+  C2S_Login    = 1;
   C2S_Register = 2;
-  C2S_Move = 3;
-
+  C2S_Move     = 3;
+  C2S_NavAuto  = 4;
 }
 
 message C2STest {
@@ -45,6 +45,12 @@ message C2SRegister {
 }
 
 message C2SMove {
+  C2S_PROTOCOL_TYPE type = 1;
+  double x = 2;
+  double y = 3;
+}
+
+message C2SNavAuto {
   C2S_PROTOCOL_TYPE type = 1;
   double x = 2;
   double y = 3;

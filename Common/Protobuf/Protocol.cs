@@ -30,24 +30,26 @@ namespace Common.Protobuf {
             "bWUYAiABKAkSEAoIcGFzc3dvcmQYAyABKAkiTwoLQzJTUmVnaXN0ZXISIAoE",
             "dHlwZRgBIAEoDjISLkMyU19QUk9UT0NPTF9UWVBFEgwKBG5hbWUYAiABKAkS",
             "EAoIcGFzc3dvcmQYAyABKAkiQQoHQzJTTW92ZRIgCgR0eXBlGAEgASgOMhIu",
-            "QzJTX1BST1RPQ09MX1RZUEUSCQoBeBgCIAEoARIJCgF5GAMgASgBIkgKB1My",
-            "Q1Rlc3QSIAoEdHlwZRgBIAEoDjISLlMyQ19QUk9UT0NPTF9UWVBFEhsKCFJv",
-            "bGVMaXN0GAIgAygLMgkuUm9sZUluZm8iVgoIUzJDTG9naW4SIAoEdHlwZRgB",
-            "IAEoDjISLlMyQ19QUk9UT0NPTF9UWVBFEgsKA3JlcxgCIAEoBRIbCghyb2xl",
-            "SW5mbxgDIAEoCzIJLlJvbGVJbmZvIjwKC1MyQ1JlZ2lzdGVyEiAKBHR5cGUY",
-            "ASABKA4yEi5TMkNfUFJPVE9DT0xfVFlQRRILCgNyZXMYAiABKAkiTAoHUzJD",
-            "TW92ZRIgCgR0eXBlGAEgASgOMhIuUzJDX1BST1RPQ09MX1RZUEUSHwoMUm9s",
-            "ZUluZm9MaXN0GAIgAygLMgkuUm9sZUluZm8inQEKCFMyQ1NpZ2h0EiAKBHR5",
-            "cGUYASABKA4yEi5TMkNfUFJPVE9DT0xfVFlQRRIlCghTaWdodE9wdBgCIAEo",
-            "DjITLlMyQ1NpZ2h0LkVTaWdodE9wdBIbCghSb2xlSW5mbxgDIAEoCzIJLlJv",
-            "bGVJbmZvIisKCUVTaWdodE9wdBIOCgpFbnRlclNpZ2h0EAASDgoKTGVhdmVT",
-            "aWdodBABIiwKCFJvbGVJbmZvEgoKAmlkGAEgASgFEgkKAXgYAiABKAESCQoB",
-            "eRgDIAEoASpzChFTMkNfUFJPVE9DT0xfVFlQRRINCglTMkNfQmVnaW4QABIN",
-            "CghTMkNfVGVzdBCIJxIOCglTMkNfTG9naW4Qj04SEQoMUzJDX1JlZ2lzdGVy",
-            "EI5OEg0KCFMyQ19Nb3ZlEI1OEg4KCVMyQ19TaWdodBCMTipgChFDMlNfUFJP",
-            "VE9DT0xfVFlQRRINCglDMlNfQmVnaW4QABINCghDMlNfVGVzdBCHJxINCglD",
-            "MlNfTG9naW4QARIQCgxDMlNfUmVnaXN0ZXIQAhIMCghDMlNfTW92ZRADQhKq",
-            "Ag9Db21tb24uUHJvdG9idWZiBnByb3RvMw=="));
+            "QzJTX1BST1RPQ09MX1RZUEUSCQoBeBgCIAEoARIJCgF5GAMgASgBIkQKCkMy",
+            "U05hdkF1dG8SIAoEdHlwZRgBIAEoDjISLkMyU19QUk9UT0NPTF9UWVBFEgkK",
+            "AXgYAiABKAESCQoBeRgDIAEoASJICgdTMkNUZXN0EiAKBHR5cGUYASABKA4y",
+            "Ei5TMkNfUFJPVE9DT0xfVFlQRRIbCghSb2xlTGlzdBgCIAMoCzIJLlJvbGVJ",
+            "bmZvIlYKCFMyQ0xvZ2luEiAKBHR5cGUYASABKA4yEi5TMkNfUFJPVE9DT0xf",
+            "VFlQRRILCgNyZXMYAiABKAUSGwoIcm9sZUluZm8YAyABKAsyCS5Sb2xlSW5m",
+            "byI8CgtTMkNSZWdpc3RlchIgCgR0eXBlGAEgASgOMhIuUzJDX1BST1RPQ09M",
+            "X1RZUEUSCwoDcmVzGAIgASgJIkwKB1MyQ01vdmUSIAoEdHlwZRgBIAEoDjIS",
+            "LlMyQ19QUk9UT0NPTF9UWVBFEh8KDFJvbGVJbmZvTGlzdBgCIAMoCzIJLlJv",
+            "bGVJbmZvIp0BCghTMkNTaWdodBIgCgR0eXBlGAEgASgOMhIuUzJDX1BST1RP",
+            "Q09MX1RZUEUSJQoIU2lnaHRPcHQYAiABKA4yEy5TMkNTaWdodC5FU2lnaHRP",
+            "cHQSGwoIUm9sZUluZm8YAyABKAsyCS5Sb2xlSW5mbyIrCglFU2lnaHRPcHQS",
+            "DgoKRW50ZXJTaWdodBAAEg4KCkxlYXZlU2lnaHQQASIsCghSb2xlSW5mbxIK",
+            "CgJpZBgBIAEoBRIJCgF4GAIgASgBEgkKAXkYAyABKAEqcwoRUzJDX1BST1RP",
+            "Q09MX1RZUEUSDQoJUzJDX0JlZ2luEAASDQoIUzJDX1Rlc3QQiCcSDgoJUzJD",
+            "X0xvZ2luEI9OEhEKDFMyQ19SZWdpc3RlchCOThINCghTMkNfTW92ZRCNThIO",
+            "CglTMkNfU2lnaHQQjE4qcQoRQzJTX1BST1RPQ09MX1RZUEUSDQoJQzJTX0Jl",
+            "Z2luEAASDQoIQzJTX1Rlc3QQhycSDQoJQzJTX0xvZ2luEAESEAoMQzJTX1Jl",
+            "Z2lzdGVyEAISDAoIQzJTX01vdmUQAxIPCgtDMlNfTmF2QXV0bxAEQhKqAg9D",
+            "b21tb24uUHJvdG9idWZiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Common.Protobuf.S2C_PROTOCOL_TYPE), typeof(global::Common.Protobuf.C2S_PROTOCOL_TYPE), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -55,6 +57,7 @@ namespace Common.Protobuf {
             new pbr::GeneratedClrTypeInfo(typeof(global::Common.Protobuf.C2SLogin), global::Common.Protobuf.C2SLogin.Parser, new[]{ "Type", "Name", "Password" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Common.Protobuf.C2SRegister), global::Common.Protobuf.C2SRegister.Parser, new[]{ "Type", "Name", "Password" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Common.Protobuf.C2SMove), global::Common.Protobuf.C2SMove.Parser, new[]{ "Type", "X", "Y" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Common.Protobuf.C2SNavAuto), global::Common.Protobuf.C2SNavAuto.Parser, new[]{ "Type", "X", "Y" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Common.Protobuf.S2CTest), global::Common.Protobuf.S2CTest.Parser, new[]{ "Type", "RoleList" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Common.Protobuf.S2CLogin), global::Common.Protobuf.S2CLogin.Parser, new[]{ "Type", "Res", "RoleInfo" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Common.Protobuf.S2CRegister), global::Common.Protobuf.S2CRegister.Parser, new[]{ "Type", "Res" }, null, null, null, null),
@@ -82,6 +85,7 @@ namespace Common.Protobuf {
     [pbr::OriginalName("C2S_Login")] C2SLogin = 1,
     [pbr::OriginalName("C2S_Register")] C2SRegister = 2,
     [pbr::OriginalName("C2S_Move")] C2SMove = 3,
+    [pbr::OriginalName("C2S_NavAuto")] C2SNavAuto = 4,
   }
 
   #endregion
@@ -830,6 +834,191 @@ namespace Common.Protobuf {
 
   }
 
+  public sealed partial class C2SNavAuto : ProtobufBase<C2SNavAuto>,pb::IMessage<C2SNavAuto> {
+    private static readonly pb::MessageParser<C2SNavAuto> _parser = new pb::MessageParser<C2SNavAuto>(() => new C2SNavAuto());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<C2SNavAuto> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Common.Protobuf.ProtocolReflection.Descriptor.MessageTypes[4]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public C2SNavAuto() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public C2SNavAuto(C2SNavAuto other) : this() {
+      type_ = other.type_;
+      x_ = other.x_;
+      y_ = other.y_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public C2SNavAuto Clone() {
+      return new C2SNavAuto(this);
+    }
+
+    /// <summary>Field number for the "type" field.</summary>
+    public const int TypeFieldNumber = 1;
+    private global::Common.Protobuf.C2S_PROTOCOL_TYPE type_ = global::Common.Protobuf.C2S_PROTOCOL_TYPE.C2SBegin;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Common.Protobuf.C2S_PROTOCOL_TYPE Type {
+      get { return type_; }
+      set {
+        type_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "x" field.</summary>
+    public const int XFieldNumber = 2;
+    private double x_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public double X {
+      get { return x_; }
+      set {
+        x_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "y" field.</summary>
+    public const int YFieldNumber = 3;
+    private double y_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public double Y {
+      get { return y_; }
+      set {
+        y_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as C2SNavAuto);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(C2SNavAuto other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Type != other.Type) return false;
+      if (!pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.Equals(X, other.X)) return false;
+      if (!pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.Equals(Y, other.Y)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Type != global::Common.Protobuf.C2S_PROTOCOL_TYPE.C2SBegin) hash ^= Type.GetHashCode();
+      if (X != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(X);
+      if (Y != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(Y);
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (Type != global::Common.Protobuf.C2S_PROTOCOL_TYPE.C2SBegin) {
+        output.WriteRawTag(8);
+        output.WriteEnum((int) Type);
+      }
+      if (X != 0D) {
+        output.WriteRawTag(17);
+        output.WriteDouble(X);
+      }
+      if (Y != 0D) {
+        output.WriteRawTag(25);
+        output.WriteDouble(Y);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (Type != global::Common.Protobuf.C2S_PROTOCOL_TYPE.C2SBegin) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Type);
+      }
+      if (X != 0D) {
+        size += 1 + 8;
+      }
+      if (Y != 0D) {
+        size += 1 + 8;
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(C2SNavAuto other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Type != global::Common.Protobuf.C2S_PROTOCOL_TYPE.C2SBegin) {
+        Type = other.Type;
+      }
+      if (other.X != 0D) {
+        X = other.X;
+      }
+      if (other.Y != 0D) {
+        Y = other.Y;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            Type = (global::Common.Protobuf.C2S_PROTOCOL_TYPE) input.ReadEnum();
+            break;
+          }
+          case 17: {
+            X = input.ReadDouble();
+            break;
+          }
+          case 25: {
+            Y = input.ReadDouble();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
   /// <summary>
   /// S2C
   /// </summary>
@@ -841,7 +1030,7 @@ namespace Common.Protobuf {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Common.Protobuf.ProtocolReflection.Descriptor.MessageTypes[4]; }
+      get { return global::Common.Protobuf.ProtocolReflection.Descriptor.MessageTypes[5]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -990,7 +1179,7 @@ namespace Common.Protobuf {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Common.Protobuf.ProtocolReflection.Descriptor.MessageTypes[5]; }
+      get { return global::Common.Protobuf.ProtocolReflection.Descriptor.MessageTypes[6]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1181,7 +1370,7 @@ namespace Common.Protobuf {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Common.Protobuf.ProtocolReflection.Descriptor.MessageTypes[6]; }
+      get { return global::Common.Protobuf.ProtocolReflection.Descriptor.MessageTypes[7]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1338,7 +1527,7 @@ namespace Common.Protobuf {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Common.Protobuf.ProtocolReflection.Descriptor.MessageTypes[7]; }
+      get { return global::Common.Protobuf.ProtocolReflection.Descriptor.MessageTypes[8]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1487,7 +1676,7 @@ namespace Common.Protobuf {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Common.Protobuf.ProtocolReflection.Descriptor.MessageTypes[8]; }
+      get { return global::Common.Protobuf.ProtocolReflection.Descriptor.MessageTypes[9]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1690,7 +1879,7 @@ namespace Common.Protobuf {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Common.Protobuf.ProtocolReflection.Descriptor.MessageTypes[9]; }
+      get { return global::Common.Protobuf.ProtocolReflection.Descriptor.MessageTypes[10]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]

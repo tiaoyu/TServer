@@ -48,7 +48,16 @@ namespace Common.Protobuf
         public override void OnProcess(Guid guid)
         {
             if (!GameServer.DicRole.TryGetValue(guid, out var role)) return;
-            SMove.Instance.RoleMove(role, this);
+            SMove.Instance.OnRoleMove(role, this);
+        }
+    }
+
+    public partial class C2SNavAuto
+    {
+        public override void OnProcess(Guid guid)
+        {
+            if (!GameServer.DicRole.TryGetValue(guid, out var role)) return;
+            SMove.Instance.OnRoleNavAuto(role, this);
         }
     }
 }

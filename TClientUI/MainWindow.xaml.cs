@@ -29,7 +29,8 @@ namespace TClientUI
         public Role SelfRole = new Role();
         public ConcurrentQueue<MoveStruct> EllipseList = new ConcurrentQueue<MoveStruct>();
         public ConcurrentQueue<MoveStruct> WillBeRemoveEllipseList = new ConcurrentQueue<MoveStruct>();
-
+        public Common.NavAuto.MapData mapData;
+        private bool isRunning = true;
         public MainWindow()
         {
             InitializeComponent();
@@ -40,9 +41,25 @@ namespace TClientUI
             tClient = new TClient(this);
             tClient.StartConnect();
 
+            mapData = new Common.NavAuto.MapData(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, System.IO.Path.Combine("MapData", "1.txt")));
+            mapData.Init();
+
+            this.Dispatcher?.Invoke(() =>
+            {
+                for (var i = 0; i < mapData.Width; ++i)
+                {
+                    for (var j = 0; j < mapData.Length; ++j)
+                    {
+                        if (mapData.map[i, j] == 1)
+                            RoleMap.Children.Add(CreateEllipse(1, 1, i, j));
+                    }
+                }
+            });
+
+
             Task.Run(() =>
             {
-                while (true)
+                while (isRunning)
                 {
                     RefreshWindow();
                     Thread.Sleep(30);
@@ -95,9 +112,11 @@ namespace TClientUI
         {
             this.Dispatcher?.Invoke(() =>
             {
-                var e = CreateEllipse(5d, 5d, x, y);
+                var e = CreateEllipse(5d, 5d, 0d, 0d);
                 DicRole.Add(id, e);
                 RoleMap.Children.Add(e);
+                Canvas.SetLeft(e, x);
+                Canvas.SetTop(e, y);
             });
         }
 
@@ -117,6 +136,7 @@ namespace TClientUI
                 Canvas.SetTop(e, y);
             });
         }
+
         public void UpdateRoleListOnCanvas(List<RoleInfo> roleInfoList)
         {
             foreach (var role in roleInfoList)
@@ -153,7 +173,6 @@ namespace TClientUI
                     break;
                 case S2CSight.Types.ESightOpt.LeaveSight:
                     WillBeRemoveEllipseList.Enqueue(new MoveStruct { ellipse = ellipse, x = roleInfo.X, y = roleInfo.Y });
-                    //DicRole.Remove(roleInfo.Id);
                     break;
                 default: break;
             }
@@ -193,7 +212,19 @@ namespace TClientUI
 
         private void OnMouseDown(object sender, MouseButtonEventArgs e)
         {
-            DebugLog.Text = e.GetPosition(null).ToString();
+            var position = e.GetPosition(null);
+            TClient._client.StartSend(new C2SNavAuto { X = position.X, Y = position.Y });
+            DebugLog.Text = position.ToString();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            isRunning = false;
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            isRunning = false;
         }
     }
 

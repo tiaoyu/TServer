@@ -15,4 +15,8 @@
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Copy SourceFiles="$(ProjectDir)..\Environment\LogConfig.log4net" DestinationFolder="$(OutDir)" />
   </Target>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy /s /e /y /q /d  $(ProjectDir)\..\Environment\*.*  $(TargetDir)" />
+  </Target>
 </Project>

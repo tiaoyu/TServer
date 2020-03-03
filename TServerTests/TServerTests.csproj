@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
@@ -18,5 +18,9 @@
   <ItemGroup>
     <ProjectReference Include="..\TServer\TServer.csproj" />
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy /s /e /y /q /d  $(ProjectDir)\..\Environment\*.*  $(TargetDir)" />
+  </Target>
 
 </Project>

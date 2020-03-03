@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using Common.LogUtil;
+using Common.NavAuto;
 using Common.Normal;
 using Common.Protobuf;
 using Common.Simple;
@@ -41,7 +42,7 @@ namespace TServer
                 return (protocol as ProtocolBufBase).Serialize();
             });
             Server.Start("127.0.0.1", 11000);
-            
+
             #endregion Normal Socket
 
             // 主循环
@@ -57,7 +58,6 @@ namespace TServer
                     log.Info($"role id:{role.Id}");
                 }
             });
-
             while (true)
             {
                 t1 = stopwatch.ElapsedMilliseconds;
@@ -67,6 +67,7 @@ namespace TServer
 
                 SDungeon.Instance.Update();
                 SNotify.Instance.Update();
+                SMove.Instance.Update();
 
                 t2 = stopwatch.ElapsedMilliseconds;
                 var t = (int)(t2 - t1);

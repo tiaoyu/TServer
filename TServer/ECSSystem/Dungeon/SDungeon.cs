@@ -47,9 +47,7 @@ namespace TServer.ECSSystem.Dungeon
 
             foreach (var (_, dungeon) in DicDungeon)
             {
-                dungeon.DicRole.Add(role.Id, role);
-                dungeon.GridSystem.AddRoleToGrid(role.Id, role.Position);
-                role.Dungeon = dungeon;
+                EnterDungeon(role, dungeon);
                 break;
             }
             role.Dungeon.GridSystem.GetRolesFromSight(role.SightDistance, role.Position, out _, out var roleIds);
