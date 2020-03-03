@@ -50,6 +50,7 @@ namespace TServer
             stopwatch.Start();
             var t1 = stopwatch.ElapsedMilliseconds;
             var t2 = stopwatch.ElapsedMilliseconds;
+
             TimerManager.Init();
             TimerManager.Insert(6000, 6000, int.MaxValue, null, (obj) =>
             {
@@ -58,6 +59,7 @@ namespace TServer
                     log.Info($"role id:{role.Id}");
                 }
             });
+
             while (true)
             {
                 t1 = stopwatch.ElapsedMilliseconds;

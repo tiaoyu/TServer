@@ -89,6 +89,8 @@ namespace TClientUI
                     if (!WillBeRemoveEllipseList.TryDequeue(out var e)) continue;
                     RoleMap.Children.Remove(e.ellipse);
                 }
+
+                DebugLog.Text = $"cur position ({SelfRole.X},{SelfRole.Y})";
             });
         }
 
@@ -154,10 +156,6 @@ namespace TClientUI
                     continue;
                 }
                 EllipseList.Enqueue(new MoveStruct { ellipse = ellipse, x = role.X, y = role.Y });
-                this.Dispatcher?.Invoke(() =>
-                {
-                    DebugLog.Text = $"cur position ({role.X},{role.Y})";
-                });
             }
         }
 
