@@ -98,7 +98,8 @@ namespace Common.NavAuto
 
         public bool IsValidPosition(int x, int y)
         {
-            return map[x, y] == 0;
+
+            return x >= 0 && x < Length && y < Width && y >= 0 && map[x, y] == 0;
         }
 
         public void ConsolePrintMap()

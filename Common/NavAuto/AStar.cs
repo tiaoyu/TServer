@@ -18,7 +18,7 @@ namespace Common.NavAuto
         public static Stack<Node> CalOptimalPath(MapData map, int sX, int sY, int tX, int tY)
         {
             // 目标点位置错误
-            if (!map.IsValidPosition(tX, tY)) return null;
+            if (!map.IsValidPosition(tX, tY)) return new Stack<Node>();
 
             // 定义OpenList CloseList
             var openList = new HashSet<Node>();
