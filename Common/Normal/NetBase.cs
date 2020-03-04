@@ -41,7 +41,6 @@ namespace Common.Normal
             m_bufferManager = new BufferManager(receiveBufferSize * numConnections * opsToPreAlloc, receiveBufferSize);
 
             m_readWritePool = new SocketAsyncEventArgsPool(numConnections);
-
         }
 
         // Initializes the server by preallocating reusable buffers and 

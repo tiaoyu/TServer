@@ -1,36 +1,16 @@
 TServer
 =========
-a game server
+a game server combine anything I have learned.
 
 ### 0 To do list
 
-| index | task                            |          |
-| ----- | ------------------------------- | -------- |
-| 1     | 角色进入副本、退出副本          | FINISHED |
-| 2     | 通知系统                        | FINISHED |
-| 3     | 匹配功能                        |          |
-| 4     | 战斗功能                        |          |
-| 5     | 寻路功能 - A*寻路               | FINISHED |
-| 6     | 地图加载功能 - 简单二维数组地图 | FINISHED |
-| 7     | 组队功能                        |          |
-| 8     |                                 |          |
-| 9     |                                 |          |
-| 10    |                                 |          |
+| index | function | status |
+| ----- | -------- | ------ |
+|       |          |        |
 
-### 1 Function List
-
-1. Socket list
-2. Buffer manager
-3. Role manager
-4. Dungeon manager
-
-### System
-
-#### AOI
-
-#### Login
-
-### Protocol
+### 1 基础网络层逻辑
+### 2 消息处理逻辑
+#### 2.1 协议定义
 
 |              |      |
 | ------------ | ---- |
@@ -50,3 +30,14 @@ a game server
 | S2C_Register | 9998 |
 | S2C_Move     | 9997 |
 | S2C_Sight    | 9996 |
+
+### 3 视野管理逻辑（AOI）
+### 4 地图寻路逻辑
+#### 4.1 参考资料
+
+[A Formal Basis for the Heuristic Determination of Minimum Cost Paths](https://www.cs.auckland.ac.nz/compsci767s2c/projectReportExamples.d/astarNilsson.pdf)
+[A*-based Pathfinding in Modern Computer Games](https://www.researchgate.net/profile/Xiao_Cui7/publication/267809499_A-based_Pathfinding_in_Modern_Computer_Games/links/54fd73740cf270426d125adc.pdf)
+
+### 5 角色战斗逻辑
+### 6 房间匹配逻辑
+### 7 队伍相关逻辑

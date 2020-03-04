@@ -19,7 +19,7 @@ namespace Common.Normal
         /// <summary>
         /// 待分配的Buffer池序号栈
         /// </summary>
-        Stack<int> m_freeIndexPool;     // 
+        Stack<int> m_freeIndexPool;            //
         /// <summary>
         /// 当前序号
         /// </summary>
