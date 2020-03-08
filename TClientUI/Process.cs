@@ -20,7 +20,7 @@ namespace Common.Protobuf
     {
         public override void OnProcess()
         {
-            TClient.UpdateRole(RoleInfo);
+            TClient.UpdateRole(RoleInfo, true);
             Console.WriteLine($"Res:{this.Res}");
         }
     }

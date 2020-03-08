@@ -61,6 +61,7 @@ namespace Common.NavAuto
         public void GetAroundNode(Node curNode, out HashSet<Node> expandNodes)
         {
             expandNodes = new HashSet<Node>();
+            if (curNode == null) return;
 
             if (curNode.x > 0 && curNode.y > 0)
             {

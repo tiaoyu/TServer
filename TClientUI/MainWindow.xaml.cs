@@ -155,6 +155,13 @@ namespace TClientUI
                     }
                     continue;
                 }
+
+                if (role.Id == SelfRole.Id)
+                {
+                    SelfRole.X = role.X;
+                    SelfRole.Y = role.Y;
+                }
+
                 EllipseList.Enqueue(new MoveStruct { ellipse = ellipse, x = role.X, y = role.Y });
             }
         }
@@ -186,26 +193,28 @@ namespace TClientUI
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
             double speed = 1;
+            var x = SelfRole.X;
+            var y = SelfRole.Y;
             switch (e.Key)
             {
                 case Key.W:
                 case Key.Up:
-                    SelfRole.Y -= speed;
+                    y -= speed;
                     break;
                 case Key.S:
                 case Key.Down:
-                    SelfRole.Y += speed;
+                    y += speed;
                     break;
                 case Key.A:
                 case Key.Left:
-                    SelfRole.X -= speed;
+                    x -= speed;
                     break;
                 case Key.D:
                 case Key.Right:
-                    SelfRole.X += speed;
+                    x += speed;
                     break;
             }
-            TClient._client.StartSend(new C2SMove { X = SelfRole.X, Y = SelfRole.Y });
+            TClient._client.StartSend(new C2SMove { X = x, Y = y, Speed = speed });
         }
 
         private void OnMouseDown(object sender, MouseButtonEventArgs e)

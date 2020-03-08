@@ -29,34 +29,34 @@ namespace Common.Protobuf {
             "TG9naW4SIAoEdHlwZRgBIAEoDjISLkMyU19QUk9UT0NPTF9UWVBFEgwKBG5h",
             "bWUYAiABKAkSEAoIcGFzc3dvcmQYAyABKAkiTwoLQzJTUmVnaXN0ZXISIAoE",
             "dHlwZRgBIAEoDjISLkMyU19QUk9UT0NPTF9UWVBFEgwKBG5hbWUYAiABKAkS",
-            "EAoIcGFzc3dvcmQYAyABKAkiQQoHQzJTTW92ZRIgCgR0eXBlGAEgASgOMhIu",
-            "QzJTX1BST1RPQ09MX1RZUEUSCQoBeBgCIAEoARIJCgF5GAMgASgBIkQKCkMy",
-            "U05hdkF1dG8SIAoEdHlwZRgBIAEoDjISLkMyU19QUk9UT0NPTF9UWVBFEgkK",
-            "AXgYAiABKAESCQoBeRgDIAEoASJICgdTMkNUZXN0EiAKBHR5cGUYASABKA4y",
-            "Ei5TMkNfUFJPVE9DT0xfVFlQRRIbCghSb2xlTGlzdBgCIAMoCzIJLlJvbGVJ",
-            "bmZvIlYKCFMyQ0xvZ2luEiAKBHR5cGUYASABKA4yEi5TMkNfUFJPVE9DT0xf",
-            "VFlQRRILCgNyZXMYAiABKAUSGwoIcm9sZUluZm8YAyABKAsyCS5Sb2xlSW5m",
-            "byI8CgtTMkNSZWdpc3RlchIgCgR0eXBlGAEgASgOMhIuUzJDX1BST1RPQ09M",
-            "X1RZUEUSCwoDcmVzGAIgASgJIkwKB1MyQ01vdmUSIAoEdHlwZRgBIAEoDjIS",
-            "LlMyQ19QUk9UT0NPTF9UWVBFEh8KDFJvbGVJbmZvTGlzdBgCIAMoCzIJLlJv",
-            "bGVJbmZvIp0BCghTMkNTaWdodBIgCgR0eXBlGAEgASgOMhIuUzJDX1BST1RP",
-            "Q09MX1RZUEUSJQoIU2lnaHRPcHQYAiABKA4yEy5TMkNTaWdodC5FU2lnaHRP",
-            "cHQSGwoIUm9sZUluZm8YAyABKAsyCS5Sb2xlSW5mbyIrCglFU2lnaHRPcHQS",
-            "DgoKRW50ZXJTaWdodBAAEg4KCkxlYXZlU2lnaHQQASIsCghSb2xlSW5mbxIK",
-            "CgJpZBgBIAEoBRIJCgF4GAIgASgBEgkKAXkYAyABKAEqcwoRUzJDX1BST1RP",
-            "Q09MX1RZUEUSDQoJUzJDX0JlZ2luEAASDQoIUzJDX1Rlc3QQiCcSDgoJUzJD",
-            "X0xvZ2luEI9OEhEKDFMyQ19SZWdpc3RlchCOThINCghTMkNfTW92ZRCNThIO",
-            "CglTMkNfU2lnaHQQjE4qcQoRQzJTX1BST1RPQ09MX1RZUEUSDQoJQzJTX0Jl",
-            "Z2luEAASDQoIQzJTX1Rlc3QQhycSDQoJQzJTX0xvZ2luEAESEAoMQzJTX1Jl",
-            "Z2lzdGVyEAISDAoIQzJTX01vdmUQAxIPCgtDMlNfTmF2QXV0bxAEQhKqAg9D",
-            "b21tb24uUHJvdG9idWZiBnByb3RvMw=="));
+            "EAoIcGFzc3dvcmQYAyABKAkiUAoHQzJTTW92ZRIgCgR0eXBlGAEgASgOMhIu",
+            "QzJTX1BST1RPQ09MX1RZUEUSCQoBeBgCIAEoARIJCgF5GAMgASgBEg0KBXNw",
+            "ZWVkGAQgASgBIkQKCkMyU05hdkF1dG8SIAoEdHlwZRgBIAEoDjISLkMyU19Q",
+            "Uk9UT0NPTF9UWVBFEgkKAXgYAiABKAESCQoBeRgDIAEoASJICgdTMkNUZXN0",
+            "EiAKBHR5cGUYASABKA4yEi5TMkNfUFJPVE9DT0xfVFlQRRIbCghSb2xlTGlz",
+            "dBgCIAMoCzIJLlJvbGVJbmZvIlYKCFMyQ0xvZ2luEiAKBHR5cGUYASABKA4y",
+            "Ei5TMkNfUFJPVE9DT0xfVFlQRRILCgNyZXMYAiABKAUSGwoIcm9sZUluZm8Y",
+            "AyABKAsyCS5Sb2xlSW5mbyI8CgtTMkNSZWdpc3RlchIgCgR0eXBlGAEgASgO",
+            "MhIuUzJDX1BST1RPQ09MX1RZUEUSCwoDcmVzGAIgASgJIkwKB1MyQ01vdmUS",
+            "IAoEdHlwZRgBIAEoDjISLlMyQ19QUk9UT0NPTF9UWVBFEh8KDFJvbGVJbmZv",
+            "TGlzdBgCIAMoCzIJLlJvbGVJbmZvIp0BCghTMkNTaWdodBIgCgR0eXBlGAEg",
+            "ASgOMhIuUzJDX1BST1RPQ09MX1RZUEUSJQoIU2lnaHRPcHQYAiABKA4yEy5T",
+            "MkNTaWdodC5FU2lnaHRPcHQSGwoIUm9sZUluZm8YAyABKAsyCS5Sb2xlSW5m",
+            "byIrCglFU2lnaHRPcHQSDgoKRW50ZXJTaWdodBAAEg4KCkxlYXZlU2lnaHQQ",
+            "ASIsCghSb2xlSW5mbxIKCgJpZBgBIAEoBRIJCgF4GAIgASgBEgkKAXkYAyAB",
+            "KAEqcwoRUzJDX1BST1RPQ09MX1RZUEUSDQoJUzJDX0JlZ2luEAASDQoIUzJD",
+            "X1Rlc3QQiCcSDgoJUzJDX0xvZ2luEI9OEhEKDFMyQ19SZWdpc3RlchCOThIN",
+            "CghTMkNfTW92ZRCNThIOCglTMkNfU2lnaHQQjE4qcQoRQzJTX1BST1RPQ09M",
+            "X1RZUEUSDQoJQzJTX0JlZ2luEAASDQoIQzJTX1Rlc3QQhycSDQoJQzJTX0xv",
+            "Z2luEAESEAoMQzJTX1JlZ2lzdGVyEAISDAoIQzJTX01vdmUQAxIPCgtDMlNf",
+            "TmF2QXV0bxAEQhKqAg9Db21tb24uUHJvdG9idWZiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Common.Protobuf.S2C_PROTOCOL_TYPE), typeof(global::Common.Protobuf.C2S_PROTOCOL_TYPE), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Common.Protobuf.C2STest), global::Common.Protobuf.C2STest.Parser, new[]{ "Type", "X", "Y" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Common.Protobuf.C2SLogin), global::Common.Protobuf.C2SLogin.Parser, new[]{ "Type", "Name", "Password" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Common.Protobuf.C2SRegister), global::Common.Protobuf.C2SRegister.Parser, new[]{ "Type", "Name", "Password" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Common.Protobuf.C2SMove), global::Common.Protobuf.C2SMove.Parser, new[]{ "Type", "X", "Y" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Common.Protobuf.C2SMove), global::Common.Protobuf.C2SMove.Parser, new[]{ "Type", "X", "Y", "Speed" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Common.Protobuf.C2SNavAuto), global::Common.Protobuf.C2SNavAuto.Parser, new[]{ "Type", "X", "Y" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Common.Protobuf.S2CTest), global::Common.Protobuf.S2CTest.Parser, new[]{ "Type", "RoleList" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Common.Protobuf.S2CLogin), global::Common.Protobuf.S2CLogin.Parser, new[]{ "Type", "Res", "RoleInfo" }, null, null, null, null),
@@ -677,6 +677,7 @@ namespace Common.Protobuf {
       type_ = other.type_;
       x_ = other.x_;
       y_ = other.y_;
+      speed_ = other.speed_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -718,6 +719,17 @@ namespace Common.Protobuf {
       }
     }
 
+    /// <summary>Field number for the "speed" field.</summary>
+    public const int SpeedFieldNumber = 4;
+    private double speed_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public double Speed {
+      get { return speed_; }
+      set {
+        speed_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as C2SMove);
@@ -734,6 +746,7 @@ namespace Common.Protobuf {
       if (Type != other.Type) return false;
       if (!pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.Equals(X, other.X)) return false;
       if (!pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.Equals(Y, other.Y)) return false;
+      if (!pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.Equals(Speed, other.Speed)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -743,6 +756,7 @@ namespace Common.Protobuf {
       if (Type != global::Common.Protobuf.C2S_PROTOCOL_TYPE.C2SBegin) hash ^= Type.GetHashCode();
       if (X != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(X);
       if (Y != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(Y);
+      if (Speed != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(Speed);
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -768,6 +782,10 @@ namespace Common.Protobuf {
         output.WriteRawTag(25);
         output.WriteDouble(Y);
       }
+      if (Speed != 0D) {
+        output.WriteRawTag(33);
+        output.WriteDouble(Speed);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -783,6 +801,9 @@ namespace Common.Protobuf {
         size += 1 + 8;
       }
       if (Y != 0D) {
+        size += 1 + 8;
+      }
+      if (Speed != 0D) {
         size += 1 + 8;
       }
       if (_unknownFields != null) {
@@ -805,6 +826,9 @@ namespace Common.Protobuf {
       if (other.Y != 0D) {
         Y = other.Y;
       }
+      if (other.Speed != 0D) {
+        Speed = other.Speed;
+      }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -826,6 +850,10 @@ namespace Common.Protobuf {
           }
           case 25: {
             Y = input.ReadDouble();
+            break;
+          }
+          case 33: {
+            Speed = input.ReadDouble();
             break;
           }
         }
