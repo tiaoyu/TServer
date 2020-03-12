@@ -101,6 +101,7 @@ namespace Common.TTimer
             t.NextTriggerTick = CurrentTick + delay;
             t.TriggerCount = count;
             t.TriggerInterval = interval;
+            t.UserData = userData;
 
             Insert(t);
         }
