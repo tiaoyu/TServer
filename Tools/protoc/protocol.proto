@@ -48,6 +48,7 @@ message C2SMove {
   C2S_PROTOCOL_TYPE type = 1;
   double x = 2;
   double y = 3;
+  double speed = 4;
 }
 
 message C2SNavAuto {

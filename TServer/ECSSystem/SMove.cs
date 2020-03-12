@@ -1,5 +1,6 @@
 ﻿using Common;
 using Common.Protobuf;
+using System;
 using TServer.ECSEntity;
 using TServer.Net;
 
@@ -34,11 +35,22 @@ namespace TServer.ECSSystem
         public void OnRoleMove(ERole role, C2SMove pack)
         {
             role.Movement.IsNavAuto = false;
-            RoleMove(role, pack.X, pack.Y);
+            var speed = pack.Speed;
+            var xt = pack.X - role.Position.x;
+            var yt = pack.Y - role.Position.y;
+
+            var tmp = Math.Max(Math.Abs(xt), Math.Abs(yt));
+
+            var x = xt / tmp * speed;
+            var y = yt / tmp * speed;
+
+            RoleMove(role, role.Position.x + x, role.Position.y + y);
         }
 
         public void RoleMove(ERole role, double x, double y)
         {
+
+            if (!role.Dungeon.MapData.IsValidPosition((int)x, (int)y)) return;
             role.Dungeon.GridSystem.UpdateRolePosition(role, x, y);
             SSight.Instance.RoleMove(role);
         }
