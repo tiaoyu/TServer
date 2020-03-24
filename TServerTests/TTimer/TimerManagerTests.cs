@@ -16,18 +16,18 @@ namespace Common.TTimer.Tests
             this.output = output;
             this.tmgr = new TimerManager();
             tmgr.Init();
-            tmgr.Insert(10, 10, 1, null, (obj) =>
-            {
-                output.WriteLine($"{tmgr.CurrentTick}: hi!");
-            });
-            tmgr.Insert(20, 10, 1, null, (obj) =>
-            {
-                output.WriteLine($"{tmgr.CurrentTick}: hi!");
-            });
-            tmgr.Insert(30, 10, 1, null, (obj) =>
-            {
-                output.WriteLine($"{tmgr.CurrentTick}: hi!");
-            });
+            //tmgr.Insert(10, 10, 1, null, (obj) =>
+            //{
+            //    output.WriteLine($"{tmgr.CurrentTick}: hi!");
+            //});
+            //tmgr.Insert(20, 10, 1, null, (obj) =>
+            //{
+            //    output.WriteLine($"{tmgr.CurrentTick}: hi!");
+            //});
+            //tmgr.Insert(30, 10, 1, null, (obj) =>
+            //{
+            //    output.WriteLine($"{tmgr.CurrentTick}: hi!");
+            //});
         }
 
         [Fact()]
@@ -62,6 +62,25 @@ namespace Common.TTimer.Tests
             });
             tmgr.Update(300000);
             Assert.True(true);
+        }
+
+        [Fact()]
+        public void RemoveTest()
+        {
+            int t1;
+            t1 = tmgr.Insert(0, 100, 10, null, obj =>
+            {
+                output.WriteLine($"once is over~");
+            });
+
+            tmgr.Update(200);
+            Assert.True(tmgr.DicTimer.Count == 1);
+
+            tmgr.Remove(t1);
+            Assert.True(tmgr.DicTimer.Count == 0);
+
+            tmgr.Update(200);
+
         }
     }
 }

@@ -19,6 +19,14 @@ namespace Common.TTimer
         public int TriggerCount;
         // 两次触发的时间间隔
         public int TriggerInterval;
+
+        // TimerId
+        public int Id;
+        // Timer 所在轮
+        public int Wheel;
+        // Timer 所在刻度
+        public int Slot;
+
         public Timer()
         {
         }
@@ -68,18 +76,24 @@ namespace Common.TTimer
         private const int MAX_WHEEL_COUNT = 5; // 时间轮个数
         private const int SLOT_TIME_MS = 10;   // 时间轮精度 10ms
         private int[] WheelSlotCount = new int[] { 1 << 8, 1 << 4, 1 << 4, 1 << 4, 1 << 4 };
+
+        // TimerId 起始点
+        private int Index = 0;
         // 所有轮
         public Wheel[] Wheels;
         // 当前时间点 ms
         public long CurrentTick;
         // 缓存的Timer
         public List<Timer> tempTimers;
+        // 所有Timer合集
+        public Dictionary<int, Timer> DicTimer;
 
         /// <summary>
         /// 初始化
         /// </summary>
         public void Init()
         {
+            DicTimer = new Dictionary<int, Timer>();
             tempTimers = new List<Timer>();
             Wheels = new Wheel[MAX_WHEEL_COUNT];
             for (var i = 0; i < MAX_WHEEL_COUNT; ++i)
@@ -93,17 +107,35 @@ namespace Common.TTimer
         /// 插入定时器
         /// 每次插入时间轮都会都会将相对时间换算成实际时间来插入
         /// </summary>
-        public void Insert(int delay, int interval, int count, object userData, Action<object> callback)
+        public int Insert(int delay, int interval, int count, object userData, Action<object> callback)
         {
             // 构建定时器
-            var t = new Timer();
-            t.callback = callback;
-            t.NextTriggerTick = CurrentTick + delay;
-            t.TriggerCount = count;
-            t.TriggerInterval = interval;
-            t.UserData = userData;
+            var t = new Timer
+            {
+                callback = callback,
+                NextTriggerTick = CurrentTick + delay,
+                TriggerCount = count,
+                TriggerInterval = interval,
+                UserData = userData,
+                Id = ++Index
+            };
 
             Insert(t);
+            DicTimer.Add(t.Id, t);
+            return t.Id;
+        }
+
+        /// <summary>
+        /// 移除定时器
+        /// </summary>
+        /// <param name="id"></param>
+        public void Remove(int id)
+        {
+            if (DicTimer.TryGetValue(id, out var timer))
+            {
+                DicTimer.Remove(id);
+                Wheels[timer.Wheel].head[timer.Slot].Remove(timer);
+            }
         }
 
         /// <summary>
@@ -133,6 +165,9 @@ namespace Common.TTimer
                     pos = pos / WheelSlotCount[i];
                     continue;
                 }
+
+                timer.Wheel = i;
+                timer.Slot = (int)pos;
 
                 Wheels[i].Add(timer, (int)pos);
                 break;
