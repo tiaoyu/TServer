@@ -6,8 +6,8 @@ a game server combine anything I have learned.
 
 | index | function   | status |
 | ----- | ---------- | ------ |
-| 1     | RPC设计   |        |
-| 2     | 多线程设计 |        |
+| 1     | RPC设计   |        |
+| 2     | 多线程设计? |        |
 | 3     | 节点分离   |        |
 | 4     |            |        |
 

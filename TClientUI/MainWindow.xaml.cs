@@ -24,6 +24,9 @@ namespace TClientUI
     /// </summary>
     public partial class MainWindow : Window
     {
+        // 放大的倍数 为了UI显示更清晰
+        private readonly int WEIGHT = 5;
+
         public Dictionary<int, Ellipse> DicRole = new Dictionary<int, Ellipse>();
         public static TClient tClient;
         public Role SelfRole = new Role();
@@ -79,8 +82,8 @@ namespace TClientUI
                     {
                         RoleMap.Children.Add(e.ellipse);
                     }
-                    Canvas.SetLeft(e.ellipse, e.x);
-                    Canvas.SetTop(e.ellipse, e.y);
+                    Canvas.SetLeft(e.ellipse, e.x * WEIGHT);
+                    Canvas.SetTop(e.ellipse, e.y * WEIGHT);
                 }
 
                 count = WillBeRemoveEllipseList.Count;
@@ -98,12 +101,12 @@ namespace TClientUI
         {
             var ellipse = new Ellipse
             {
-                Width = width,
-                Height = height,
+                Width = width * WEIGHT,
+                Height = height * WEIGHT,
                 Margin = new Thickness
                 {
-                    Left = desiredCenterX - (width / 2),
-                    Top = desireCenterY - (height / 2)
+                    Left = desiredCenterX * WEIGHT - (width * WEIGHT / 2),
+                    Top = desireCenterY * WEIGHT - (height * WEIGHT / 2)
                 },
                 Fill = new SolidColorBrush(Color.FromScRgb(1f, 255f, 255f, 255f))
             };
@@ -114,11 +117,11 @@ namespace TClientUI
         {
             this.Dispatcher?.Invoke(() =>
             {
-                var e = CreateEllipse(5d, 5d, 0d, 0d);
+                var e = CreateEllipse(1d, 1d, 0d, 0d);
                 DicRole.Add(id, e);
                 RoleMap.Children.Add(e);
-                Canvas.SetLeft(e, x);
-                Canvas.SetTop(e, y);
+                Canvas.SetLeft(e, x * WEIGHT);
+                Canvas.SetTop(e, y * WEIGHT);
             });
         }
 
@@ -134,8 +137,8 @@ namespace TClientUI
         {
             this.Dispatcher?.Invoke(() =>
             {
-                Canvas.SetLeft(e, x);
-                Canvas.SetTop(e, y);
+                Canvas.SetLeft(e, x * WEIGHT);
+                Canvas.SetTop(e, y * WEIGHT);
             });
         }
 
@@ -220,7 +223,7 @@ namespace TClientUI
         private void OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             var position = e.GetPosition(null);
-            TClient._client.StartSend(new C2SNavAuto { X = position.X, Y = position.Y });
+            TClient._client.StartSend(new C2SNavAuto { X = position.X / 5, Y = position.Y / 5 });
             DebugLog.Text = position.ToString();
         }
 
@@ -232,6 +235,15 @@ namespace TClientUI
         private void Window_Closed(object sender, EventArgs e)
         {
             isRunning = false;
+        }
+
+        private void OnMouseMove(object sender, MouseEventArgs e)
+        {
+            if(LoginBtn.IsEnabled == false)
+            {
+                //var position = e.GetPosition(null);
+                //TClient._client.StartSend(new C2SNavAuto { X = position.X / 5, Y = position.Y / 5 });
+            }
         }
     }
 
