@@ -14,7 +14,7 @@ namespace Common.NavAuto
         /// <param name="sY">起点Y</param>
         /// <param name="tX">终点X</param>
         /// <param name="tY">终点Y</param>
-        /// <returns></returns>
+        /// <returns>结果返回所有路点</returns>
         public static Stack<Node> CalOptimalPath(MapData map, int sX, int sY, int tX, int tY)
         {
             // 目标点位置错误
@@ -82,7 +82,7 @@ namespace Common.NavAuto
                 optimalPath.Push(curNode.Parent);
                 curNode = curNode.Parent;
             }
-            Console.WriteLine($"Find path {count}.");
+            //Console.WriteLine($"Find path {count}.");
             return optimalPath;
         }
 

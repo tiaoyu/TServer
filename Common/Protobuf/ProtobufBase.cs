@@ -77,7 +77,6 @@ namespace Common.Protobuf
             ProtobufBase<T>.TypeId = protoId;
         }
     }
-
     public class ProtocolParser
     {
         private static ProtocolParser _instance = new ProtocolParser();

@@ -1,6 +1,9 @@
 ﻿using System;
 namespace Common.Cache
 {
+    /// <summary>
+    /// Redis缓存
+    /// </summary>
     public class RedisCache : Singleton<RedisCache>
     {
         public RedisCache()

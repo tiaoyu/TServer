@@ -4,19 +4,21 @@ a game server combine anything I have learned.
 
 ### 0 To do list
 
-| index | function   | status |
-| ----- | ---------- | ------ |
-| 1     | RPC设计   |        |
-| 2     | 多线程设计? |        |
-| 3     | 节点分离   |        |
-| 4     |            |        |
+| index | function | status |
+| ----- | -------- | ------ |
+| 1     | 断线重连 |        |
+| 2     | 节点分离 |        |
+| 3     |          |        |
 
 ### 1 基础网络层逻辑
+* SocketAsyncEventArgs 池
+* AsyncUserToken
+* Buffer池
 ### 2 消息处理逻辑
-### 3 RPC设计
 
 待续
 
+### 3.功能
 #### 3.1 协议定义
 
 |              |      |

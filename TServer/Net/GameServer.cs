@@ -15,6 +15,10 @@ namespace TServer.Net
             DicRole = new Dictionary<Guid, ERole>();
         }
 
+        /// <summary>
+        /// 客户端断开连接后做的处理
+        /// </summary>
+        /// <param name="ss"></param>
         protected override void OnDisconnect(ExtSocket ss)
         {
             base.OnDisconnect(ss);

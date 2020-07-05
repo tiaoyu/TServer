@@ -28,22 +28,20 @@ namespace TServer
 
             log.Info("Hello Server!");
 
-            #region Normal Socket
-
             Server = new GameServer(128, 8192);
             Server.Init();
+            // 反序列化消息
             Server.MessageHandler.SetDeserializeFunc((bytes, guid) =>
             {
                 var protoId = BitConverter.ToInt32(bytes);
                 return new ExtSocket { Protocol = ProtocolParser.Instance.GetParser(protoId).ParseFrom(bytes) as ProtocolBufBase, Guid = guid, ESocketType = ESocketType.ESocketReceive };
             });
+            // 序列化消息
             Server.MessageHandler.SetSerializeFunc((protocol) =>
             {
                 return (protocol as ProtocolBufBase).Serialize();
             });
             Server.Start("127.0.0.1", 11000);
-
-            #endregion Normal Socket
 
             // 主循环
             var stopwatch = new Stopwatch();
@@ -52,13 +50,6 @@ namespace TServer
             var t2 = stopwatch.ElapsedMilliseconds;
 
             TimerManager.Init();
-            TimerManager.Insert(6000, 6000, int.MaxValue, null, (obj) =>
-            {
-                foreach (var (_, role) in GameServer.DicRole)
-                {
-                    log.Info($"role id:{role.Id}");
-                }
-            });
 
             while (true)
             {

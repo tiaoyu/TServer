@@ -54,11 +54,6 @@ namespace Common.Normal
             StartSend(ClientEventArgs, msg);
         }
 
-        public void StartSend(byte[] msg)
-        {
-            StartSend(ClientEventArgs, msg);
-        }
-
         private SocketAsyncEventArgs CreateNewSocketAsyncEventArgsForConnect()
         {
             var e = new SocketAsyncEventArgs();

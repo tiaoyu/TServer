@@ -9,8 +9,14 @@ using System.Threading;
 
 namespace Common.Normal
 {
-    // Implements the connection logic for the socket server.  
-    // 
+    /// <summary>
+    /// 基础网络模块
+    ///     提供网络流的异步收发
+    /// 
+    /// 客户端独有的Connect 和 服务端的Accept由子类另行实现
+    /// Implements the connection logic for the socket server.  
+    ///  
+    /// </summary>
     public class NetBase
     {
         private static readonly LogHelp log = LogHelp.GetLogger(typeof(NetBase));
@@ -23,6 +29,11 @@ namespace Common.Normal
         protected SocketAsyncEventArgsPool m_readWritePool;
         private int m_totalBytesRead;           // counter of the total # bytes received by the server
 
+        /// <summary>
+        /// 消息处理类
+        ///   将字节流反序列化为协议
+        ///   将协议序列化为字节流
+        /// </summary>
         public MessageHandler<object> MessageHandler;
 
         // Create an uninitialized server instance.  
@@ -75,39 +86,43 @@ namespace Common.Normal
             ProtocolParser.Register();
         }
 
-        // This method is called whenever a receive or send operation is completed on a socket 
-        //
-        // <param name="e">SocketAsyncEventArg associated with the completed receive operation</param>
+        /// <summary>
+        /// 当Socket完成一次IO操作后的回调
+        /// This method is called whenever a receive or send operation is completed on a socket 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e">SocketAsyncEventArg associated with the completed receive operation</param>
         public virtual void IO_Completed(object sender, SocketAsyncEventArgs e)
         {
             // determine which type of operation just completed and call the associated handler
             switch (e.LastOperation)
             {
                 case SocketAsyncOperation.Connect:
-                    log.Debug("Connect");
                     break;
                 case SocketAsyncOperation.Receive:
-                    log.Debug("Receive");
                     ProcessReceive(e);
                     break;
                 case SocketAsyncOperation.Send:
-                    log.Debug("Send");
                     ProcessSend(e);
                     break;
                 case SocketAsyncOperation.Disconnect:
-                    log.Debug("Disconnect");
                     break;
                 default:
                     throw new ArgumentException("The last operation completed on the socket was not a receive or send");
             }
         }
 
+        /// <summary>
+        /// 发送消息
+        /// </summary>
+        /// <param name="e"></param>
+        /// <param name="msg"></param>
         public void StartSend(SocketAsyncEventArgs e, object msg)
         {
             StartSend(e, MessageHandler.SerializeMessage(msg));
         }
 
-        public void StartSend(SocketAsyncEventArgs e, byte[] buffer)
+        private void StartSend(SocketAsyncEventArgs e, byte[] buffer)
         {
             AsyncUserToken token = (AsyncUserToken)e.UserToken;
             if (token != null && token.Socket.Connected)
@@ -124,11 +139,14 @@ namespace Common.Normal
             }
         }
 
-        // This method is invoked when an asynchronous send operation completes.  
-        // The method issues another receive on the socket to read any additional 
-        // data sent from the client
-        //
-        // <param name="e"></param>
+        /// <summary>
+        /// 发送消息后的处理方法 
+        /// This method is invoked when an asynchronous send operation completes.  
+        /// The method issues another receive on the socket to read any additional 
+        /// data sent from the client
+        ///
+        /// </summary>
+        /// <param name="e"></param>
         private void ProcessSend(SocketAsyncEventArgs e)
         {
             if (e.SocketError == SocketError.Success)
@@ -144,6 +162,15 @@ namespace Common.Normal
             }
         }
 
+        /// <summary>
+        /// 接收消息
+        /// 
+        ///     对于客户端来说，在Connect到服务器后进行接收
+        ///     对于服务器来说，在Accept到客户端后进行接收
+        /// 
+        /// 并且每次处理完Receive到的消息后，紧接着接收下一条消息
+        /// </summary>
+        /// <param name="e"></param>
         public void StartReceive(SocketAsyncEventArgs e)
         {
             var ret = e.AcceptSocket.ReceiveAsync(e);
@@ -154,10 +181,14 @@ namespace Common.Normal
             }
         }
 
-        // This method is invoked when an asynchronous receive operation completes. 
-        // If the remote host closed the connection, then the socket is closed.  
-        // If data was received then the data is echoed back to the client.
-        //
+        /// <summary>
+        /// 接收完消息后的处理
+        /// 使用MessageHandler处理字节流 发序列化为消息并入队供消息执行处理线程处理
+        /// This method is invoked when an asynchronous receive operation completes. 
+        /// If the remote host closed the connection, then the socket is closed.  
+        /// If data was received then the data is echoed back to the client.
+        /// </summary>
+        /// <param name="e"></param>
         private void ProcessReceive(SocketAsyncEventArgs e)
         {
             // check if the remote host closed the connection
@@ -172,7 +203,6 @@ namespace Common.Normal
             {
                 //increment the count of the total bytes receive by the server
                 Interlocked.Add(ref m_totalBytesRead, e.BytesTransferred);
-                //log.Debug($"The server has read a total of {m_totalBytesRead} bytes, message: {Encoding.UTF8.GetString(e.Buffer, e.Offset, e.BytesTransferred)}");
                 token.OffsetInBufferPool = e.Offset;
                 // 当前剩余需要处理的字节长度
                 var remainProcessLength = e.BytesTransferred;
@@ -181,6 +211,8 @@ namespace Common.Normal
                     remainProcessLength = MessageHandler.ReadBufferFromPool(m_bufferManager.m_buffer, token, remainProcessLength);
 
                 } while (remainProcessLength != 0);
+
+                // 每次处理完Receive到的消息后，紧接着接收下一条消息
                 StartReceive(e);
             }
         }
@@ -188,13 +220,19 @@ namespace Common.Normal
         protected virtual void CloseSocket(SocketAsyncEventArgs e) { }
 
         /// <summary>
-        /// 
+        /// 创建新的SocketAsyncEventArgs
+        ///   对于客户端来说，在Connect到服务器后创建两个，一读一写
+        ///   对于服务器来说，在Accept到客户端后创建两个，一读一写
         /// </summary>
         protected SocketAsyncEventArgs CreateNewSocketAsyncEventArgsFromPool()
         {
             return m_readWritePool.Pop();
         }
 
+        /// <summary>
+        /// 释放SocketAsyncEventArgs到池中
+        /// </summary>
+        /// <param name="e"></param>
         protected void FreeSocketAsyncEventArgsToPool(SocketAsyncEventArgs e)
         {
             m_bufferManager.FreeBuffer(e);
@@ -206,15 +244,12 @@ namespace Common.Normal
 
         protected virtual void OnConnect(ExtSocket ss) { }
 
-        protected virtual void OnClose(ExtSocket ss)
-        {
-            log.Debug($"Close client.");
-        }
+        protected virtual void OnClose(ExtSocket ss) { }
+
         protected virtual void OnDisconnect(ExtSocket ss) { }
-        
+
         protected virtual void OnReceive(ExtSocket ss)
         {
-            log.Debug($"Get msg:{ss.Protocol}");
             ss.Protocol.OnProcess(ss.Guid);
         }
 

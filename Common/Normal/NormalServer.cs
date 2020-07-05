@@ -23,11 +23,15 @@ namespace Common.Normal
             m_maxNumberAcceptedClients = new Semaphore(numConnections, numConnections);
         }
 
-        // Starts the server such that it is listening for 
-        // incoming connection requests.    
-        //
-        // <param name="localEndPoint">The endpoint which the server will listening 
-        // for connection requests on</param>
+        /// <summary>
+        /// Starts the server such that it is listening for 
+        /// incoming connection requests.    
+        ///
+        /// <param name="localEndPoint">The endpoint which the server will listening 
+        /// for connection requests on</param>
+        /// </summary>
+        /// <param name="ipOrHost"></param>
+        /// <param name="port"></param>
         public void Start(string ipOrHost, int port)
         {
             var address = Dns.GetHostAddresses(ipOrHost);

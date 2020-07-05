@@ -13,7 +13,9 @@ namespace TServer.ECSEntity
         public CSight Sight { get; set; }
         public CMovement Movement { get; set; }
 
-        /// <summary> 视野半径 </summary>
+        /// <summary> 
+        /// 视野半径 格子为单位长度
+        /// </summary>
         public int SightDistance { get; set; }
 
         public ERole()
@@ -21,7 +23,7 @@ namespace TServer.ECSEntity
             Position = new CPosition<double> { x = 0D, y = 0D };
             Sight = new CSight();
             Movement = new CMovement();
-            SightDistance = 4;
+            SightDistance = 20;
         }
     }
 }

@@ -26,6 +26,11 @@ namespace TServer.ECSSystem
             }
         }
 
+        /// <summary>
+        /// 自动寻路
+        /// </summary>
+        /// <param name="role"></param>
+        /// <param name="pack"></param>
         public void OnRoleNavAuto(ERole role, C2SNavAuto pack)
         {
             role.Movement.StackNavPath = Common.NavAuto.AStar.CalOptimalPath(role.Dungeon.MapData, (int)role.Position.x, (int)role.Position.y, (int)pack.X, (int)pack.Y);

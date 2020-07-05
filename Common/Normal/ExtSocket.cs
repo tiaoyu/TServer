@@ -14,7 +14,6 @@ namespace Common.Normal
         ESocketSend,
         ESocketAccept,
         ESocketClose,
-
     }
 
     public class ExtSocket
