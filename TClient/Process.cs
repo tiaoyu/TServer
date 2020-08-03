@@ -34,7 +34,7 @@ namespace Common.Protobuf
     {
         public override void OnProcess() 
         {
-            foreach(var roleInfo in RoleInfoList)
+            foreach(var roleInfo in EntityInfoList)
             {
                 Console.WriteLine($"{roleInfo.Id} ({roleInfo.X}, {roleInfo.Y})");
             }

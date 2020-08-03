@@ -11,5 +11,6 @@ namespace TServer.ECSComponent
     {
         public T x;
         public T y;
+        public T z;
     }
 }

@@ -4,15 +4,14 @@ using System.Text;
 
 namespace TServer.ECSSystem.AI
 {
-    class AIState
+    /// <summary>
+    /// AI状态
+    /// </summary>
+    public enum EAIState
     {
-        public enum EAIState
-        {
-            Patrol,
-            investigate,
-            attack,
-            flee
-        }
-
+        PATROL,         // 巡逻
+        INVESTIGATE,    // 预警
+        ATTACK,         // 攻击
+        FLEE,           // 逃跑
     }
 }

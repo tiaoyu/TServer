@@ -40,12 +40,12 @@ namespace TClientUI
             }
         }
 
-        public static void UpdateRoleList(List<RoleInfo> roleInfoList)
+        public static void UpdateRoleList(List<EntityInfo> roleInfoList)
         {
             _mainWindow.UpdateRoleListOnCanvas(roleInfoList);
         }
 
-        public static void UpdateRoleSight(RoleInfo roleInfo, S2CSight.Types.ESightOpt opt)
+        public static void UpdateRoleSight(EntityInfo roleInfo, S2CSight.Types.ESightOpt opt)
         {
             _mainWindow.UpdateRoleSight(roleInfo, opt);
         }

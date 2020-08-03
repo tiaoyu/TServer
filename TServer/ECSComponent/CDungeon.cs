@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using TServer.ECSEntity;
 using TServer.ECSSystem.AOI;
+using TServer.ECSSystem.Dungeon;
 
 namespace TServer.ECSComponent
 {
@@ -15,7 +16,7 @@ namespace TServer.ECSComponent
         /// 副本内的所有角色
         /// </summary>
         public Dictionary<int, ERole> DicRole;
-
+        public Dictionary<int, EEntity> DicEntity;
         /// <summary> AOI </summary>
         public GridSystem GridSystem;
 
@@ -25,10 +26,11 @@ namespace TServer.ECSComponent
         public CDungeon(int tid = 1)
         {
             DicRole = new Dictionary<int, ERole>();
+            DicEntity = new Dictionary<int, EEntity>();
 
-            MapData = new MapData(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Path.Combine("MapData", "1.txt")));
+            MapData = new MapData(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Path.Combine("MapData", $"{tid}")));
             MapData.Init();
-            
+
             GridSystem = new GridSystem(5, MapData.Length, MapData.Width);
             GridSystem.Init();
         }

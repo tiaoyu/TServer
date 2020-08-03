@@ -17,6 +17,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Vector = Common.Protobuf.Vector;
+
 namespace TClientUI
 {
     /// <summary>
@@ -26,7 +28,7 @@ namespace TClientUI
     {
         // 放大的倍数 为了UI显示更清晰
         private readonly int WEIGHT = 5;
-
+        private bool isKeyUp = true;
         public Dictionary<int, Ellipse> DicRole = new Dictionary<int, Ellipse>();
         public static TClient tClient;
         public Role SelfRole = new Role();
@@ -44,7 +46,7 @@ namespace TClientUI
             tClient = new TClient(this);
             tClient.StartConnect();
 
-            mapData = new Common.NavAuto.MapData(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, System.IO.Path.Combine("MapData", "1.txt")));
+            mapData = new Common.NavAuto.MapData(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, System.IO.Path.Combine("MapData", "101")));
             mapData.Init();
 
             this.Dispatcher?.Invoke(() =>
@@ -142,7 +144,7 @@ namespace TClientUI
             });
         }
 
-        public void UpdateRoleListOnCanvas(List<RoleInfo> roleInfoList)
+        public void UpdateRoleListOnCanvas(List<EntityInfo> roleInfoList)
         {
             foreach (var role in roleInfoList)
             {
@@ -169,7 +171,7 @@ namespace TClientUI
             }
         }
 
-        public void UpdateRoleSight(RoleInfo roleInfo, S2CSight.Types.ESightOpt opt)
+        public void UpdateRoleSight(EntityInfo roleInfo, S2CSight.Types.ESightOpt opt)
         {
             DicRole.TryGetValue(roleInfo.Id, out var ellipse);
 
@@ -195,31 +197,64 @@ namespace TClientUI
 
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
-            double speed = 1;
-            var x = SelfRole.X;
-            var y = SelfRole.Y;
+            if (!isKeyUp)
+            {
+                return;
+            }
+            isKeyUp = false;
+            double speed = 10;
+            var v = new Vector
+            {
+                X = 0D,
+                Y = 0D,
+                Z = 0D
+            };
             switch (e.Key)
             {
                 case Key.W:
                 case Key.Up:
-                    y -= speed;
+                    v.Y = -1D;
                     break;
                 case Key.S:
                 case Key.Down:
-                    y += speed;
+                    v.Y = 1D;
                     break;
                 case Key.A:
                 case Key.Left:
-                    x -= speed;
+                    v.X = -1D;
                     break;
                 case Key.D:
                 case Key.Right:
-                    x += speed;
+                    v.X = 1D;
+                    break;
+                default:
+                    return;
+            }
+
+            TClient._client.StartSend(new C2SMove
+            {
+                IsUsePosition = false,
+                Speed = speed,
+                Orientation = v,
+            });
+        }
+        private void OnKeyUp(object sender, KeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case Key.W:
+                case Key.Up:
+                case Key.S:
+                case Key.Down:
+                case Key.A:
+                case Key.Left:
+                case Key.D:
+                case Key.Right:
+                    isKeyUp = true;
+                    TClient._client.StartSend(new C2SStopMove());
                     break;
             }
-            TClient._client.StartSend(new C2SMove { X = x, Y = y, Speed = speed });
         }
-
         private void OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             var position = e.GetPosition(null);
@@ -239,12 +274,14 @@ namespace TClientUI
 
         private void OnMouseMove(object sender, MouseEventArgs e)
         {
-            if(LoginBtn.IsEnabled == false)
+            if (LoginBtn.IsEnabled == false)
             {
                 //var position = e.GetPosition(null);
                 //TClient._client.StartSend(new C2SNavAuto { X = position.X / 5, Y = position.Y / 5 });
             }
         }
+
+
     }
 
     public class Role

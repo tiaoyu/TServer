@@ -1,8 +1,8 @@
 ﻿using Common;
-using Common.Protobuf;
+using Common.NavAuto;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.IO;
 using TServer.ECSComponent;
 using TServer.ECSEntity;
 
@@ -12,11 +12,34 @@ namespace TServer.ECSSystem.Dungeon
     {
         public Dictionary<int, CDungeon> DicDungeon = new Dictionary<int, CDungeon>();
 
+        public void Init()
+        {
+            // 初始化副本
+            var dInfo = new DirectoryInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MapData"));
+            foreach (var filePath in dInfo.GetFiles())
+            {
+                var dungeon = new CDungeon(int.Parse(filePath.Name));
+                DicDungeon.Add(int.Parse(filePath.Name), dungeon);
+                SDungeon.Instance.EnterDungeon(new EMonster
+                {
+                    Id = EEntity.GenerateEntityId(EEntityType.MONSTER),
+                    AIState = AI.EAIState.PATROL,
+                    Dungeon = dungeon,
+                    EntityType = EEntityType.MONSTER,
+                    Position = new CPosition<double> { x = 0D, y = 0D, z = 0D },
+                    Movement = new CMovement
+                    {
+                        Speed = 5
+                    }
+                }, dungeon);
+            }
+        }
         public void Update()
         {
             // 同步视野内角色数据由: 角色移动、角色进入、角色退出来触发
             foreach (var (_, dungeon) in DicDungeon)
             {
+                // 副本自己的tick由timer处理 这里可以不做统一的Update
             }
         }
 
@@ -28,31 +51,59 @@ namespace TServer.ECSSystem.Dungeon
         public void EnterDungeon(ERole role, CDungeon dungeon)
         {
             dungeon.DicRole.Add(role.Id, role);
-            dungeon.GridSystem.AddRoleToGrid(role.Id, role.Position);
+            dungeon.DicEntity.Add(role.Id, role);
+            dungeon.GridSystem.AddEntityToGrid(role);
             role.Dungeon = dungeon;
+        }
+        /// <summary>
+        /// Entity进入副本
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="dungeon"></param>
+        public void EnterDungeon(EEntity entity, CDungeon dungeon)
+        {
+            dungeon.DicEntity.Add(entity.Id, entity);
+            dungeon.GridSystem.AddEntityToGrid(entity);
+            entity.Dungeon = dungeon;
+            entity.Update();
         }
 
         /// <summary>
         /// 角色进入任意副本
         /// </summary>
         /// <param name="role"></param>
-        public void EnterDungeon(ERole role)
+        public void EnterDungeon(ERole role, int tid = 101)
         {
             if (DicDungeon.Count <= 0)
             {
                 var dungeon = new CDungeon();
-                dungeon.Tid = 101;
+                dungeon.Tid = tid;
                 DicDungeon.Add(dungeon.Tid, dungeon);
             }
 
-            foreach (var (_, dungeon) in DicDungeon)
+            foreach (var (id, dungeon) in DicDungeon)
             {
-                EnterDungeon(role, dungeon);
-                break;
+                if (tid == id)
+                {
+                    EnterDungeon(role, dungeon);
+                    role.Dungeon.GridSystem.GetEntitiesFromSight(role.SightDistance, role.Position, out _, out var entityIds);
+                    role.Sight.SetInSightEntity = entityIds;
+                    SSight.Instance.EnterSight(role, entityIds);
+                    break;
+                }
             }
-            role.Dungeon.GridSystem.GetRolesFromSight(role.SightDistance, role.Position, out _, out var roleIds);
-            role.Sight.SetInSightRole = roleIds;
-            SSight.Instance.EnterSight(role, roleIds);
+        }
+
+        public void EnterDungeon(EMonster monster, int tid = 101)
+        {
+            foreach (var (id, dungeon) in DicDungeon)
+            {
+                if (tid == id)
+                {
+                    EnterDungeon(monster, dungeon);
+                    break;
+                }
+            }
         }
 
         /// <summary>
@@ -65,7 +116,7 @@ namespace TServer.ECSSystem.Dungeon
             role.Dungeon?.GridSystem.GetRolesFromSight(role.SightDistance, role.Position, out _, out roleIds);
 
             role.Dungeon?.DicRole.Remove(role.Id);
-            role.Dungeon?.GridSystem.DeleteRoleFromGrid(role.Id, role.Position);
+            role.Dungeon?.GridSystem.DeleteEntityFromGrid(role);
 
             SSight.Instance.LeaveSight(role, roleIds);
         }

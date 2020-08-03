@@ -60,4 +60,13 @@ namespace Common.Protobuf
             SMove.Instance.OnRoleNavAuto(role, this);
         }
     }
+
+    public partial class C2SStopMove
+    {
+        public override void OnProcess(Guid guid)
+        {
+            if (!GameServer.DicRole.TryGetValue(guid, out var role)) return;
+            SMove.Instance.OnRoleStopMove(role);
+        }
+    }
 }

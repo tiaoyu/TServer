@@ -50,7 +50,7 @@ namespace TServer
             var t2 = stopwatch.ElapsedMilliseconds;
 
             TimerManager.Init();
-
+            SDungeon.Instance.Init();
             while (true)
             {
                 t1 = stopwatch.ElapsedMilliseconds;

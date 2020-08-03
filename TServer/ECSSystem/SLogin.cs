@@ -21,7 +21,7 @@ namespace TServer.ECSSystem
         public void LoginIn(Guid guid, C2SLogin pack)
         {
             var role = new ERole();
-            role.Id = Utilities.SUtilities.GetIndex();
+            role.Id = EEntity.GenerateEntityId(EEntityType.ROLE);
             Program.Server.DicEventArgs.TryGetValue(guid, out role.exSocket);
 
             GameServer.DicRole.Add(guid, role);

@@ -37,7 +37,7 @@ namespace Common.Protobuf
     {
         public override void OnProcess()
         {
-            TClient.UpdateRoleList(new List<RoleInfo>(RoleInfoList));
+            TClient.UpdateRoleList(new List<EntityInfo>(EntityInfoList));
         }
     }
 
@@ -45,7 +45,7 @@ namespace Common.Protobuf
     {
         public override void OnProcess()
         {
-            TClient.UpdateRoleSight(RoleInfo, SightOpt);
+            TClient.UpdateRoleSight(EntityInfo, SightOpt);
         }
     }
 }

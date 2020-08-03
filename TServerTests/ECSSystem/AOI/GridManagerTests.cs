@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using Xunit.Abstractions;
 using TServer.ECSComponent;
+using TServer.ECSEntity;
 
 namespace TServer.ECSSystem.AOI.Tests
 {
@@ -33,7 +34,7 @@ namespace TServer.ECSSystem.AOI.Tests
             {
                 var x = GetRandomNum(0, 499);
                 var y = GetRandomNum(0, 499);
-                map[manager.AddRoleToGrid(i, new CPosition<double> { x = x, y = y })]++;
+                map[manager.AddEntityToGrid(new EEntity { Id = i, EntityType = EEntityType.ROLE, Position = new CPosition<double> { x = x, y = y } })]++;
             }
 
             // 获取视野内角色
@@ -67,7 +68,7 @@ namespace TServer.ECSSystem.AOI.Tests
             {
                 for (var j = 0; j <= 99; ++j)
                 {
-                    strings.Append($"{manager.RoleMap[manager.GetGridIdxFromGridPos(i, j)].Count} ");
+                    strings.Append($"{manager.EntityMap[manager.GetGridIdxFromGridPos(i, j)][(int)EEntityType.ROLE].Count} ");
                 }
                 output.WriteLine(strings.ToString());
                 strings.Clear();

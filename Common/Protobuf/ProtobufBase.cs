@@ -116,6 +116,9 @@ namespace Common.Protobuf
 
             push((int)C2S_PROTOCOL_TYPE.C2SNavAuto, CreateParse<C2SNavAuto>());
 
+            push((int)C2S_PROTOCOL_TYPE.C2SStopMove, CreateParse<C2SStopMove>());
+            push((int)S2C_PROTOCOL_TYPE.S2CStopMove, CreateParse<S2CStopMove>());
+
 
             foreach (var (protoId, parser) in _dicParser)
             {

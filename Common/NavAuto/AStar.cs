@@ -4,6 +4,11 @@ using System.Text;
 
 namespace Common.NavAuto
 {
+    /// <summary>
+    /// A*寻路
+    /// 参考实现
+    /// https://www.cs.auckland.ac.nz/compsci767s2c/projectReportExamples.d/astarNilsson.pdf
+    /// </summary>
     public class AStar
     {
         /// <summary>
@@ -115,6 +120,10 @@ namespace Common.NavAuto
             Parent = p;
         }
 
+        /// <summary>
+        /// 计算当前
+        /// </summary>
+        /// <param name="target"></param>
         public void CalculateValue(Node target)
         {
             if (Parent == null)

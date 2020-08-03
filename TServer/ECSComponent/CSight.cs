@@ -7,13 +7,12 @@ namespace TServer.ECSComponent
     public class CSight
     {
         /// <summary>
-        /// 视野内玩具ID
+        /// 视野内Entity ID
         /// </summary>
-        public HashSet<int> SetInSightRole { get; set; }
-
+        public HashSet<int> SetInSightEntity { get; set; }
         public CSight()
         {
-            SetInSightRole = new HashSet<int>();
+            SetInSightEntity = new HashSet<int>();
         }
     }
 }
