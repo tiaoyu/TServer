@@ -1,6 +1,6 @@
 TServer
 =========
-a game server combine anything I have learned.
+a game server created with anything I have learned.
 
 ### 0 To do list
 
