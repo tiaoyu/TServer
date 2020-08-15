@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Common.NavAuto
@@ -18,24 +19,26 @@ namespace Common.NavAuto
         private int width;
 
         public int[,] map;
-
+        public List<int[]> monsterPos;
         public int Width { get => width; set => width = value; }
         public int Length { get => length; set => length = value; }
 
         public MapData(string path)
         {
             filePath = path;
+            monsterPos = new List<int[]>();
         }
 
         public bool Init()
         {
             var f = File.ReadAllLines(filePath);
+            var inx = 0;
             var lineCount = f.Length;
 
             if (f.Length <= 1) return false;
 
             // 第一行为地图长宽 逗号分隔
-            var size = f[0].Split(',');
+            var size = f[inx++].Split(',');
 
             if (size.Length < 2) return false;
             if (!int.TryParse(size[0], out var l)) return false;
@@ -44,8 +47,7 @@ namespace Common.NavAuto
             Length = l;
             Width = w;
             map = new int[l, w];
-
-            for (var i = 1; i < lineCount; ++i)
+            for (var i = inx; i < l + inx; ++i)
             {
                 var row = f[i].ToCharArray();
                 for (var j = 0; j < row.Length; ++j)
@@ -54,6 +56,14 @@ namespace Common.NavAuto
                         map[i - 1, j] = row[j] - 48;
                     else return false;
                 }
+            }
+            inx += l;
+            // 初始化的怪物位置
+            if (!int.TryParse(f[inx++], out var monsterCount)) return false;
+            for (var i = inx; i < monsterCount + inx; ++i)
+            {
+                var pos = f[i].Split(",").Select(int.Parse).ToArray();
+                monsterPos.Add(pos);
             }
             return true;
         }

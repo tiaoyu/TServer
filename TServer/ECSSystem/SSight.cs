@@ -9,197 +9,118 @@ namespace TServer.ECSSystem
 {
     public class SSight : Singleton<SSight>
     {
-        //public void EnterSight(ERole roleA, ERole roleB)
-        //{
-        //    roleA.Sight.SetInSightRole.Add(roleB.Id);
-        //    roleB.Sight.SetInSightRole.Add(roleA.Id);
-        //    Program.Server.StartSend(roleA.exSocket.SocketEventArgs
-        //        , new S2CSight
-        //        {
-        //            EntityInfo = new EntityInfo { Id = roleB.Id, X = roleB.Position.x, Y = roleB.Position.y },
-        //            SightOpt = S2CSight.Types.ESightOpt.EnterSight
-        //        });
-        //    Program.Server.StartSend(roleB.exSocket.SocketEventArgs
-        //        , new S2CSight
-        //        {
-        //            EntityInfo = new EntityInfo { Id = roleA.Id, X = roleA.Position.x, Y = roleA.Position.y },
-        //            SightOpt = S2CSight.Types.ESightOpt.EnterSight
-        //        });
-        //}
         /// <summary>
-        /// 角色进入视野时 互相加入到视野中
+        /// Entity进入视野时 
+        ///     根据相互的视野范围来决定是否要互相加入到视野中
         /// </summary>
         /// <param name="roleA"></param>
         /// <param name="roleB"></param>
         public void EnterSight(EEntity entityA, EEntity entityB)
         {
-            entityA.Sight.SetInSightEntity.Add(entityB.Id);
-            entityB.Sight.SetInSightEntity.Add(entityA.Id);
-            if (entityA is ERole roleA)
+            var dis = entityA.Dungeon.GridSystem.GetDistanceFromTwoPosition(entityA.Position, entityB.Position);
+
+            if (entityA.SightDistance >= dis)
             {
-                Program.Server.StartSend(roleA.exSocket.SocketEventArgs
-                    , new S2CSight
-                    {
-                        EntityInfo = new EntityInfo { Id = entityB.Id, EntityType = (int)entityB.EntityType, X = entityB.Position.x, Y = entityB.Position.y },
-                        SightOpt = S2CSight.Types.ESightOpt.EnterSight
-                    });
-            }
-            if (entityB is ERole roleB)
-            {
-                Program.Server.StartSend(roleB.exSocket.SocketEventArgs
-                    , new S2CSight
-                    {
-                        EntityInfo = new EntityInfo { Id = entityA.Id, EntityType = (int)entityA.EntityType, X = entityA.Position.x, Y = entityA.Position.y },
-                        SightOpt = S2CSight.Types.ESightOpt.EnterSight
-                    });
+                // 自己的视野 大于 两者间距 则 一定能进入视野
+                //entityA.Sight.SetInSightEntityIds.Add(entityB.Id);
+                entityA.Sight.SetInSightEntity.Add(entityB);
+                entityB.Sight.SetWatchEntity.Add(entityA);
+
+                if (entityA is ERole roleA)
+                {
+                    Program.Server.StartSend(roleA.exSocket.SocketEventArgs
+                        , new S2CSight
+                        {
+                            EntityInfo = new EntityInfo { Id = entityB.Id, EntityType = (int)entityB.EntityType, X = entityB.Position.x, Y = entityB.Position.y },
+                            SightOpt = S2CSight.Types.ESightOpt.EnterSight
+                        });
+                }
             }
 
+            if (entityB.SightDistance >= dis)
+            {
+                //entityB.Sight.SetInSightEntityIds.Add(entityA.Id);
+                entityB.Sight.SetInSightEntity.Add(entityA);
+                entityA.Sight.SetWatchEntity.Add(entityB);
+                if (entityB is ERole roleB)
+                {
+                    Program.Server.StartSend(roleB.exSocket.SocketEventArgs
+                        , new S2CSight
+                        {
+                            EntityInfo = new EntityInfo { Id = entityA.Id, EntityType = (int)entityA.EntityType, X = entityA.Position.x, Y = entityA.Position.y },
+                            SightOpt = S2CSight.Types.ESightOpt.EnterSight
+                        });
+                }
+            }
         }
-        //public void EnterSight(EEntity entityA, ERole roleB)
-        //{
-        //    entityA.Sight.SetInSightRole.Add(roleB.Id);
-        //    roleB.Sight.SetInSightRole.Add(entityA.Id);
 
-        //    Program.Server.StartSend(roleB.exSocket.SocketEventArgs
-        //        , new S2CSight
-        //        {
-        //            EntityInfo = new EntityInfo { Id = entityA.Id, X = entityA.Position.x, Y = entityA.Position.y },
-        //            SightOpt = S2CSight.Types.ESightOpt.EnterSight
-        //        });
-        //}
-
-        /// <summary>
-        /// 进入视野
-        /// </summary>
-        /// <param name="role"></param>
-        /// <param name="roleIds"></param>
-        public void EnterSight(EEntity entity, HashSet<int> entityIds)
+        public void EnterSight(EEntity self, HashSet<EEntity> entities)
         {
-            foreach (var id in entityIds)
+            foreach (var entity in entities)
             {
-                if (!entity.Dungeon.DicEntity.TryGetValue(id, out var other)) continue;
-                EnterSight(entity, other);
+                EnterSight(self, entity);
             }
         }
 
-        //public void EnterSight(EEntity entity, HashSet<int> entityIds)
-        //{
-
-        //    foreach (var id in roleIds)
-        //    {
-        //        if (!entity.Dungeon.DicRole.TryGetValue(id, out var other)) continue;
-        //        EnterSight(entity, other);
-        //    }
-        //}
-
-
-        //public void LeaveSight(ERole roleA, ERole roleB)
-        //{
-        //    roleA.Sight.SetInSightRole.Remove(roleB.Id);
-        //    roleB.Sight.SetInSightRole.Remove(roleA.Id);
-        //    Program.Server.StartSend(roleA.exSocket.SocketEventArgs
-        //        , new S2CSight
-        //        {
-        //            EntityInfo = new EntityInfo { Id = roleB.Id, X = roleB.Position.x, Y = roleB.Position.y },
-        //            SightOpt = S2CSight.Types.ESightOpt.LeaveSight
-        //        });
-        //    Program.Server.StartSend(roleB.exSocket.SocketEventArgs
-        //        , new S2CSight
-        //        {
-        //            EntityInfo = new EntityInfo { Id = roleA.Id, X = roleA.Position.x, Y = roleA.Position.y },
-        //            SightOpt = S2CSight.Types.ESightOpt.LeaveSight
-        //        });
-        //}
-
-        //public void LeaveSight(EEntity entityA, ERole roleB)
-        //{
-        //    entityA.Sight.SetInSightRole.Remove(roleB.Id);
-        //    roleB.Sight.SetInSightRole.Remove(entityA.Id);
-
-        //    Program.Server.StartSend(roleB.exSocket.SocketEventArgs
-        //        , new S2CSight
-        //        {
-        //            EntityInfo = new EntityInfo { Id = entityA.Id, X = entityA.Position.x, Y = entityA.Position.y },
-        //            SightOpt = S2CSight.Types.ESightOpt.LeaveSight
-        //        });
-        //}
-
         /// <summary>
-        /// 角色离开视野时 互相移除出视野
+        /// Entity离开视野时 
+        ///     根据相互的视野范围来决定是否互相移除出视野
         /// </summary>
         /// <param name="roleA"></param>
         /// <param name="roleB"></param>
         public void LeaveSight(EEntity entityA, EEntity entityB)
         {
-            entityA.Sight.SetInSightEntity.Remove(entityB.Id);
-            entityB.Sight.SetInSightEntity.Remove(entityA.Id);
-            if (entityA is ERole roleA)
+            var dis = entityA.Dungeon.GridSystem.GetDistanceFromTwoPosition(entityA.Position, entityB.Position);
+            if (entityA.SightDistance < dis)
             {
-                Program.Server.StartSend(roleA.exSocket.SocketEventArgs
-                    , new S2CSight
-                    {
-                        EntityInfo = new EntityInfo { Id = entityB.Id, EntityType = (int)entityB.EntityType, X = entityB.Position.x, Y = entityB.Position.y },
-                        SightOpt = S2CSight.Types.ESightOpt.LeaveSight
-                    });
+                entityA.Sight.SetInSightEntity.Remove(entityB);
+                entityB.Sight.SetWatchEntity.Remove(entityA);
+                if (entityA is ERole roleA)
+                {
+                    Program.Server.StartSend(roleA.exSocket.SocketEventArgs
+                        , new S2CSight
+                        {
+                            EntityInfo = new EntityInfo { Id = entityB.Id, EntityType = (int)entityB.EntityType, X = entityB.Position.x, Y = entityB.Position.y },
+                            SightOpt = S2CSight.Types.ESightOpt.LeaveSight
+                        });
+                }
             }
-            if (entityB is ERole roleB)
+            if (entityB.SightDistance < dis)
             {
-                Program.Server.StartSend(roleB.exSocket.SocketEventArgs
-                    , new S2CSight
-                    {
-                        EntityInfo = new EntityInfo { Id = entityA.Id, EntityType = (int)entityA.EntityType, X = entityA.Position.x, Y = entityA.Position.y },
-                        SightOpt = S2CSight.Types.ESightOpt.LeaveSight
-                    });
+                //entityB.Sight.SetInSightEntityIds.Remove(entityA.Id);
+                entityA.Sight.SetWatchEntity.Remove(entityB);
+                if (entityB is ERole roleB)
+                {
+                    Program.Server.StartSend(roleB.exSocket.SocketEventArgs
+                        , new S2CSight
+                        {
+                            EntityInfo = new EntityInfo { Id = entityA.Id, EntityType = (int)entityA.EntityType, X = entityA.Position.x, Y = entityA.Position.y },
+                            SightOpt = S2CSight.Types.ESightOpt.LeaveSight
+                        });
+                }
             }
         }
 
-        //public void LeaveSight(ERole role, HashSet<int> roleIds)
-        //{
-        //    foreach (var id in roleIds)
-        //    {
-        //        if (!role.Dungeon.DicRole.TryGetValue(id, out var other)) continue;
-        //        LeaveSight(role, other);
-        //    }
-        //}
-        /// <summary>
-        /// 离开视野
-        /// </summary>
-        /// <param name="role"></param>
-        /// <param name="roleIds"></param>
-
-        public void LeaveSight(EEntity entity, HashSet<int> entityIds)
+        public void LeaveSight(EEntity self, HashSet<EEntity> entities)
         {
-            foreach (var id in entityIds)
+            foreach (var entity in entities)
             {
-                if (!entity.Dungeon.DicEntity.TryGetValue(id, out var other)) continue;
-                LeaveSight(entity, other);
+                LeaveSight(self, entity);
             }
         }
 
-
-        //public void RoleMove(ERole role)
-        //{
-        //    var pack = new S2CMove();
-        //    pack.EntityInfoList.Add(new EntityInfo { Id = role.Id, X = role.Position.x, Y = role.Position.y });
-        //    foreach (var id in role.Sight.SetInSightRole)
-        //    {
-        //        if (!role.Dungeon.DicRole.TryGetValue(id, out var r)) continue;
-        //        Program.Server.StartSend(r.exSocket.SocketEventArgs, pack);
-        //    }
-        //}
-
         /// <summary>
-        /// Entity移动通知视野内角色
+        /// Entity移动通知视野内Entity
         /// </summary>
         /// <param name="role"></param>
-        public void EntityMove(EEntity entity)
+        public void EntityMove(EEntity self)
         {
             var pack = new S2CMove();
-            pack.EntityInfoList.Add(new EntityInfo { Id = entity.Id, EntityType = (int)entity.EntityType, X = entity.Position.x, Y = entity.Position.y });
-            foreach (var id in entity.Sight.SetInSightEntity)
+            pack.EntityInfoList.Add(new EntityInfo { Id = self.Id, EntityType = (int)self.EntityType, X = self.Position.x, Y = self.Position.y });
+            foreach (var entity in self.Sight.SetWatchEntity)
             {
-                if (!entity.Dungeon.DicRole.TryGetValue(id, out var r)) continue;
-                Program.Server.StartSend(r.exSocket.SocketEventArgs, pack);
+                if (!self.Dungeon.DicRole.ContainsKey(entity.Id)) continue;
+                Program.Server.StartSend((entity as ERole).exSocket.SocketEventArgs, pack);
             }
         }
     }

@@ -5,17 +5,24 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TClientUI"
         mc:Ignorable="d"
-        Title="TClientUI" Height="450" Width="800" Loaded="Window_Loaded" Closing="Window_Closing" Closed="Window_Closed" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip" >
+        Title="TClientUI" Height="965" Width="916" Loaded="Window_Loaded" Closing="Window_Closing" Closed="Window_Closed" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" >
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="30*"/>
+            <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Canvas Name="RoleMap" Background="Black" PreviewKeyDown="OnKeyDown" PreviewKeyUp="OnKeyUp" PreviewMouseMove="OnMouseMove" PreviewMouseLeftButtonDown="OnMouseDown" Focusable="True">
-            <Button Name="LoginBtn" Canvas.Left="725" Canvas.Top="393" PreviewMouseLeftButtonUp="RoleLogin">start</Button>
-            <TextBox Name="DebugLog" Canvas.Left="55" Canvas.Top="394" Width="660"></TextBox>
+        <Canvas Grid.Column="0" Grid.Row="0" Name="RoleMap" Background="Black" PreviewKeyDown="OnKeyDown" PreviewKeyUp="OnKeyUp" PreviewMouseMove="OnMouseMove" PreviewMouseLeftButtonDown="OnMouseDown" Focusable="True">
         </Canvas>
+        <Grid Grid.Column="0" Grid.Row="1" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="10*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <TextBox Grid.Column ="0" Name="DebugLog" VerticalAlignment="Center"></TextBox>
+            <Button Grid.Column ="1" Name="LoginBtn" PreviewMouseLeftButtonUp="RoleLogin">start</Button>
+        </Grid>
     </Grid>
 </Window>

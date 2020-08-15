@@ -23,10 +23,12 @@ namespace TServer.ECSComponent
         /// <summary> 地图数据 </summary>
         public MapData MapData;
 
+        public HashSet<CPosition<double>> MonsterPosSet;
         public CDungeon(int tid = 1)
         {
             DicRole = new Dictionary<int, ERole>();
             DicEntity = new Dictionary<int, EEntity>();
+            MonsterPosSet = new HashSet<ECSComponent.CPosition<double>>();
 
             MapData = new MapData(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Path.Combine("MapData", $"{tid}")));
             MapData.Init();

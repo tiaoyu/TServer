@@ -12,9 +12,12 @@ namespace TServer.ECSSystem.AOI
         private Grid _grid;
         private Map _map;
 
-        // 每个格子中的Entity列表 <格子index-<EntityType-角色ID集合>>
-        public Dictionary<int, Dictionary<int, HashSet<int>>> _entityMap;
-        public Dictionary<int, Dictionary<int, HashSet<int>>> EntityMap => _entityMap;
+        // 每个格子中的Entity列表 <格子index-<EntityType-EntityID集合>>
+        private Dictionary<int, Dictionary<int, HashSet<int>>> _entityIdMap;
+        public Dictionary<int, Dictionary<int, HashSet<int>>> EntityIdMap => _entityIdMap;
+
+        private Dictionary<int, Dictionary<int, HashSet<EEntity>>> _entityMap;
+        public Dictionary<int, Dictionary<int, HashSet<EEntity>>> EntityMap => _entityMap;
 
         /// <summary>
         /// 
@@ -37,13 +40,21 @@ namespace TServer.ECSSystem.AOI
         {
             _grid.GridWidth = (int)_map.MapWidth / _grid.GridUnit + 1;
             _grid.GridLength = (int)_map.MapLength / _grid.GridUnit + 1;
-            _entityMap = new Dictionary<int, Dictionary<int, HashSet<int>>>();
+            _entityIdMap = new Dictionary<int, Dictionary<int, HashSet<int>>>();
+            _entityMap = new Dictionary<int, Dictionary<int, HashSet<EEntity>>>();
+
             for (int i = 0; i < _grid.GridWidth * _grid.GridLength; ++i)
             {
-                _entityMap.Add(i, new Dictionary<int, HashSet<int>>() {
+                _entityIdMap.Add(i, new Dictionary<int, HashSet<int>>() {
                     { (int)EEntityType.ROLE,new HashSet<int>() },
                     { (int)EEntityType.MONSTER,new HashSet<int>() },
                     { (int)EEntityType.BULLET,new HashSet<int>() },
+                });
+                _entityMap.Add(i, new Dictionary<int, HashSet<EEntity>>()
+                {
+                    { (int)EEntityType.ROLE,new HashSet<EEntity>() },
+                    { (int)EEntityType.MONSTER,new HashSet<EEntity>() },
+                    { (int)EEntityType.BULLET,new HashSet<EEntity>() },
                 });
             }
         }
@@ -102,7 +113,8 @@ namespace TServer.ECSSystem.AOI
         public int AddEntityToGrid(EEntity entity)
         {
             var idx = GetGridPosFromMapPos(entity.Position, out var _);
-            _entityMap[idx][(int)entity.EntityType].Add(entity.Id);
+            //_entityIdMap[idx][(int)entity.EntityType].Add(entity.Id);
+            _entityMap[idx][(int)entity.EntityType].Add(entity);
             return idx;
         }
 
@@ -113,7 +125,7 @@ namespace TServer.ECSSystem.AOI
         public void DeleteEntityFromGrid(EEntity entity)
         {
             var idx = GetGridPosFromMapPos(entity.Position, out var _);
-            _entityMap[idx][(int)entity.EntityType].Remove(entity.Id);
+            _entityIdMap[idx][(int)entity.EntityType].Remove(entity.Id);
         }
 
         /// <summary>
@@ -139,26 +151,27 @@ namespace TServer.ECSSystem.AOI
                     {
                         var idx = GetGridIdxFromGridPos(i, j);
                         gridIdxs.Add(idx);
-                        roleIds.UnionWith(_entityMap[idx][(int)EEntityType.ROLE]);
+                        roleIds.UnionWith(_entityIdMap[idx][(int)EEntityType.ROLE]);
                     }
                 }
             }
         }
 
-        public void GetRolesFromSight(int deep, CPosition<double> curPos, out HashSet<int> gridIdxs, out HashSet<int> roleIds)
-        {
-            GetGridPosFromMapPos(curPos, out var gridPos);
-            GetRolesFromSight(deep, gridPos, out gridIdxs, out roleIds);
-        }
-
-        public void GetEntitiesFromSight(int deep, CPosition<int> curPos, out HashSet<int> gridIdxs, out HashSet<int> roleIds)
+        /// <summary>
+        /// 一定范围内的Entity集合
+        /// </summary>
+        /// <param name="deep"></param>
+        /// <param name="gridPos"></param>
+        /// <param name="gridIdxs"></param>
+        /// <param name="entities"></param>
+        public void GetEntitiesFromSight(int deep, CPosition<int> gridPos, out HashSet<int> gridIdxs, out HashSet<EEntity> roleIds)
         {
             gridIdxs = new HashSet<int>();
-            roleIds = new HashSet<int>();
-            var xFrom = curPos.x - deep < 0 ? 0 : curPos.x - deep;
-            var yFrom = curPos.y - deep < 0 ? 0 : curPos.y - deep;
-            var xTo = curPos.x + deep < _grid.GridWidth ? curPos.x + deep : _grid.GridWidth;
-            var yTo = curPos.y + deep < _grid.GridLength ? curPos.y + deep : _grid.GridLength;
+            roleIds = new HashSet<EEntity>();
+            var xFrom = gridPos.x - deep < 0 ? 0 : gridPos.x - deep;
+            var yFrom = gridPos.y - deep < 0 ? 0 : gridPos.y - deep;
+            var xTo = gridPos.x + deep < _grid.GridWidth ? gridPos.x + deep : _grid.GridWidth;
+            var yTo = gridPos.y + deep < _grid.GridLength ? gridPos.y + deep : _grid.GridLength;
 
             for (var i = xFrom; i <= xTo; ++i)
             {
@@ -175,52 +188,82 @@ namespace TServer.ECSSystem.AOI
                 }
             }
         }
-        public void GetEntitiesFromSight(int deep, CPosition<double> curPos, out HashSet<int> gridIdxs, out HashSet<int> entityIds)
+
+        /// <summary>
+        /// 找到所有能看到自己的Entity集合
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="deep"></param>
+        /// <param name="curPos"></param>
+        /// <param name="gridIdxs"></param>
+        /// <param name="entities"></param>
+        public void GetEntitiesFromSight(EEntity self, CPosition<double> curPos, out HashSet<int> gridIdxs, out HashSet<EEntity> entities)
         {
             GetGridPosFromMapPos(curPos, out var gridPos);
-            GetEntitiesFromSight(deep, gridPos, out gridIdxs, out entityIds);
+
+            GetEntitiesFromSight(self.SightDistance, gridPos, out gridIdxs, out entities);
         }
 
         /// <summary>
-        /// 更新角色位置
+        /// 获得两个位置的相对格子距离
         /// </summary>
-        /// <param name="entity"></param>
+        /// <param name="aPos"></param>
+        /// <param name="bPos"></param>
+        /// <returns></returns>
+        public int GetDistanceFromTwoPosition(CPosition<double> aPos, CPosition<double> bPos)
+        {
+            GetGridPosFromMapPos(aPos, out var aGridPos);
+            GetGridPosFromMapPos(bPos, out var bGridPos);
+
+            var res = System.Math.Max(System.Math.Abs(aGridPos.x - bGridPos.x), System.Math.Abs(aGridPos.y - bGridPos.y));
+            return res;
+        }
+
+        /// <summary>
+        /// 更新Entity位置
+        /// </summary>
+        /// <param name="self"></param>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        public void UpdateEntityPosition(EEntity entity, double x, double y)
+        public void UpdateEntityPosition(EEntity self, double x, double y, bool isFirst = false)
         {
             // 位置无效 
             if (!IsValidPos(x, y)) return;
-            var oldPosition = new CPosition<double> { x = entity.Position.x, y = entity.Position.y };
+            var oldPosition = new CPosition<double> { x = self.Position.x, y = self.Position.y };
 
             // 格子位置不变时说明AOI没变化 所以不必通知AOI内角色
             var oldGridId = GetGridPosFromMapPos(oldPosition, out var _);
             var newGridId = GetGridPosFromMapPos(x, y, out var _);
-            if (oldGridId == newGridId)
+            if (oldGridId == newGridId && !isFirst)
             {
-                entity.Position.x = x;
-                entity.Position.y = y;
+                self.Position.x = x;
+                self.Position.y = y;
                 return;
             }
 
+            GetEntitiesFromSight(self, oldPosition, out _, out var oldEntities);
+
             // 从旧格子中删除
-            GetEntitiesFromSight(entity.SightDistance, oldPosition, out _, out var roleIdsOld);
-            DeleteEntityFromGrid(entity);
+            DeleteEntityFromGrid(self);
             // 更新位置
-            entity.Position.x = x;
-            entity.Position.y = y;
+            self.Position.x = x;
+            self.Position.y = y;
             // 加入新格子
-            AddEntityToGrid(entity);
-            GetEntitiesFromSight(entity.SightDistance, entity.Position, out _, out var roleIdsNew);
+            AddEntityToGrid(self);
 
-            var bothTmp = new HashSet<int>(roleIdsOld);
-            bothTmp.IntersectWith(roleIdsNew);
-            roleIdsOld.ExceptWith(bothTmp);
-            roleIdsNew.ExceptWith(bothTmp);
+            GetEntitiesFromSight(self, self.Position, out _, out var newEntities);
 
-            roleIdsOld.Remove(entity.Id);
-            SSight.Instance.LeaveSight(entity, roleIdsOld);
-            SSight.Instance.EnterSight(entity, roleIdsNew);
+            if (!isFirst)
+            {// 首次进入AOI不需要排除
+                var bothTmp = new HashSet<EEntity>(oldEntities);
+                bothTmp.IntersectWith(newEntities);
+                oldEntities.ExceptWith(bothTmp);
+                newEntities.ExceptWith(bothTmp);
+            }
+
+            oldEntities.Remove(self);
+            SSight.Instance.LeaveSight(self, oldEntities);
+            SSight.Instance.EnterSight(self, newEntities);
         }
         //public void UpdateEntityPostion(EEntity entity, double x, double y)
         //{

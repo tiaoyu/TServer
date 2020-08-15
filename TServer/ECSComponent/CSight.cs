@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using TServer.ECSEntity;
 
 namespace TServer.ECSComponent
 {
@@ -9,10 +10,23 @@ namespace TServer.ECSComponent
         /// <summary>
         /// 视野内Entity ID
         /// </summary>
-        public HashSet<int> SetInSightEntity { get; set; }
+        //public HashSet<int> SetInSightEntityIds { get; set; }
+
+        /// <summary>
+        /// 自己能看到的Entity
+        /// </summary>
+        public HashSet<EEntity> SetInSightEntity { get; set; }
+
+        /// <summary>
+        /// 能看到自己的Entity
+        /// </summary>
+        public HashSet<EEntity> SetWatchEntity { get; set; }
+
         public CSight()
         {
-            SetInSightEntity = new HashSet<int>();
+            //SetInSightEntityIds = new HashSet<int>();
+            SetInSightEntity = new HashSet<EEntity>();
+            SetWatchEntity = new HashSet<EEntity>();
         }
     }
 }

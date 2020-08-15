@@ -68,7 +68,7 @@ namespace TServer.ECSSystem.AOI.Tests
             {
                 for (var j = 0; j <= 99; ++j)
                 {
-                    strings.Append($"{manager.EntityMap[manager.GetGridIdxFromGridPos(i, j)][(int)EEntityType.ROLE].Count} ");
+                    strings.Append($"{manager.EntityIdMap[manager.GetGridIdxFromGridPos(i, j)][(int)EEntityType.ROLE].Count} ");
                 }
                 output.WriteLine(strings.ToString());
                 strings.Clear();

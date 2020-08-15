@@ -27,7 +27,7 @@ namespace TClientUI
     public partial class MainWindow : Window
     {
         // 放大的倍数 为了UI显示更清晰
-        private readonly int WEIGHT = 5;
+        private readonly int WEIGHT = 3;
         private bool isKeyUp = true;
         public Dictionary<int, Ellipse> DicRole = new Dictionary<int, Ellipse>();
         public static TClient tClient;
@@ -258,7 +258,7 @@ namespace TClientUI
         private void OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             var position = e.GetPosition(null);
-            TClient._client.StartSend(new C2SNavAuto { X = position.X / 5, Y = position.Y / 5 });
+            TClient._client.StartSend(new C2SNavAuto { X = position.X / WEIGHT, Y = position.Y / WEIGHT });
             DebugLog.Text = position.ToString();
         }
 

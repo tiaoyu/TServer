@@ -20,18 +20,22 @@ namespace TServer.ECSSystem.Dungeon
             {
                 var dungeon = new CDungeon(int.Parse(filePath.Name));
                 DicDungeon.Add(int.Parse(filePath.Name), dungeon);
-                SDungeon.Instance.EnterDungeon(new EMonster
+                foreach (var pos in dungeon.MapData.monsterPos)
                 {
-                    Id = EEntity.GenerateEntityId(EEntityType.MONSTER),
-                    AIState = AI.EAIState.PATROL,
-                    Dungeon = dungeon,
-                    EntityType = EEntityType.MONSTER,
-                    Position = new CPosition<double> { x = 0D, y = 0D, z = 0D },
-                    Movement = new CMovement
+                    SDungeon.Instance.EnterDungeon(new EMonster
                     {
-                        Speed = 5
-                    }
-                }, dungeon);
+                        Id = EEntity.GenerateEntityId(EEntityType.MONSTER),
+                        AIState = AI.EAIState.PATROL,
+                        Dungeon = dungeon,
+                        EntityType = EEntityType.MONSTER,
+                        Position = new CPosition<double> { x = pos[0], y = pos[1], z = 0D },
+                        BirthPosition = new CPosition<double> { x = pos[0], y = pos[1], z = 0D },
+                        Movement = new CMovement
+                        {
+                            Speed = 5
+                        }
+                    }, dungeon);
+                }
             }
         }
         public void Update()
@@ -50,10 +54,11 @@ namespace TServer.ECSSystem.Dungeon
         /// <param name="dungeon"></param>
         public void EnterDungeon(ERole role, CDungeon dungeon)
         {
+            role.Dungeon = dungeon;
             dungeon.DicRole.Add(role.Id, role);
             dungeon.DicEntity.Add(role.Id, role);
             dungeon.GridSystem.AddEntityToGrid(role);
-            role.Dungeon = dungeon;
+            dungeon.GridSystem.UpdateEntityPosition(role, role.Position.x, role.Position.y, true);
         }
         /// <summary>
         /// Entity进入副本
@@ -86,9 +91,6 @@ namespace TServer.ECSSystem.Dungeon
                 if (tid == id)
                 {
                     EnterDungeon(role, dungeon);
-                    role.Dungeon.GridSystem.GetEntitiesFromSight(role.SightDistance, role.Position, out _, out var entityIds);
-                    role.Sight.SetInSightEntity = entityIds;
-                    SSight.Instance.EnterSight(role, entityIds);
                     break;
                 }
             }
@@ -113,12 +115,11 @@ namespace TServer.ECSSystem.Dungeon
         public void LeaveDungeon(ERole role)
         {
             var roleIds = new HashSet<int>();
-            role.Dungeon?.GridSystem.GetRolesFromSight(role.SightDistance, role.Position, out _, out roleIds);
 
             role.Dungeon?.DicRole.Remove(role.Id);
             role.Dungeon?.GridSystem.DeleteEntityFromGrid(role);
 
-            SSight.Instance.LeaveSight(role, roleIds);
+            SSight.Instance.LeaveSight(role, role.Sight.SetWatchEntity);
         }
     }
 }

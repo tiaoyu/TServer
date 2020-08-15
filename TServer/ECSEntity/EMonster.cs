@@ -20,8 +20,15 @@ namespace TServer.ECSEntity
         public EMonster() : base()
         {
             AIState = EAIState.PATROL;
+            SightDistance = 150;
+            CanBeSeeDistance = 150;
+            AutoAttackDistance = 5;
         }
 
+        /// <summary>
+        /// Entity更新逻辑
+        /// 用于做一些定时操作
+        /// </summary>
         public override void Update()
         {
             Program.TimerManager.Insert(50, 50, int.MaxValue, null, (obj) =>
@@ -33,23 +40,31 @@ namespace TServer.ECSEntity
                     case EAIState.PATROL:
                         log.Debug($"i'm monster, i'm in partrol, my position is ({Position.x},{Position.y}).");
 
-                        foreach (var id in this.Sight.SetInSightEntity)
+                        //foreach (var id in this.Sight.SetInSightEntityIds)
+                        foreach (var target in this.Sight.SetInSightEntity)
                         {
-                            if (EEntity.IsRole(id))
+                            if (this.Dungeon.GridSystem.GetDistanceFromTwoPosition(target.Position, this.Position) > AutoAttackDistance)
+                                continue;
+                            if (EEntity.IsRole(target.Id))
                             {
-                                TargetId = id;
+                                TargetId = target.Id;
                                 AIState = EAIState.ATTACK;
                                 this.Movement.IsNavAuto = false;
+                                break;
                             }
                         }
 
-                        if (this.Movement.IsNavAuto)
+                        if (TargetId == 0)
                         {
-                            NavMove();
-                        }
-                        else
-                        {
-                            SMove.Instance.OnEntityNavAuto(this, SUtilities.GetRandomInt(100, 150), SUtilities.GetRandomInt(100, 150));
+                            if (this.Movement.IsNavAuto)
+                            {
+                                NavMove();
+                            }
+                            else
+                            {
+                                // 巡逻时在自己出生点一定距离内随机一个位置寻路
+                                SMove.Instance.OnEntityNavAuto(this, SUtilities.GetRandomInt((int)BirthPosition.x - 25, (int)BirthPosition.x + 25), SUtilities.GetRandomInt((int)BirthPosition.y - 25, (int)BirthPosition.y + 25));
+                            }
                         }
 
                         break;
@@ -57,7 +72,7 @@ namespace TServer.ECSEntity
                     case EAIState.ATTACK:
                         if (this.Dungeon.DicEntity.TryGetValue(TargetId, out var entity))
                         {
-                            //log.Debug($"i'm monster, i'm in attack, target is {TargetId},  my position is ({Position.x},{Position.y}), target position is ({entity.Position.x},{entity.Position.y}).");
+                            log.Debug($"i'm monster, i'm in attack, target is {TargetId},  my position is ({Position.x},{Position.y}), target position is ({entity.Position.x},{entity.Position.y}).");
                             if (this.Movement.IsNavAuto)
                             {
                                 NavMove();
@@ -66,6 +81,11 @@ namespace TServer.ECSEntity
                             {
                                 SMove.Instance.OnEntityNavAuto(this, entity.Position.x, entity.Position.y);
                             }
+                        }
+                        else
+                        {
+                            TargetId = 0;
+                            AIState = EAIState.PATROL;
                         }
                         break;
                     // 逃跑
