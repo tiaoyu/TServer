@@ -100,9 +100,6 @@ namespace Common.Protobuf
 
         public static void Register()
         {
-            push((int)C2S_PROTOCOL_TYPE.C2STest, CreateParse<C2STest>());
-            push((int)S2C_PROTOCOL_TYPE.S2CTest, CreateParse<S2CTest>());
-
             push((int)C2S_PROTOCOL_TYPE.C2SLogin, CreateParse<C2SLogin>());
             push((int)S2C_PROTOCOL_TYPE.S2CLogin, CreateParse<S2CLogin>());
 

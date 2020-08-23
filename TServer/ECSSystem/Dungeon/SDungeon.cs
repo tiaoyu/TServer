@@ -40,11 +40,7 @@ namespace TServer.ECSSystem.Dungeon
         }
         public void Update()
         {
-            // 同步视野内角色数据由: 角色移动、角色进入、角色退出来触发
-            foreach (var (_, dungeon) in DicDungeon)
-            {
-                // 副本自己的tick由timer处理 这里可以不做统一的Update
-            }
+            // 副本自己的tick由timer处理 这里可以不做统一的Update
         }
 
         /// <summary>
@@ -60,6 +56,7 @@ namespace TServer.ECSSystem.Dungeon
             dungeon.GridSystem.AddEntityToGrid(role);
             dungeon.GridSystem.UpdateEntityPosition(role, role.Position.x, role.Position.y, true);
         }
+
         /// <summary>
         /// Entity进入副本
         /// </summary>
@@ -96,29 +93,14 @@ namespace TServer.ECSSystem.Dungeon
             }
         }
 
-        public void EnterDungeon(EMonster monster, int tid = 101)
-        {
-            foreach (var (id, dungeon) in DicDungeon)
-            {
-                if (tid == id)
-                {
-                    EnterDungeon(monster, dungeon);
-                    break;
-                }
-            }
-        }
-
         /// <summary>
         /// 角色离开副本
         /// </summary>
         /// <param name="role"></param>
         public void LeaveDungeon(ERole role)
         {
-            var roleIds = new HashSet<int>();
-
             role.Dungeon?.DicRole.Remove(role.Id);
             role.Dungeon?.GridSystem.DeleteEntityFromGrid(role);
-
             SSight.Instance.LeaveSight(role, role.Sight.SetWatchEntity);
         }
     }

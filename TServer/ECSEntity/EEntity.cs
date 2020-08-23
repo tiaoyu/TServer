@@ -17,6 +17,10 @@ namespace TServer.ECSEntity
         /// 自动索敌半径 格子为单位长度
         /// </summary>
         public int AutoAttackDistance { get; set; }
+        /// <summary>
+        /// 脱战半径 格子为单位长度
+        /// </summary>
+        public int LeaveCombatDistance { get; set; }
         public CSight Sight { get; set; }
         public EEntityType EntityType { get; set; }
         public CDungeon Dungeon { get; set; }
@@ -32,6 +36,7 @@ namespace TServer.ECSEntity
                 Speed = 5
             };
             SightDistance = 5;
+            LeaveCombatDistance = 10;
         }
 
         public virtual void Update() { }

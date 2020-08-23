@@ -1,4 +1,5 @@
-﻿using Common.Normal;
+﻿using Common;
+using Common.Normal;
 using System;
 using System.Collections.Generic;
 using TServer.ECSEntity;
@@ -10,6 +11,11 @@ namespace TServer.Net
     {
         public static Dictionary<Guid, ERole> DicRole;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="numConnections">连接数</param>
+        /// <param name="receiveBufferSize">每个socket接收buff大小</param>
         public GameServer(int numConnections, int receiveBufferSize) : base(numConnections, receiveBufferSize)
         {
             DicRole = new Dictionary<Guid, ERole>();

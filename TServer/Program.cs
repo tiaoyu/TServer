@@ -55,7 +55,9 @@ namespace TServer
             {
                 t1 = stopwatch.ElapsedMilliseconds;
 
+                // 消息处理
                 Server.ProcessMessage();
+                // 定时器处理
                 TimerManager.Update(stopwatch.ElapsedMilliseconds);
 
                 SDungeon.Instance.Update();

@@ -23,6 +23,7 @@ namespace TServer.ECSEntity
             SightDistance = 150;
             CanBeSeeDistance = 150;
             AutoAttackDistance = 5;
+            LeaveCombatDistance = 10;
         }
 
         /// <summary>
@@ -38,18 +39,17 @@ namespace TServer.ECSEntity
                 {
                     // 巡逻 在出生点一定范围内随机一个位置移动
                     case EAIState.PATROL:
-                        log.Debug($"i'm monster, i'm in partrol, my position is ({Position.x},{Position.y}).");
-
-                        //foreach (var id in this.Sight.SetInSightEntityIds)
+                        //log.Debug($"i'm monster, i'm in partrol, my position is ({Position.x},{Position.y}).");
                         foreach (var target in this.Sight.SetInSightEntity)
                         {
-                            if (this.Dungeon.GridSystem.GetDistanceFromTwoPosition(target.Position, this.Position) > AutoAttackDistance)
+                            if (this.Dungeon.GridSystem.GetDistanceFromTwoPosition(target.Position, this.BirthPosition) > AutoAttackDistance)
                                 continue;
                             if (EEntity.IsRole(target.Id))
                             {
                                 TargetId = target.Id;
                                 AIState = EAIState.ATTACK;
                                 this.Movement.IsNavAuto = false;
+                                log.Debug($"i'm monster, i'm in partrol, i found a target({target.Id}, ready to attcck.");
                                 break;
                             }
                         }
@@ -64,6 +64,7 @@ namespace TServer.ECSEntity
                             {
                                 // 巡逻时在自己出生点一定距离内随机一个位置寻路
                                 SMove.Instance.OnEntityNavAuto(this, SUtilities.GetRandomInt((int)BirthPosition.x - 25, (int)BirthPosition.x + 25), SUtilities.GetRandomInt((int)BirthPosition.y - 25, (int)BirthPosition.y + 25));
+                                log.Debug($"i'm monster, i'm in partrol.");
                             }
                         }
 
@@ -72,20 +73,30 @@ namespace TServer.ECSEntity
                     case EAIState.ATTACK:
                         if (this.Dungeon.DicEntity.TryGetValue(TargetId, out var entity))
                         {
-                            log.Debug($"i'm monster, i'm in attack, target is {TargetId},  my position is ({Position.x},{Position.y}), target position is ({entity.Position.x},{entity.Position.y}).");
+                            //log.Debug($"i'm monster, i'm in attack, target is {TargetId},  my position is ({Position.x},{Position.y}), target position is ({entity.Position.x},{entity.Position.y}).");
                             if (this.Movement.IsNavAuto)
                             {
                                 NavMove();
                             }
                             else
                             {
+                                log.Debug($"i'm monster, i'm in attack, target is {TargetId}");
                                 SMove.Instance.OnEntityNavAuto(this, entity.Position.x, entity.Position.y);
+                            }
+
+                            //目标超出索敌范围 切换为寻路状态
+                            if (this.Dungeon.GridSystem.GetDistanceFromTwoPosition(entity.Position, this.BirthPosition) > this.LeaveCombatDistance)
+                            {
+                                TargetId = 0;
+                                AIState = EAIState.PATROL;
+                                log.Debug($"i'm monster, i'm in attack, but target({TargetId}) is lost.");
                             }
                         }
                         else
                         {
                             TargetId = 0;
                             AIState = EAIState.PATROL;
+                            log.Debug($"i'm monster, i'm in attack, but target({TargetId}) is lost.");
                         }
                         break;
                     // 逃跑

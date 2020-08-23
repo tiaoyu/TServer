@@ -11,22 +11,6 @@ using TServer.Net;
 
 namespace Common.Protobuf
 {
-    public partial class C2STest
-    {
-        private static readonly LogHelp log = LogHelp.GetLogger(typeof(C2STest));
-        public override void OnProcess(Guid guid)
-        {
-            if (!GameServer.DicRole.TryGetValue(guid, out var role))
-                return;
-            role.Position = new TServer.ECSComponent.CPosition<double> { x = X, y = Y };
-            var dungeon = new CDungeon { Tid = 1 };
-            dungeon.DicRole.Add(role.Id, role);
-            SDungeon.Instance.DicDungeon.Add(1, dungeon);
-
-            log.Debug($"Pos:({X}, {Y})");
-        }
-    }
-
     public partial class C2SLogin
     {
         public override void OnProcess(Guid guid)
