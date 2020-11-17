@@ -15,7 +15,12 @@ a game server created with anything I have learned.
 * AsyncUserToken
 * Buffer池
 * ExtSocket 作为
-
+### 2 会话管理逻辑
+```mermaid
+graph LR
+User --> Role
+User --> Session --> Socket
+```
 ### 2 消息处理逻辑
 
 待续

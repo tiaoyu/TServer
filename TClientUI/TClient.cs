@@ -53,7 +53,7 @@ namespace TClientUI
         public void StartConnect()
         {
             _client = new NormalClient(20, 8192);
-            _client.Init();
+            _client.Init(2048);
             _client.MessageHandler.SetDeserializeFunc((bytes, guid) =>
             {
                 var protoId = BitConverter.ToInt32(bytes);

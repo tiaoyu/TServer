@@ -28,7 +28,7 @@ namespace TClient
             #region Normal Socket
 
             var client = new NormalClient(20, 8192);
-            client.Init();
+            client.Init(2048);
             client.MessageHandler.SetDeserializeFunc((bytes, guid) =>
             {
                 var protoId = BitConverter.ToInt32(bytes);

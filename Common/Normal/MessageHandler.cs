@@ -17,16 +17,18 @@ namespace Common.Normal
         /// <summary>
         /// 反序列消息方法 构造时传入
         /// </summary>
-        private Func<byte[],Guid, T> _funcDeserialize;
+        private Func<byte[], Guid, T> _funcDeserialize;
 
         /// <summary>
         /// 序列化消息方法 构造时传入
         /// </summary>
         private Func<T, byte[]> _funcSerialize;
 
-        public MessageHandler()
+        private int MaxProtocolLengthLimit;
+        public MessageHandler(int maxProtocolLengthLimit)
         {
             MessageQueue = new ConcurrentQueue<T>();
+            MaxProtocolLengthLimit = maxProtocolLengthLimit;
         }
 
         /// <summary>
@@ -34,7 +36,7 @@ namespace Common.Normal
         /// </summary>
         /// <param name="funcDeserialize"></param>
         /// <returns></returns>
-        public MessageHandler<T> SetDeserializeFunc(Func<byte[],Guid, T> funcDeserialize)
+        public MessageHandler<T> SetDeserializeFunc(Func<byte[], Guid, T> funcDeserialize)
         {
             _funcDeserialize = funcDeserialize;
             return this;
@@ -108,6 +110,11 @@ namespace Common.Normal
                 }
             }
 
+            if (connection.MessageLength > MaxProtocolLengthLimit)
+            {
+                connection.Clear();
+                Console.WriteLine($"ERROR: protocol lengh over limit, length:{connection.MessageLength}");
+            }
             // 读取消息体：若当前剩余buffer长度大于待读取的消息长度 则读取的消息长度为 待读取的消息长度
             if (connection.BytesOfDoneBody == 0)
             {
@@ -131,7 +138,7 @@ namespace Common.Normal
             }
 
             // 处理读取到到消息
-            if (connection.MessageLength == connection.BytesOfDoneBody)
+            if (connection.MessageLength == connection.BytesOfDoneBody && connection.MessageLength != 0)
             {
                 MessageQueue.Enqueue(DeserializeMessage(connection.MessageBody, connection.Guid));
 

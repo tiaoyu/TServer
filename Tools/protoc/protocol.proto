@@ -58,6 +58,8 @@ message C2SMove {
   double speed = 4;
   bool isUsePosition = 5;
   Vector orientation = 6;
+  Vector position = 7; // 下一个位置
+  Vector moveDirection = 8; // 移动方向
 }
 
 message C2SNavAuto {
@@ -118,4 +120,5 @@ message S2CSight {
 
 message S2CStopMove {
     S2C_PROTOCOL_TYPE type = 1;
+    Vector position = 2;
 }

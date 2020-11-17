@@ -48,16 +48,20 @@ namespace TServer.ECSSystem
             role.Movement.IsNavAuto = false;
             if (pack.IsUsePosition)
             {
-                var speed = pack.Speed;
-                var xt = pack.X - role.Position.x;
-                var yt = pack.Y - role.Position.y;
+                // new
+                EntityMove(role, pack.Position.X, pack.Position.Y);
 
-                var tmp = Math.Max(Math.Abs(xt), Math.Abs(yt));
+                // old
+                //var speed = pack.Speed;
+                //var xt = pack.X - role.Position.x;
+                //var yt = pack.Y - role.Position.y;
 
-                var x = xt / tmp * speed;
-                var y = yt / tmp * speed;
+                //var tmp = Math.Max(Math.Abs(xt), Math.Abs(yt));
 
-                EntityMove(role, role.Position.x + x, role.Position.y + y);
+                //var x = xt / tmp * speed;
+                //var y = yt / tmp * speed;
+
+                //EntityMove(role, role.Position.x + x, role.Position.y + y);
             }
             else
             {

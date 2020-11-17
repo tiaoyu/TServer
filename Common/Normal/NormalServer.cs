@@ -9,7 +9,6 @@ namespace Common.Normal
 {
     public class NormalServer : NetBase
     {
-        private static readonly LogHelp log = LogHelp.GetLogger(typeof(NormalServer));
         public Dictionary<Guid, ExtSocket> DicEventArgs = new Dictionary<Guid, ExtSocket>();
 
         Semaphore m_maxNumberAcceptedClients;
@@ -45,7 +44,7 @@ namespace Common.Normal
             // start the server with a listen backlog of 100 connections
             listenSocket.Listen(100);
 
-            log.Debug($"HostOrIp:{ipOrHost} Listen LocalAddress:{localAddress.ToString()} Port:{port}");
+            Console.WriteLine($"HostOrIp:{ipOrHost} Listen LocalAddress:{localAddress} Port:{port}");
 
             // post accepts on the listening socket
             StartAccept(null);
@@ -56,7 +55,7 @@ namespace Common.Normal
         // <param name="acceptEventArg">The context object to use when issuing 
         // the accept operation on the server's listening socket</param>
         public void StartAccept(SocketAsyncEventArgs acceptEventArg)
-        {
+        { 
             if (acceptEventArg == null)
             {
                 acceptEventArg = new SocketAsyncEventArgs();
@@ -79,7 +78,7 @@ namespace Common.Normal
         private void ProcessAccept(SocketAsyncEventArgs e)
         {
             Interlocked.Increment(ref m_numConnectedSockets);
-            log.Debug($"Client connection accepted. There are {m_numConnectedSockets} clients connected to the server");
+            Console.WriteLine($"Client connection accepted. There are {m_numConnectedSockets} clients connected to the server");
 
             // Get the socket for the accepted client connection and put it into the 
             //ReadEventArg object user token
@@ -113,6 +112,7 @@ namespace Common.Normal
         protected override void OnAccept(ExtSocket ss)
         {
             DicEventArgs.Add(ss.Guid, ss);
+
         }
 
         protected override void CloseSocket(SocketAsyncEventArgs e)
@@ -127,7 +127,7 @@ namespace Common.Normal
             // throws if client process has already closed
             catch (Exception err)
             {
-                log.Error($"Exception:{err.Message}");
+                Console.WriteLine($"Exception:{err.Message}");
             }
             token.Socket?.Close();
 
@@ -138,7 +138,7 @@ namespace Common.Normal
             FreeSocketAsyncEventArgsToPool(e);
 
             m_maxNumberAcceptedClients.Release();
-            log.Info($"A client has been disconnected from the server. There are {m_numConnectedSockets} clients connected to the server");
+            Console.WriteLine($"A client has been disconnected from the server. There are {m_numConnectedSockets} clients connected to the server");
         }
     }
 }

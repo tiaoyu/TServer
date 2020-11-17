@@ -87,12 +87,13 @@ namespace Common.TTimer
         public List<Timer> tempTimers;
         // 所有Timer合集
         public Dictionary<int, Timer> DicTimer;
-
+        public HashSet<int> ReadyToRemoveTimerIds;
         /// <summary>
         /// 初始化
         /// </summary>
         public void Init()
         {
+            ReadyToRemoveTimerIds = new HashSet<int>();
             DicTimer = new Dictionary<int, Timer>();
             tempTimers = new List<Timer>();
             Wheels = new Wheel[MAX_WHEEL_COUNT];
@@ -125,6 +126,14 @@ namespace Common.TTimer
             return t.Id;
         }
 
+        /// <summary>
+        /// 加入待删除的定时器ID 此方法在定时器回调中使用
+        /// </summary>
+        /// <param name="id"></param>
+        public void AddToRemove(int id)
+        {
+            ReadyToRemoveTimerIds.Add(id);
+        }
         /// <summary>
         /// 移除定时器
         /// </summary>
@@ -226,6 +235,10 @@ namespace Common.TTimer
                         continue;
                     }
                     break;
+                }
+                foreach(var id in ReadyToRemoveTimerIds)
+                {
+                    Remove(id);
                 }
             }
         }

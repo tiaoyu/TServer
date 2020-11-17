@@ -10,7 +10,6 @@ namespace Common.Normal
 {
     public class NormalClient : NetBase
     {
-        private static readonly LogHelp log = LogHelp.GetLogger(typeof(NormalClient));
         private SocketAsyncEventArgs ClientEventArgs;
         private IPAddress RemoteAddress;
         private Socket connectSocket;
@@ -23,7 +22,7 @@ namespace Common.Normal
         {
             var address = Dns.GetHostAddresses(ipOrHost);
             RemoteAddress = address[address.Length - 1];
-            log.Debug($"HostOrIp:{ipOrHost} RemoteAddress:{RemoteAddress.ToString()}");
+            Console.WriteLine($"HostOrIp:{ipOrHost} RemoteAddress:{RemoteAddress.ToString()}");
             var remoteEndPoint = new IPEndPoint(RemoteAddress, port);
             connectSocket = new Socket(remoteEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
             var e = CreateNewSocketAsyncEventArgsForConnect();
@@ -87,14 +86,14 @@ namespace Common.Normal
             // throws if client process has already closed
             catch (Exception err)
             {
-                log.Error($"Exception:{err.Message}");
+                Console.WriteLine($"Exception:{err.Message}");
             }
             token.Socket?.Close();
 
             // Free the SocketAsyncEventArg so they can be reused by another client
             FreeSocketAsyncEventArgsToPool(e);
 
-            log.Info("Connection break");
+            Console.WriteLine("Connection break");
         }
     }
 }

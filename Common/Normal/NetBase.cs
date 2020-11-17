@@ -14,13 +14,10 @@ namespace Common.Normal
     ///     提供网络流的异步收发
     /// 
     /// 客户端独有的Connect 和 服务端的Accept由子类另行实现
-    /// Implements the connection logic for the socket server.  
     ///  
     /// </summary>
     public class NetBase
     {
-        private static readonly LogHelp log = LogHelp.GetLogger(typeof(NetBase));
-
         private int m_numConnections;   // the maximum number of connections the sample is designed to handle simultaneously 
         protected int m_receiveBufferSize;// buffer size to use for each socket I/O operation 
         private BufferManager m_bufferManager;  // represents a large reusable set of buffers for all socket operations
@@ -59,7 +56,7 @@ namespace Common.Normal
         // or reused, but it is done this way to illustrate how the API can 
         // easily be used to create reusable objects to increase server performance.
         //
-        public void Init()
+        public void Init(int MaxProtocolLengthLimit)
         {
             // Allocates one large byte buffer which all I/O operations use a piece of.  This gaurds 
             // against memory fragmentation
@@ -81,7 +78,7 @@ namespace Common.Normal
                 m_readWritePool.Push(readWriteEventArg);
             }
 
-            MessageHandler = new MessageHandler<object>();
+            MessageHandler = new MessageHandler<object>(MaxProtocolLengthLimit);
 
             ProtocolParser.Register();
         }
@@ -154,7 +151,7 @@ namespace Common.Normal
                 // done echoing data back to the client
                 AsyncUserToken token = (AsyncUserToken)e.UserToken;
                 // read the next block of data send from the client
-                //FreeSocketAsyncEventArgsToPool(e);
+                // FreeSocketAsyncEventArgsToPool(e);
             }
             else
             {
@@ -173,12 +170,16 @@ namespace Common.Normal
         /// <param name="e"></param>
         public void StartReceive(SocketAsyncEventArgs e)
         {
-            var ret = e.AcceptSocket.ReceiveAsync(e);
-
-            if (!ret)
+            try
             {
-                ProcessReceive(e);
+                var ret = e.AcceptSocket.ReceiveAsync(e);
+
+                if (!ret)
+                {
+                    ProcessReceive(e);
+                }
             }
+            catch { }
         }
 
         /// <summary>
@@ -279,5 +280,6 @@ namespace Common.Normal
                 }
             }
         }
+        public void TCloseSocket(SocketAsyncEventArgs e) { this.CloseSocket(e); }
     }
 }

@@ -30,33 +30,35 @@ namespace Common.Protobuf {
             "bWUYAiABKAkSEAoIcGFzc3dvcmQYAyABKAkiTwoLQzJTUmVnaXN0ZXISIAoE",
             "dHlwZRgBIAEoDjISLkMyU19QUk9UT0NPTF9UWVBFEgwKBG5hbWUYAiABKAkS",
             "EAoIcGFzc3dvcmQYAyABKAkiKQoGVmVjdG9yEgkKAXgYASABKAESCQoBeRgC",
-            "IAEoARIJCgF6GAMgASgBIoUBCgdDMlNNb3ZlEiAKBHR5cGUYASABKA4yEi5D",
+            "IAEoARIJCgF6GAMgASgBIsABCgdDMlNNb3ZlEiAKBHR5cGUYASABKA4yEi5D",
             "MlNfUFJPVE9DT0xfVFlQRRIJCgF4GAIgASgBEgkKAXkYAyABKAESDQoFc3Bl",
             "ZWQYBCABKAESFQoNaXNVc2VQb3NpdGlvbhgFIAEoCBIcCgtvcmllbnRhdGlv",
-            "bhgGIAEoCzIHLlZlY3RvciJECgpDMlNOYXZBdXRvEiAKBHR5cGUYASABKA4y",
-            "Ei5DMlNfUFJPVE9DT0xfVFlQRRIJCgF4GAIgASgBEgkKAXkYAyABKAEiLwoL",
-            "QzJTU3RvcE1vdmUSIAoEdHlwZRgBIAEoDjISLkMyU19QUk9UT0NPTF9UWVBF",
-            "IiwKCFJvbGVJbmZvEgoKAmlkGAEgASgFEgkKAXgYAiABKAESCQoBeRgDIAEo",
-            "ASJCCgpFbnRpdHlJbmZvEgoKAmlkGAEgASgFEhIKCmVudGl0eVR5cGUYAiAB",
-            "KAUSCQoBeBgDIAEoARIJCgF5GAQgASgBIkoKB1MyQ1Rlc3QSIAoEdHlwZRgB",
-            "IAEoDjISLlMyQ19QUk9UT0NPTF9UWVBFEh0KCFJvbGVMaXN0GAIgAygLMgsu",
-            "RW50aXR5SW5mbyJWCghTMkNMb2dpbhIgCgR0eXBlGAEgASgOMhIuUzJDX1BS",
-            "T1RPQ09MX1RZUEUSCwoDcmVzGAIgASgFEhsKCHJvbGVJbmZvGAMgASgLMgku",
-            "Um9sZUluZm8iPAoLUzJDUmVnaXN0ZXISIAoEdHlwZRgBIAEoDjISLlMyQ19Q",
-            "Uk9UT0NPTF9UWVBFEgsKA3JlcxgCIAEoCSJQCgdTMkNNb3ZlEiAKBHR5cGUY",
-            "ASABKA4yEi5TMkNfUFJPVE9DT0xfVFlQRRIjCg5FbnRpdHlJbmZvTGlzdBgC",
-            "IAMoCzILLkVudGl0eUluZm8ioQEKCFMyQ1NpZ2h0EiAKBHR5cGUYASABKA4y",
-            "Ei5TMkNfUFJPVE9DT0xfVFlQRRIlCghTaWdodE9wdBgCIAEoDjITLlMyQ1Np",
-            "Z2h0LkVTaWdodE9wdBIfCgpFbnRpdHlJbmZvGAMgASgLMgsuRW50aXR5SW5m",
-            "byIrCglFU2lnaHRPcHQSDgoKRW50ZXJTaWdodBAAEg4KCkxlYXZlU2lnaHQQ",
-            "ASIvCgtTMkNTdG9wTW92ZRIgCgR0eXBlGAEgASgOMhIuUzJDX1BST1RPQ09M",
-            "X1RZUEUqhgEKEVMyQ19QUk9UT0NPTF9UWVBFEg0KCVMyQ19CZWdpbhAAEg0K",
-            "CFMyQ19UZXN0EIgnEg4KCVMyQ19Mb2dpbhCPThIRCgxTMkNfUmVnaXN0ZXIQ",
-            "jk4SDQoIUzJDX01vdmUQjU4SDgoJUzJDX1NpZ2h0EIxOEhEKDFMyQ19TdG9w",
-            "TW92ZRCLTiqDAQoRQzJTX1BST1RPQ09MX1RZUEUSDQoJQzJTX0JlZ2luEAAS",
-            "DQoIQzJTX1Rlc3QQhycSDQoJQzJTX0xvZ2luEAESEAoMQzJTX1JlZ2lzdGVy",
-            "EAISDAoIQzJTX01vdmUQAxIPCgtDMlNfTmF2QXV0bxAEEhAKDEMyU19TdG9w",
-            "TW92ZRAFQhKqAg9Db21tb24uUHJvdG9idWZiBnByb3RvMw=="));
+            "bhgGIAEoCzIHLlZlY3RvchIZCghwb3NpdGlvbhgHIAEoCzIHLlZlY3RvchIe",
+            "Cg1tb3ZlRGlyZWN0aW9uGAggASgLMgcuVmVjdG9yIkQKCkMyU05hdkF1dG8S",
+            "IAoEdHlwZRgBIAEoDjISLkMyU19QUk9UT0NPTF9UWVBFEgkKAXgYAiABKAES",
+            "CQoBeRgDIAEoASIvCgtDMlNTdG9wTW92ZRIgCgR0eXBlGAEgASgOMhIuQzJT",
+            "X1BST1RPQ09MX1RZUEUiLAoIUm9sZUluZm8SCgoCaWQYASABKAUSCQoBeBgC",
+            "IAEoARIJCgF5GAMgASgBIkIKCkVudGl0eUluZm8SCgoCaWQYASABKAUSEgoK",
+            "ZW50aXR5VHlwZRgCIAEoBRIJCgF4GAMgASgBEgkKAXkYBCABKAEiSgoHUzJD",
+            "VGVzdBIgCgR0eXBlGAEgASgOMhIuUzJDX1BST1RPQ09MX1RZUEUSHQoIUm9s",
+            "ZUxpc3QYAiADKAsyCy5FbnRpdHlJbmZvIlYKCFMyQ0xvZ2luEiAKBHR5cGUY",
+            "ASABKA4yEi5TMkNfUFJPVE9DT0xfVFlQRRILCgNyZXMYAiABKAUSGwoIcm9s",
+            "ZUluZm8YAyABKAsyCS5Sb2xlSW5mbyI8CgtTMkNSZWdpc3RlchIgCgR0eXBl",
+            "GAEgASgOMhIuUzJDX1BST1RPQ09MX1RZUEUSCwoDcmVzGAIgASgJIlAKB1My",
+            "Q01vdmUSIAoEdHlwZRgBIAEoDjISLlMyQ19QUk9UT0NPTF9UWVBFEiMKDkVu",
+            "dGl0eUluZm9MaXN0GAIgAygLMgsuRW50aXR5SW5mbyKhAQoIUzJDU2lnaHQS",
+            "IAoEdHlwZRgBIAEoDjISLlMyQ19QUk9UT0NPTF9UWVBFEiUKCFNpZ2h0T3B0",
+            "GAIgASgOMhMuUzJDU2lnaHQuRVNpZ2h0T3B0Eh8KCkVudGl0eUluZm8YAyAB",
+            "KAsyCy5FbnRpdHlJbmZvIisKCUVTaWdodE9wdBIOCgpFbnRlclNpZ2h0EAAS",
+            "DgoKTGVhdmVTaWdodBABIkoKC1MyQ1N0b3BNb3ZlEiAKBHR5cGUYASABKA4y",
+            "Ei5TMkNfUFJPVE9DT0xfVFlQRRIZCghwb3NpdGlvbhgCIAEoCzIHLlZlY3Rv",
+            "ciqGAQoRUzJDX1BST1RPQ09MX1RZUEUSDQoJUzJDX0JlZ2luEAASDQoIUzJD",
+            "X1Rlc3QQiCcSDgoJUzJDX0xvZ2luEI9OEhEKDFMyQ19SZWdpc3RlchCOThIN",
+            "CghTMkNfTW92ZRCNThIOCglTMkNfU2lnaHQQjE4SEQoMUzJDX1N0b3BNb3Zl",
+            "EItOKoMBChFDMlNfUFJPVE9DT0xfVFlQRRINCglDMlNfQmVnaW4QABINCghD",
+            "MlNfVGVzdBCHJxINCglDMlNfTG9naW4QARIQCgxDMlNfUmVnaXN0ZXIQAhIM",
+            "CghDMlNfTW92ZRADEg8KC0MyU19OYXZBdXRvEAQSEAoMQzJTX1N0b3BNb3Zl",
+            "EAVCEqoCD0NvbW1vbi5Qcm90b2J1ZmIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Common.Protobuf.S2C_PROTOCOL_TYPE), typeof(global::Common.Protobuf.C2S_PROTOCOL_TYPE), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -64,7 +66,7 @@ namespace Common.Protobuf {
             new pbr::GeneratedClrTypeInfo(typeof(global::Common.Protobuf.C2SLogin), global::Common.Protobuf.C2SLogin.Parser, new[]{ "Type", "Name", "Password" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Common.Protobuf.C2SRegister), global::Common.Protobuf.C2SRegister.Parser, new[]{ "Type", "Name", "Password" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Common.Protobuf.Vector), global::Common.Protobuf.Vector.Parser, new[]{ "X", "Y", "Z" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Common.Protobuf.C2SMove), global::Common.Protobuf.C2SMove.Parser, new[]{ "Type", "X", "Y", "Speed", "IsUsePosition", "Orientation" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Common.Protobuf.C2SMove), global::Common.Protobuf.C2SMove.Parser, new[]{ "Type", "X", "Y", "Speed", "IsUsePosition", "Orientation", "Position", "MoveDirection" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Common.Protobuf.C2SNavAuto), global::Common.Protobuf.C2SNavAuto.Parser, new[]{ "Type", "X", "Y" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Common.Protobuf.C2SStopMove), global::Common.Protobuf.C2SStopMove.Parser, new[]{ "Type" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Common.Protobuf.RoleInfo), global::Common.Protobuf.RoleInfo.Parser, new[]{ "Id", "X", "Y" }, null, null, null, null),
@@ -74,7 +76,7 @@ namespace Common.Protobuf {
             new pbr::GeneratedClrTypeInfo(typeof(global::Common.Protobuf.S2CRegister), global::Common.Protobuf.S2CRegister.Parser, new[]{ "Type", "Res" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Common.Protobuf.S2CMove), global::Common.Protobuf.S2CMove.Parser, new[]{ "Type", "EntityInfoList" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Common.Protobuf.S2CSight), global::Common.Protobuf.S2CSight.Parser, new[]{ "Type", "SightOpt", "EntityInfo" }, null, new[]{ typeof(global::Common.Protobuf.S2CSight.Types.ESightOpt) }, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Common.Protobuf.S2CStopMove), global::Common.Protobuf.S2CStopMove.Parser, new[]{ "Type" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Common.Protobuf.S2CStopMove), global::Common.Protobuf.S2CStopMove.Parser, new[]{ "Type", "Position" }, null, null, null, null)
           }));
     }
     #endregion
@@ -878,6 +880,8 @@ namespace Common.Protobuf {
       speed_ = other.speed_;
       isUsePosition_ = other.isUsePosition_;
       orientation_ = other.orientation_ != null ? other.orientation_.Clone() : null;
+      position_ = other.position_ != null ? other.position_.Clone() : null;
+      moveDirection_ = other.moveDirection_ != null ? other.moveDirection_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -952,6 +956,34 @@ namespace Common.Protobuf {
       }
     }
 
+    /// <summary>Field number for the "position" field.</summary>
+    public const int PositionFieldNumber = 7;
+    private global::Common.Protobuf.Vector position_;
+    /// <summary>
+    /// 下一个位置
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Common.Protobuf.Vector Position {
+      get { return position_; }
+      set {
+        position_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "moveDirection" field.</summary>
+    public const int MoveDirectionFieldNumber = 8;
+    private global::Common.Protobuf.Vector moveDirection_;
+    /// <summary>
+    /// 移动方向
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Common.Protobuf.Vector MoveDirection {
+      get { return moveDirection_; }
+      set {
+        moveDirection_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as C2SMove);
@@ -971,6 +1003,8 @@ namespace Common.Protobuf {
       if (!pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.Equals(Speed, other.Speed)) return false;
       if (IsUsePosition != other.IsUsePosition) return false;
       if (!object.Equals(Orientation, other.Orientation)) return false;
+      if (!object.Equals(Position, other.Position)) return false;
+      if (!object.Equals(MoveDirection, other.MoveDirection)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -983,6 +1017,8 @@ namespace Common.Protobuf {
       if (Speed != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(Speed);
       if (IsUsePosition != false) hash ^= IsUsePosition.GetHashCode();
       if (orientation_ != null) hash ^= Orientation.GetHashCode();
+      if (position_ != null) hash ^= Position.GetHashCode();
+      if (moveDirection_ != null) hash ^= MoveDirection.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1020,6 +1056,14 @@ namespace Common.Protobuf {
         output.WriteRawTag(50);
         output.WriteMessage(Orientation);
       }
+      if (position_ != null) {
+        output.WriteRawTag(58);
+        output.WriteMessage(Position);
+      }
+      if (moveDirection_ != null) {
+        output.WriteRawTag(66);
+        output.WriteMessage(MoveDirection);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -1045,6 +1089,12 @@ namespace Common.Protobuf {
       }
       if (orientation_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Orientation);
+      }
+      if (position_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Position);
+      }
+      if (moveDirection_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(MoveDirection);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -1077,6 +1127,18 @@ namespace Common.Protobuf {
           Orientation = new global::Common.Protobuf.Vector();
         }
         Orientation.MergeFrom(other.Orientation);
+      }
+      if (other.position_ != null) {
+        if (position_ == null) {
+          Position = new global::Common.Protobuf.Vector();
+        }
+        Position.MergeFrom(other.Position);
+      }
+      if (other.moveDirection_ != null) {
+        if (moveDirection_ == null) {
+          MoveDirection = new global::Common.Protobuf.Vector();
+        }
+        MoveDirection.MergeFrom(other.MoveDirection);
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -1114,6 +1176,20 @@ namespace Common.Protobuf {
               Orientation = new global::Common.Protobuf.Vector();
             }
             input.ReadMessage(Orientation);
+            break;
+          }
+          case 58: {
+            if (position_ == null) {
+              Position = new global::Common.Protobuf.Vector();
+            }
+            input.ReadMessage(Position);
+            break;
+          }
+          case 66: {
+            if (moveDirection_ == null) {
+              MoveDirection = new global::Common.Protobuf.Vector();
+            }
+            input.ReadMessage(MoveDirection);
             break;
           }
         }
@@ -2712,6 +2788,7 @@ namespace Common.Protobuf {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public S2CStopMove(S2CStopMove other) : this() {
       type_ = other.type_;
+      position_ = other.position_ != null ? other.position_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -2731,6 +2808,17 @@ namespace Common.Protobuf {
       }
     }
 
+    /// <summary>Field number for the "position" field.</summary>
+    public const int PositionFieldNumber = 2;
+    private global::Common.Protobuf.Vector position_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Common.Protobuf.Vector Position {
+      get { return position_; }
+      set {
+        position_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as S2CStopMove);
@@ -2745,6 +2833,7 @@ namespace Common.Protobuf {
         return true;
       }
       if (Type != other.Type) return false;
+      if (!object.Equals(Position, other.Position)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -2752,6 +2841,7 @@ namespace Common.Protobuf {
     public override int GetHashCode() {
       int hash = 1;
       if (Type != global::Common.Protobuf.S2C_PROTOCOL_TYPE.S2CBegin) hash ^= Type.GetHashCode();
+      if (position_ != null) hash ^= Position.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -2769,6 +2859,10 @@ namespace Common.Protobuf {
         output.WriteRawTag(8);
         output.WriteEnum((int) Type);
       }
+      if (position_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(Position);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -2779,6 +2873,9 @@ namespace Common.Protobuf {
       int size = 0;
       if (Type != global::Common.Protobuf.S2C_PROTOCOL_TYPE.S2CBegin) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Type);
+      }
+      if (position_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Position);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -2794,6 +2891,12 @@ namespace Common.Protobuf {
       if (other.Type != global::Common.Protobuf.S2C_PROTOCOL_TYPE.S2CBegin) {
         Type = other.Type;
       }
+      if (other.position_ != null) {
+        if (position_ == null) {
+          Position = new global::Common.Protobuf.Vector();
+        }
+        Position.MergeFrom(other.Position);
+      }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -2807,6 +2910,13 @@ namespace Common.Protobuf {
             break;
           case 8: {
             Type = (global::Common.Protobuf.S2C_PROTOCOL_TYPE) input.ReadEnum();
+            break;
+          }
+          case 18: {
+            if (position_ == null) {
+              Position = new global::Common.Protobuf.Vector();
+            }
+            input.ReadMessage(Position);
             break;
           }
         }

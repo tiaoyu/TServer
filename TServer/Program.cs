@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using Common.LogUtil;
@@ -18,6 +19,8 @@ namespace TServer
         private static LogHelp log;
         public static GameServer Server;
         public static TimerManager TimerManager = new TimerManager();
+        public static Dictionary<Guid, long> DicRoleTimeOut = new Dictionary<Guid, long>();
+        public static Stopwatch stopwatch = new Stopwatch();
         private static void Main()
         {
             LogHelp.Init(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LogConfig.log4net"));
@@ -29,7 +32,7 @@ namespace TServer
             log.Info("Hello Server!");
 
             Server = new GameServer(128, 8192);
-            Server.Init();
+            Server.Init(2048);
             // 反序列化消息
             Server.MessageHandler.SetDeserializeFunc((bytes, guid) =>
             {
@@ -44,7 +47,6 @@ namespace TServer
             Server.Start("127.0.0.1", 11000);
 
             // 主循环
-            var stopwatch = new Stopwatch();
             stopwatch.Start();
             var t1 = stopwatch.ElapsedMilliseconds;
             var t2 = stopwatch.ElapsedMilliseconds;

@@ -38,5 +38,13 @@ namespace Common.Normal
         {
             MessageHead = new byte[4];
         }
+
+        public void Clear()
+        {
+            SkipBufferBytes = 0;
+            MessageLength = 0;
+            BytesOfDoneBody = 0;
+            BytesOfDoneHead = 0;
+        }
     }
 }

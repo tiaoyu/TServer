@@ -27,7 +27,7 @@ namespace TServer.ECSSystem
             GameServer.DicRole.Add(guid, role);
 
             SDungeon.Instance.EnterDungeon(role);
-
+            role.Update();
             TServer.Program.Server.StartSend(role.exSocket.SocketEventArgs, new S2CLogin { Res = 1, RoleInfo = new RoleInfo { Id = role.Id, X = role.Position.x, Y = role.Position.y } });
             log.Debug($"Guid:{guid} --- {pack.Name} login in, password is {pack.Password}.");
         }
