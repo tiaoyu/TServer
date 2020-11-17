@@ -110,7 +110,7 @@ namespace Common.Normal
                 }
             }
 
-            if (connection.MessageLength > MaxProtocolLengthLimit)
+            if (connection.MessageLength > MaxProtocolLengthLimit || connection.MessageLength <= 0)
             {
                 connection.Clear();
                 Console.WriteLine($"ERROR: protocol lengh over limit, length:{connection.MessageLength}");
